@@ -1,0 +1,162 @@
+{
+  "name": "Cement Register",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "entry_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Entry ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "batch_number",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Batch Number",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_3",
+      "fieldtype": "Section Break",
+      "label": "Cement Details"
+    },
+    {
+      "fieldname": "cement_brand",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Brand Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "cement_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Cement Type",
+      "options": "OPC 33\nOPC 43\nOPC 53\nPPC\nPSC",
+      "reqd": 1
+    },
+    {
+      "fieldname": "grade",
+      "fieldtype": "Select",
+      "label": "Grade",
+      "options": "33\n43\n53",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_5",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "manufacturer",
+      "fieldtype": "Data",
+      "label": "Manufacturer",
+      "reqd": 1
+    },
+    {
+      "fieldname": "quantity_tonnes",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Quantity (tonnes)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_8",
+      "fieldtype": "Section Break",
+      "label": "Dates & Certification"
+    },
+    {
+      "fieldname": "date_received",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Date Received",
+      "reqd": 1
+    },
+    {
+      "fieldname": "date_of_manufacture",
+      "fieldtype": "Date",
+      "label": "Date of Manufacture",
+      "reqd": 1
+    },
+    {
+      "fieldname": "date_of_expiry",
+      "fieldtype": "Date",
+      "label": "Expiry Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_10",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "test_certificate_ref",
+      "fieldtype": "Attach",
+      "label": "Test Certificate"
+    },
+    {
+      "fieldname": "is_approved",
+      "fieldtype": "Check",
+      "label": "Approved",
+      "default": "0"
+    },
+    {
+      "fieldname": "section_break_12",
+      "fieldtype": "Section Break",
+      "label": "Storage & Usage"
+    },
+    {
+      "fieldname": "storage_location",
+      "fieldtype": "Data",
+      "label": "Storage Location",
+      "reqd": 1
+    },
+    {
+      "fieldname": "is_used",
+      "fieldtype": "Check",
+      "label": "Used",
+      "default": "0"
+    },
+    {
+      "fieldname": "column_break_14",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "total_consumed_tonnes",
+      "fieldtype": "Float",
+      "label": "Total Consumed (tonnes)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

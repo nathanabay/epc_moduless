@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: epc_modules
+Version: 1.0.0
+Summary: Comprehensive EPC Module for ERPNext
+Author: EPC Development Team
+Author-email: dev@organization.com
+Requires-Python: >=3.10
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary

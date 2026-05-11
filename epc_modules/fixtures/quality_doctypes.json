@@ -18,7 +18,7 @@
         "fieldtype": "MultiSelect",
         "in_list_view": 1,
         "label": "Applicable Typologies",
-        "options": "Electromechanical\nCivil\nStandard Service",
+        "options": "Electromechanical\nCivil\nStandard/Service",
         "reqd": 1
       },
       {

@@ -19,7 +19,7 @@ def get_app_info():
 
 def get_supported_typologies():
     """Return list of supported project typologies."""
-    return ["Electromechanical", "Civil", "Standard Service"]
+    return ["Electromechanical", "Civil", "Standard/Service"]
 
 
 def get_billing_tracks():

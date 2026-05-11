@@ -6,6 +6,7 @@ Event handlers and hooks for EPC module operations.
 
 import frappe
 from frappe import _
+from frappe.utils import add_days, today
 from epc_modules.utils import get_epc_logger, create_site_warehouse
 from epc_modules.utils.typology_engine import TypologyEngine
 from epc_modules.workflows import setup_epc_workflows
@@ -31,7 +32,7 @@ def add_project_role(doc):
     role_mapping = {
         "Electromechanical": ["Project Manager", "Procurement Manager"],
         "Civil": ["Project Manager", "Site Supervisor"],
-        "Standard Service": ["Project Manager", "Service Coordinator"],
+        "Standard/Service": ["Project Manager", "Service Coordinator"],
     }
 
     roles_to_add = role_mapping.get(typology_type, [])
@@ -323,12 +324,12 @@ def create_default_typologies():
             "color": "#3498db"
         },
         {
-            "name": "Standard Service",
-            "typology_type": "Standard Service",
+            "name": "Standard/Service",
+            "typology_type": "Standard/Service",
             "is_active": 1,
             "billing_track": "Milestone-Billing",
             "wbs_architecture": "Milestone-Based",
-            "inventory_strategy": "Standard",
+            "inventory_strategy": "Hidden",
             "requires_tbe": 0,
             "requires_measurement_book": 0,
             "requires_spatial_zones": 0,

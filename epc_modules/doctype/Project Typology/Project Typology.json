@@ -1,0 +1,183 @@
+{
+  "name": "Project Typology",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "autoname": "field:typology_name",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "typology_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Typology Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "label": "Description"
+    },
+    {
+      "fieldname": "typology_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Typology Type",
+      "options": "Electromechanical\nCivil\nStandard/Service",
+      "reqd": 1
+    },
+    {
+      "fieldname": "priority",
+      "fieldtype": "Int",
+      "label": "Priority",
+      "default": "1"
+    },
+    {
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Active",
+      "default": "1"
+    },
+    {
+      "fieldname": "icon",
+      "fieldtype": "Data",
+      "label": "Icon"
+    },
+    {
+      "fieldname": "color",
+      "fieldtype": "Color",
+      "label": "Color"
+    },
+    {
+      "fieldname": "section_break_procurement",
+      "fieldtype": "Section Break",
+      "label": "Procurement"
+    },
+    {
+      "fieldname": "requires_tbe",
+      "fieldtype": "Check",
+      "label": "Requires TBE",
+      "default": "0",
+      "description": "Requires Technical Bid Evaluation"
+    },
+    {
+      "fieldname": "column_break_procurement",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "measurement_method_default",
+      "fieldtype": "Select",
+      "label": "Measurement Method Default",
+      "options": "Unit-Based\nPercentage-Based\nMilestone-Based"
+    },
+    {
+      "fieldname": "requires_measurement_book",
+      "fieldtype": "Check",
+      "label": "Requires Measurement Book",
+      "default": "0"
+    },
+    {
+      "fieldname": "section_break_inventory",
+      "fieldtype": "Section Break",
+      "label": "Inventory & WBS"
+    },
+    {
+      "fieldname": "inventory_strategy",
+      "fieldtype": "Select",
+      "label": "Inventory Strategy",
+      "options": "Spatial-Zone\nBulk-Warehouse\nHidden"
+    },
+    {
+      "fieldname": "requires_spatial_zones",
+      "fieldtype": "Check",
+      "label": "Requires Spatial Zones",
+      "default": "0"
+    },
+    {
+      "fieldname": "column_break_inventory",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "wbs_architecture",
+      "fieldtype": "Select",
+      "label": "WBS Architecture",
+      "options": "Equipment-Based\nPhase-Based\nMilestone-Based"
+    },
+    {
+      "fieldname": "section_break_billing",
+      "fieldtype": "Section Break",
+      "label": "Billing"
+    },
+    {
+      "fieldname": "billing_track",
+      "fieldtype": "Select",
+      "label": "Billing Track",
+      "options": "RA-Billing\nMilestone-Billing"
+    },
+    {
+      "fieldname": "default_retention_percentage",
+      "fieldtype": "Float",
+      "label": "Default Retention %",
+      "default": "10"
+    },
+    {
+      "fieldname": "column_break_billing",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "advance_recovery_enabled",
+      "fieldtype": "Check",
+      "label": "Advance Recovery Enabled",
+      "default": "0"
+    },
+    {
+      "fieldname": "advance_recovery_threshold",
+      "fieldtype": "Float",
+      "label": "Advance Recovery Threshold %",
+      "default": "20"
+    },
+    {
+      "fieldname": "advance_recovery_cap",
+      "fieldtype": "Float",
+      "label": "Advance Recovery Cap %",
+      "default": "80"
+    },
+    {
+      "fieldname": "section_break_quality",
+      "fieldtype": "Section Break",
+      "label": "Quality"
+    },
+    {
+      "fieldname": "requires_itp",
+      "fieldtype": "Check",
+      "label": "Requires ITP",
+      "default": "0",
+      "description": "Inspection and Test Plan required"
+    },
+    {
+      "fieldname": "column_break_quality",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "auto_generate_ncr",
+      "fieldtype": "Check",
+      "label": "Auto Generate NCR",
+      "default": "0"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

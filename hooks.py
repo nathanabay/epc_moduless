@@ -70,14 +70,15 @@ get_match_filters = {
     "Project": "epc_modules.hooks.get_project_match_conditions"
 }
 
-# Fixtures to load
+# Fixtures to load (data records only; DocType schemas are in doctype/ directory)
 fixtures = [
-    {
-        "dt": "Custom Field",
-        "filters": [["name", "like", "Project%"]]
-    },
-    {
-        "dt": "Project Typology",
-        "filters": [["name", "like", "%"]]
-    }
+    # Custom fields on standard DocTypes (Project, Item, NCR, Equipment Register)
+    {"dt": "Custom Field", "filters": [["dt", "in", ["Project", "Item", "Non-Conformance Report", "Equipment Register"]]]},
+    # Property setters for Project form customization
+    {"dt": "Property Setter", "filters": [["doc_type", "=", "Project"]]},
+    # Default typology data records
+    {"dt": "Project Typology", "filters": []},
+    # Dashboard configurations
+    {"dt": "Dashboard", "filters": []},
+    {"dt": "Dashboard Chart", "filters": []},
 ]

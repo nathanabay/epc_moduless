@@ -199,7 +199,7 @@ class TestCivilTypology(unittest.TestCase):
 
 
 class TestStandardTypology(unittest.TestCase):
-    """Test Standard Service typology."""
+    """Test Standard/Service typology."""
 
     def setUp(self):
         """Set up test environment."""
@@ -209,7 +209,7 @@ class TestStandardTypology(unittest.TestCase):
         """Test Standard type detection."""
         project_data = {
             "name": "Test Project",
-            "typology": "Standard Service"
+            "typology": "Standard/Service"
         }
 
         typology = StandardTypology(project_data)
@@ -220,7 +220,7 @@ class TestStandardTypology(unittest.TestCase):
         """Test Standard uses Milestone-Billing."""
         project_data = {
             "name": "Test Project",
-            "typology": "Standard Service"
+            "typology": "Standard/Service"
         }
 
         typology = StandardTypology(project_data)
@@ -231,7 +231,7 @@ class TestStandardTypology(unittest.TestCase):
         """Test advance limit is 0 for standard service."""
         project_data = {
             "name": "Test Project",
-            "typology": "Standard Service"
+            "typology": "Standard/Service"
         }
 
         typology = StandardTypology(project_data)
@@ -242,7 +242,7 @@ class TestStandardTypology(unittest.TestCase):
         """Test measurement methods for standard."""
         project_data = {
             "name": "Test Project",
-            "typology": "Standard Service"
+            "typology": "Standard/Service"
         }
 
         typology = StandardTypology(project_data)
@@ -255,7 +255,7 @@ class TestStandardTypology(unittest.TestCase):
         """Test concrete compliance not required for standard."""
         project_data = {
             "name": "Test Project",
-            "typology": "Standard Service"
+            "typology": "Standard/Service"
         }
 
         typology = StandardTypology(project_data)
@@ -296,7 +296,7 @@ class TestTypologyFactory(unittest.TestCase):
         """Test creating Standard typology."""
         project_data = {
             "name": "Test Project",
-            "typology": "Standard Service"
+            "typology": "Standard/Service"
         }
 
         typology = TypologyFactory.create(project_data)
@@ -319,7 +319,7 @@ class TestTypologyFactory(unittest.TestCase):
 
         self.assertIn("Electromechanical", typologies)
         self.assertIn("Civil", typologies)
-        self.assertIn("Standard Service", typologies)
+        self.assertIn("Standard/Service", typologies)
 
 
 class TestTypologyCalculations(unittest.TestCase):
@@ -363,7 +363,7 @@ class TestTypologyCalculations(unittest.TestCase):
         """Test max advance calculation for standard (0%)."""
         project_data = {
             "name": "Test Project",
-            "typology": "Standard Service",
+            "typology": "Standard/Service",
             "total_contract_value": 10000000,
             "advance_rap_percentage": 0
         }

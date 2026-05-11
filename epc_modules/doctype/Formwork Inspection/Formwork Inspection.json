@@ -1,0 +1,215 @@
+{
+  "name": "Formwork Inspection",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "inspection_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Inspection ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "WBS Item",
+      "options": "WBS Item",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_3",
+      "fieldtype": "Section Break",
+      "label": "Element Details"
+    },
+    {
+      "fieldname": "location",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Location",
+      "reqd": 1
+    },
+    {
+      "fieldname": "formwork_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Formwork Type",
+      "options": "Slab\nBeam\nColumn\nWall\nFoundation",
+      "reqd": 1
+    },
+    {
+      "fieldname": "element_description",
+      "fieldtype": "Data",
+      "label": "Element Description"
+    },
+    {
+      "fieldname": "column_break_5",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "dimensions_length_m",
+      "fieldtype": "Float",
+      "label": "Length (m)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "dimensions_breadth_m",
+      "fieldtype": "Float",
+      "label": "Breadth (m)"
+    },
+    {
+      "fieldname": "dimensions_depth_m",
+      "fieldtype": "Float",
+      "label": "Depth (m)"
+    },
+    {
+      "fieldname": "section_break_8",
+      "fieldtype": "Section Break",
+      "label": "Inspection Checks"
+    },
+    {
+      "fieldname": "alignment_check",
+      "fieldtype": "Check",
+      "label": "Alignment Correct",
+      "default": "0"
+    },
+    {
+      "fieldname": "dimensions_check",
+      "fieldtype": "Check",
+      "label": "Dimensions Verified",
+      "default": "0"
+    },
+    {
+      "fieldname": "props_alignment",
+      "fieldtype": "Check",
+      "label": "Props Properly Aligned",
+      "default": "0"
+    },
+    {
+      "fieldname": "cleaning_check",
+      "fieldtype": "Check",
+      "label": "Formwork Cleaned",
+      "default": "0"
+    },
+    {
+      "fieldname": "column_break_10",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "oil_applied",
+      "fieldtype": "Check",
+      "label": "Release Agent Applied",
+      "default": "0"
+    },
+    {
+      "fieldname": "reinforcement_check",
+      "fieldtype": "Check",
+      "label": "Reinforcement Checked",
+      "default": "0"
+    },
+    {
+      "fieldname": "cover_blocks_placed",
+      "fieldtype": "Check",
+      "label": "Cover Blocks Placed",
+      "default": "0"
+    },
+    {
+      "fieldname": "section_break_15",
+      "fieldtype": "Section Break",
+      "label": "Inspection Details"
+    },
+    {
+      "fieldname": "inspector",
+      "fieldtype": "Link",
+      "label": "Inspector",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "inspection_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Inspection Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_17",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "is_cleared",
+      "fieldtype": "Check",
+      "label": "Cleared for Pouring",
+      "default": "0"
+    },
+    {
+      "fieldname": "cleared_by",
+      "fieldtype": "Link",
+      "label": "Cleared By",
+      "options": "User"
+    },
+    {
+      "fieldname": "clearance_date",
+      "fieldtype": "Date",
+      "label": "Clearance Date"
+    },
+    {
+      "fieldname": "section_break_20",
+      "fieldtype": "Section Break",
+      "label": "Pour Schedule"
+    },
+    {
+      "fieldname": "proposed_stripping_date",
+      "fieldtype": "Date",
+      "label": "Proposed Stripping Date"
+    },
+    {
+      "fieldname": "actual_stripping_date",
+      "fieldtype": "Date",
+      "label": "Actual Stripping Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "formwork_area_sqm",
+      "fieldtype": "Float",
+      "label": "Formwork Area (m²)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_22",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "QC Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

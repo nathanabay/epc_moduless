@@ -41,8 +41,8 @@
       },
       {
         "color": "#28A745",
-        "label": "Standard Service",
-        "condition": "Standard Service"
+        "label": "Standard/Service",
+        "condition": "Standard/Service"
       }
     ]
   },

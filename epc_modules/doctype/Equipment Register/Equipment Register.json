@@ -1,0 +1,196 @@
+{
+  "name": "Equipment Register",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "equipment_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Equipment ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "equipment_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Equipment Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "equipment_category",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Category",
+      "options": "Earthmoving\nLifting\nConcrete\nTransport\nPower\nTools",
+      "reqd": 1
+    },
+    {
+      "fieldname": "manufacturer",
+      "fieldtype": "Data",
+      "label": "Manufacturer"
+    },
+    {
+      "fieldname": "model_number",
+      "fieldtype": "Data",
+      "label": "Model"
+    },
+    {
+      "fieldname": "serial_number",
+      "fieldtype": "Data",
+      "label": "Serial/VIN"
+    },
+    {
+      "fieldname": "column_break_6",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "year_of_manufacture",
+      "fieldtype": "Int",
+      "label": "Year of Manufacture"
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Current Project",
+      "options": "Project"
+    },
+    {
+      "fieldname": "equipment_status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Available\nIn Use\nUnder Maintenance\nUnder Repair\nScrapped\nSold",
+      "default": "Available"
+    },
+    {
+      "fieldname": "section_break_10",
+      "fieldtype": "Section Break",
+      "label": "Ownership"
+    },
+    {
+      "fieldname": "ownership_type",
+      "fieldtype": "Select",
+      "label": "Ownership Type",
+      "options": "Owned\nLeased\nRented\nSubcontractor Owned",
+      "reqd": 1
+    },
+    {
+      "fieldname": "lease_vendor",
+      "fieldtype": "Link",
+      "label": "Lease Vendor",
+      "options": "Supplier"
+    },
+    {
+      "fieldname": "lease_start_date",
+      "fieldtype": "Date",
+      "label": "Lease Start"
+    },
+    {
+      "fieldname": "column_break_13",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "lease_end_date",
+      "fieldtype": "Date",
+      "label": "Lease End"
+    },
+    {
+      "fieldname": "lease_rate",
+      "fieldtype": "Currency",
+      "label": "Lease Rate"
+    },
+    {
+      "fieldname": "section_break_16",
+      "fieldtype": "Section Break",
+      "label": "Fuel & Operations"
+    },
+    {
+      "fieldname": "fuel_type",
+      "fieldtype": "Select",
+      "label": "Fuel Type",
+      "options": "Diesel\nPetrol\nElectric\nHybrid\nCNG"
+    },
+    {
+      "fieldname": "fuel_capacity_ltr",
+      "fieldtype": "Float",
+      "label": "Fuel Capacity (L)"
+    },
+    {
+      "fieldname": "average_fuel_consumption",
+      "fieldtype": "Float",
+      "label": "Avg Consumption"
+    },
+    {
+      "fieldname": "column_break_19",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "operator_required",
+      "fieldtype": "Check",
+      "label": "Operator Required"
+    },
+    {
+      "fieldname": "section_break_22",
+      "fieldtype": "Section Break",
+      "label": "Compliance"
+    },
+    {
+      "fieldname": "insurance_expiry",
+      "fieldtype": "Date",
+      "label": "Insurance Expiry"
+    },
+    {
+      "fieldname": "road_tax_expiry",
+      "fieldtype": "Date",
+      "label": "Road Tax Expiry"
+    },
+    {
+      "fieldname": "fitness_certificate_expiry",
+      "fieldtype": "Date",
+      "label": "Fitness Cert Expiry"
+    },
+    {
+      "fieldname": "column_break_25",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "current_location",
+      "fieldtype": "Data",
+      "label": "Current Location"
+    },
+    {
+      "fieldname": "odometer_reading",
+      "fieldtype": "Float",
+      "label": "Odometer/KM"
+    },
+    {
+      "fieldname": "hour_meter_reading",
+      "fieldtype": "Float",
+      "label": "Hour Meter"
+    },
+    {
+      "fieldname": "image",
+      "fieldtype": "Attach",
+      "label": "Photo"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}
