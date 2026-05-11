@@ -1,0 +1,289 @@
+[
+  {
+    "name": "epc_project_form_workflow",
+    "doctype": "Workflow",
+    "workflow_name": "EPC Project Form Workflow",
+    "document_type": "Project",
+    "is_active": 1,
+    "send_email_alert": 0,
+    "states": [
+      {
+        "state": "Draft",
+        "docstatus": 0,
+        "allow_edit": "All",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Active",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "On Hold",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Completed",
+        "docstatus": 2,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Cancelled",
+        "docstatus": 2,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      }
+    ],
+    "transitions": [
+      {
+        "state": "Draft",
+        "action": "Submit",
+        "next_state": "Active",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Active",
+        "action": "Hold",
+        "next_state": "On Hold",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "On Hold",
+        "action": "Resume",
+        "next_state": "Active",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Active",
+        "action": "Complete",
+        "next_state": "Completed",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Draft",
+        "action": "Cancel",
+        "next_state": "Cancelled",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      }
+    ]
+  },
+  {
+    "name": "epc_ra_bill_workflow",
+    "doctype": "Workflow",
+    "workflow_name": "EPC RA Bill Workflow",
+    "document_type": "RA Bill",
+    "is_active": 1,
+    "send_email_alert": 1,
+    "email_template": "RA Bill Status Update",
+    "states": [
+      {
+        "state": "Draft",
+        "docstatus": 0,
+        "allow_edit": "All",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Submitted",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Under Review",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Certified",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Invoiced",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Paid",
+        "docstatus": 2,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      }
+    ],
+    "transitions": [
+      {
+        "state": "Draft",
+        "action": "Submit",
+        "next_state": "Submitted",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Submitted",
+        "action": "Under Review",
+        "next_state": "Under Review",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Under Review",
+        "action": "Certify",
+        "next_state": "Certified",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Certified",
+        "action": "Invoice",
+        "next_state": "Invoiced",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Invoiced",
+        "action": "Mark Paid",
+        "next_state": "Paid",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      }
+    ]
+  },
+  {
+    "name": "epc_ncr_workflow",
+    "doctype": "Workflow",
+    "workflow_name": "EPC NCR Workflow",
+    "document_type": "Non-Conformance Report",
+    "is_active": 1,
+    "send_email_alert": 1,
+    "email_template": "NCR Status Update",
+    "states": [
+      {
+        "state": "Open",
+        "docstatus": 0,
+        "allow_edit": "All",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "In Progress",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Under Review",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Closed",
+        "docstatus": 1,
+        "allow_edit": "System Manager",
+        "modified": "2024-01-15 10:00:00"
+      }
+    ],
+    "transitions": [
+      {
+        "state": "Open",
+        "action": "Start Investigation",
+        "next_state": "In Progress",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "In Progress",
+        "action": "Submit for Review",
+        "next_state": "Under Review",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      },
+      {
+        "state": "Under Review",
+        "action": "Approve",
+        "next_state": "Closed",
+        "allowed": "System Manager",
+        "allow_self_approval": 0,
+        "modified": "2024-01-15 10:00:00"
+      }
+    ]
+  },
+  {
+    "name": "epc_project_list_view",
+    "doctype": "List View Settings",
+    "name_field": "name",
+    "doctype": "Project",
+    "is_default": 1,
+    "label": "EPC Project List",
+    "fields": [
+      {
+        "fieldname": "name",
+        "label": "ID"
+      },
+      {
+        "fieldname": "project_name",
+        "label": "Project Name"
+      },
+      {
+        "fieldname": "project_typology",
+        "label": "Typology"
+      },
+      {
+        "fieldname": "customer",
+        "label": "Customer"
+      },
+      {
+        "fieldname": "status",
+        "label": "Status"
+      },
+      {
+        "fieldname": "percent_complete",
+        "label": "Progress"
+      },
+      {
+        "fieldname": "contract_value",
+        "label": "Contract Value"
+      },
+      {
+        "fieldname": "expected_start_date",
+        "label": "Start Date"
+      },
+      {
+        "fieldname": "expected_end_date",
+        "label": "End Date"
+      }
+    ],
+    "filters": [
+      {
+        "fieldname": "is_epc_project",
+        "condition": "=",
+        "value": "1"
+      }
+    ],
+    "sort_by": "dashboard_priority",
+    "sort_order": "desc"
+  }
+]

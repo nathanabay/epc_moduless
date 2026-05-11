@@ -1,0 +1,713 @@
+---
+permalink: epc-project-dashboard.html
+---
+
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="epc-project-dashboard">
+    <div class="dashboard-header">
+        <div class="project-info">
+            <h1 class="project-title">{{ project_name }}</h1>
+            <div class="project-meta">
+                <span class="typology-badge">{{ typology }}</span>
+                <span class="status-badge status-{{ status.lower().replace(' ', '-') }}">{{ status }}</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="/app/project/{{ project }}" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit Project
+            </a>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </span>
+                <span class="kpi-title">Progress</span>
+            </div>
+            <div class="kpi-body">
+                <div class="kpi-main-value" id="kpi-progress">{{ progress.percent_complete }}%</div>
+                <div class="progress-ring-container">
+                    <svg class="progress-ring" viewBox="0 0 100 100">
+                        <circle class="progress-ring-bg" cx="50" cy="50" r="45"/>
+                        <circle class="progress-ring-fill" cx="50" cy="50" r="45"
+                                style="stroke-dasharray: {{ progress.percent_complete * 2.827 }} 282.7"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                </span>
+                <span class="kpi-title">Billing</span>
+            </div>
+            <div class="kpi-body">
+                <div class="kpi-main-value" id="kpi-billed">{{ billing.total_billed|format_currency }}</div>
+                <div class="kpi-sub-value">of {{ billing.contract_value|format_currency }}</div>
+                <div class="progress-bar-small">
+                    <div class="progress-fill" style="width: {{ billing.billing_percentage }}%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </span>
+                <span class="kpi-title">Quality</span>
+            </div>
+            <div class="kpi-body">
+                <div class="kpi-main-value" id="kpi-open-ncr">{{ quality.open_ncrs }}</div>
+                <div class="kpi-sub-value">Open NCRs</div>
+                {% if quality.critical_ncrs > 0 %}
+                <div class="kpi-alert">
+                    <span class="alert-indicator critical"></span>
+                    {{ quality.critical_ncrs }} Critical
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </span>
+                <span class="kpi-title">Labor</span>
+            </div>
+            <div class="kpi-body">
+                <div class="kpi-main-value" id="kpi-labor">{{ resources.labor_today }}</div>
+                <div class="kpi-sub-value">Workers Today</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WBS Progress -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">WBS Progress</h2>
+            <div class="section-actions">
+                <span class="wbs-summary">
+                    {{ progress.completed_wbs }}/{{ progress.wbs_items }} Items Completed
+                </span>
+            </div>
+        </div>
+        <div class="wbs-list" id="wbs-list">
+            <!-- Loaded via API -->
+        </div>
+    </div>
+
+    <!-- Recent DPRs -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">Recent Daily Progress</h2>
+            <a href="/app/daily-progress-report?project={{ project }}" class="btn btn-link btn-sm">
+                View All
+            </a>
+        </div>
+        <div class="dpr-timeline" id="dpr-timeline">
+            <!-- Loaded via API -->
+        </div>
+    </div>
+
+    <!-- Health Score -->
+    <div class="section-card health-section">
+        <div class="section-header">
+            <h2 class="section-title">Project Health</h2>
+        </div>
+        <div class="health-details">
+            <div class="health-score-large health-{{ health.status.lower() }}">
+                <div class="score-circle">
+                    <span class="score-value">{{ health.health_score }}</span>
+                </div>
+                <div class="score-label">{{ health.status }}</div>
+            </div>
+            <div class="health-factors">
+                <h4>Score Factors</h4>
+                <ul class="factor-list">
+                    {% for factor, score in health.factors.items() %}
+                    <li class="factor-item">
+                        <span class="factor-name">{{ factor|title }}</span>
+                        <div class="factor-bar">
+                            <div class="factor-fill" style="width: {{ score }}%"></div>
+                        </div>
+                        <span class="factor-score">{{ score }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% if health.issues %}
+                <h4>Issues</h4>
+                <ul class="issue-list">
+                    {% for issue in health.issues %}
+                    <li class="issue-item">{{ issue }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-card quick-actions">
+        <div class="section-header">
+            <h2 class="section-title">Quick Actions</h2>
+        </div>
+        <div class="action-grid">
+            {% if typology == 'Civil' %}
+            <a href="/app/measurement-book/new?project={{ project }}" class="action-card">
+                <span class="action-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                </span>
+                <span class="action-label">New Measurement Book</span>
+            </a>
+            {% endif %}
+            <a href="/app/daily-progress-report/new?project={{ project }}" class="action-card">
+                <span class="action-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20h9"/>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                    </svg>
+                </span>
+                <span class="action-label">Submit DPR</span>
+            </a>
+            {% if typology != 'Standard Service' %}
+            <a href="/app/ra-bill/new?project={{ project }}" class="action-card">
+                <span class="action-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </span>
+                <span class="action-label">Create RA Bill</span>
+            </a>
+            {% endif %}
+            <a href="/app/non-conformance-report/new?project={{ project }}" class="action-card">
+                <span class="action-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </span>
+                <span class="action-label">Report NCR</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Project-specific dashboard controller
+frappe.provide('epc_project_dashboard');
+
+const epc_project_dashboard = {
+    project: '{{ project }}',
+
+    init() {
+        this.loadWBSItems();
+        this.loadRecentDPRs();
+    },
+
+    async loadWBSItems() {
+        const wbs = await frappe.call({
+            method: 'frappe.client.get_list',
+            args: {
+                doctype: 'WBS Item',
+                filters: { project: this.project },
+                fields: ['name', 'item_code', 'wbs_level', 'physical_progress', 'status', 'parent_item'],
+                order_by: 'lft asc'
+            }
+        });
+
+        const container = document.getElementById('wbs-list');
+        if (wbs.message && wbs.message.length > 0) {
+            container.innerHTML = wbs.message.slice(0, 10).map(item => `
+                <div class="wbs-item">
+                    <div class="wbs-indent" style="width: ${item.wbs_level * 20}px"></div>
+                    <div class="wbs-info">
+                        <span class="wbs-code">${item.item_code}</span>
+                        <span class="wbs-status badge-${item.status.toLowerCase().replace(' ', '-')}">${item.status}</span>
+                    </div>
+                    <div class="wbs-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${item.physical_progress}%"></div>
+                        </div>
+                        <span class="progress-text">${item.physical_progress}%</span>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<div class="empty-state">No WBS items found</div>';
+        }
+    },
+
+    async loadRecentDPRs() {
+        const dprs = await frappe.call({
+            method: 'frappe.client.get_list',
+            args: {
+                doctype: 'Daily Progress Report',
+                filters: { project: this.project },
+                fields: ['name', 'report_date', 'overall_progress', 'work_summary'],
+                order_by: 'report_date desc',
+                limit: 5
+            }
+        });
+
+        const container = document.getElementById('dpr-timeline');
+        if (dprs.message && dprs.message.length > 0) {
+            container.innerHTML = dprs.message.map(dpr => `
+                <div class="dpr-item">
+                    <div class="dpr-date">${frappe.datetime.format_date(dpr.report_date)}</div>
+                    <div class="dpr-content">
+                        <div class="dpr-progress">${dpr.overall_progress || 0}%</div>
+                        <div class="dpr-summary">${dpr.work_summary || 'No summary'}</div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<div class="empty-state">No DPR entries found</div>';
+        }
+    }
+};
+
+frappe.ready(() => {
+    epc_project_dashboard.init();
+});
+</script>
+
+<style>
+/* Project Dashboard Specific Styles */
+.epc-project-dashboard .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.project-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin: 0 0 0.5rem 0;
+}
+
+.project-meta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.typology-badge {
+    background: #EEF2FF;
+    color: #4338CA;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.kpi-card .kpi-body {
+    position: relative;
+}
+
+.progress-ring-container {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: #E5E7EB;
+    stroke-width: 8;
+}
+
+.progress-ring-fill {
+    fill: none;
+    stroke: #5A5BE0;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s ease;
+}
+
+.progress-bar-small {
+    height: 4px;
+    background: #E5E7EB;
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-bar-small .progress-fill {
+    height: 100%;
+    background: #5A5BE0;
+    transition: width 0.5s ease;
+}
+
+.kpi-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #DC2626;
+}
+
+.alert-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.alert-indicator.critical {
+    background: #DC2626;
+}
+
+/* Section Cards */
+.section-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1F2937;
+    margin: 0;
+}
+
+/* WBS List */
+.wbs-list {
+    padding: 1rem 1.25rem;
+}
+
+.wbs-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.wbs-item:last-child {
+    border-bottom: none;
+}
+
+.wbs-indent {
+    flex-shrink: 0;
+}
+
+.wbs-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.wbs-code {
+    font-weight: 500;
+    color: #1F2937;
+}
+
+.wbs-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 200px;
+}
+
+.wbs-progress .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.wbs-progress .progress-fill {
+    height: 100%;
+    background: #5A5BE0;
+}
+
+.progress-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6B7280;
+    min-width: 35px;
+}
+
+/* DPR Timeline */
+.dpr-timeline {
+    padding: 1rem 1.25rem;
+}
+
+.dpr-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.dpr-item:last-child {
+    border-bottom: none;
+}
+
+.dpr-date {
+    font-size: 0.875rem;
+    color: #6B7280;
+    min-width: 100px;
+}
+
+.dpr-content {
+    flex: 1;
+}
+
+.dpr-progress {
+    font-weight: 600;
+    color: #1F2937;
+}
+
+.dpr-summary {
+    font-size: 0.875rem;
+    color: #6B7280;
+    margin-top: 0.25rem;
+}
+
+/* Health Score Section */
+.health-section {
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+}
+
+.health-details {
+    display: flex;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+
+.health-score-large {
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.score-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.health-good .score-circle { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); }
+.health-warning .score-circle { background: linear-gradient(135deg, #FEF3C7, #FDE68A); }
+.health-critical .score-circle { background: linear-gradient(135deg, #FEE2E2, #FECACA); }
+
+.score-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1F2937;
+}
+
+.score-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.health-factors {
+    flex: 1;
+}
+
+.health-factors h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6B7280;
+    margin: 0 0 0.75rem 0;
+}
+
+.factor-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.factor-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.factor-name {
+    width: 80px;
+    font-size: 0.875rem;
+    color: #6B7280;
+}
+
+.factor-bar {
+    flex: 1;
+    height: 8px;
+    background: #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.factor-fill {
+    height: 100%;
+    background: #10B981;
+}
+
+.factor-score {
+    width: 30px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1F2937;
+    text-align: right;
+}
+
+.issue-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.issue-item {
+    padding: 0.5rem 0.75rem;
+    background: #FEE2E2;
+    border-radius: 4px;
+    color: #DC2626;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Quick Actions */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 1.25rem;
+}
+
+.action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: #F9FAFB;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.action-card:hover {
+    background: #EEF2FF;
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5A5BE0;
+}
+
+.action-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1F2937;
+    text-align: center;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #9CA3AF;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-active { background: #D1FAE5; color: #047857; }
+.status-on-hold { background: #FEF3C7; color: #B45309; }
+.status-completed { background: #DBEAFE; color: #1D4ED8; }
+
+/* Badge variants */
+.badge-completed { background: #D1FAE5; color: #047857; }
+.badge-in-progress { background: #DBEAFE; color: #1D4ED8; }
+.badge-pending { background: #F3F4F6; color: #374151; }
+</style>

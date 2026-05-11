@@ -1,0 +1,721 @@
+[
+  {
+    "name": "Custom BOQ",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "autoname": "field:parent_wbs",
+    "is_submittable": 1,
+    "editable_grid": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "parent",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "parent_wbs",
+        "fieldtype": "Link",
+        "label": "Parent WBS",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "item_code",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Item Code",
+        "options": "Item",
+        "reqd": 1
+      },
+      {
+        "fieldname": "item_name",
+        "fieldtype": "Data",
+        "label": "Item Name",
+        "read_only": 1
+      },
+      {
+        "fieldname": "description",
+        "fieldtype": "Small Text",
+        "label": "Description"
+      },
+      {
+        "fieldname": "measurement_method",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Measurement Method",
+        "options": "Unit-Based\nPercentage-Based\nMilestone-Based",
+        "reqd": 1
+      },
+      {
+        "fieldname": "boq_quantity",
+        "fieldtype": "Float",
+        "in_list_view": 1,
+        "label": "BOQ Quantity",
+        "reqd": 1
+      },
+      {
+        "fieldname": "uom",
+        "fieldtype": "Link",
+        "label": "Unit",
+        "options": "UOM",
+        "reqd": 1
+      },
+      {
+        "fieldname": "unit_rate",
+        "fieldtype": "Currency",
+        "in_list_view": 1,
+        "label": "Unit Rate",
+        "reqd": 1
+      },
+      {
+        "fieldname": "total_value",
+        "fieldtype": "Currency",
+        "in_list_view": 1,
+        "label": "Total Value",
+        "read_only": 1
+      },
+      {
+        "fieldname": "is_electromechanical",
+        "fieldtype": "Check",
+        "label": "Electromechanical Item"
+      },
+      {
+        "fieldname": "is_civil",
+        "fieldtype": "Check",
+        "label": "Civil Item"
+      },
+      {
+        "fieldname": "wbs_code",
+        "fieldtype": "Data",
+        "label": "WBS Code",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_13",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "billed_quantity",
+        "fieldtype": "Float",
+        "label": "Billed Quantity",
+        "read_only": 1,
+        "default": "0"
+      },
+      {
+        "fieldname": "pending_quantity",
+        "fieldtype": "Float",
+        "label": "Pending Quantity",
+        "read_only": 1,
+        "formula": "boq_quantity - billed_quantity"
+      },
+      {
+        "fieldname": "column_break_16",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Draft\nActive\nCompleted\nCancelled",
+        "read_only": 1
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "WBS Item",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "autoname": "field:wbs_code",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_code",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "WBS Code",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_name",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "WBS Name",
+        "reqd": 1
+      },
+      {
+        "fieldname": "parent_wbs",
+        "fieldtype": "Link",
+        "label": "Parent WBS",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "wbs_level",
+        "fieldtype": "Int",
+        "in_list_view": 1,
+        "label": "WBS Level",
+        "read_only": 1,
+        "default": "1"
+      },
+      {
+        "fieldname": "is_milestone",
+        "fieldtype": "Check",
+        "label": "Is Milestone"
+      },
+      {
+        "fieldname": "section_break_6",
+        "fieldtype": "Section Break",
+        "label": "Schedule"
+      },
+      {
+        "fieldname": "planned_start",
+        "fieldtype": "Date",
+        "label": "Planned Start"
+      },
+      {
+        "fieldname": "planned_end",
+        "fieldtype": "Date",
+        "label": "Planned End"
+      },
+      {
+        "fieldname": "actual_start",
+        "fieldtype": "Date",
+        "label": "Actual Start"
+      },
+      {
+        "fieldname": "actual_end",
+        "fieldtype": "Date",
+        "label": "Actual End"
+      },
+      {
+        "fieldname": "column_break_9",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "responsible_party",
+        "fieldtype": "Link",
+        "label": "Responsible Party",
+        "options": "User"
+      },
+      {
+        "fieldname": "section_break_10",
+        "fieldtype": "Section Break",
+        "label": "Cost & Progress"
+      },
+      {
+        "fieldname": "planned_value",
+        "fieldtype": "Currency",
+        "in_list_view": 1,
+        "label": "Planned Value"
+      },
+      {
+        "fieldname": "earned_value",
+        "fieldtype": "Currency",
+        "label": "Earned Value",
+        "read_only": 1
+      },
+      {
+        "fieldname": "physical_progress",
+        "fieldtype": "Float",
+        "in_list_view": 1,
+        "label": "Physical Progress %",
+        "precision": 2
+      },
+      {
+        "fieldname": "column_break_14",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "budget_allocated",
+        "fieldtype": "Currency",
+        "label": "Budget Allocated"
+      },
+      {
+        "fieldname": "cost_incurred",
+        "fieldtype": "Currency",
+        "label": "Cost Incurred",
+        "read_only": 1
+      },
+      {
+        "fieldname": "wbs_status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Pending\nIn Progress\nCompleted\nOn Hold\nCancelled",
+        "default": "Pending"
+      },
+      {
+        "fieldname": "architecture",
+        "fieldtype": "Select",
+        "label": "WBS Architecture",
+        "options": "Equipment-Based\nPhase-Based\nMilestone-Based",
+        "hidden": 1
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Measurement Book",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "autoname": "field:mb_code",
+    "is_submittable": 1,
+    "editable_grid": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "mb_code",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "MB Code",
+        "reqd": 1
+      },
+      {
+        "fieldname": "mb_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Measurement Date",
+        "reqd": 1,
+        "default": "Today"
+      },
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "label": "WBS Item",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "supervisor",
+        "fieldtype": "Link",
+        "label": "Supervisor",
+        "options": "User",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_5",
+        "fieldtype": "Section Break",
+        "label": "Location"
+      },
+      {
+        "fieldname": "site_zone",
+        "fieldtype": "Link",
+        "label": "Site Zone",
+        "options": "Site Zone"
+      },
+      {
+        "fieldname": "location_description",
+        "fieldtype": "Small Text",
+        "label": "Location Description"
+      },
+      {
+        "fieldname": "column_break_7",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "work_description",
+        "fieldtype": "Small Text",
+        "label": "Work Description"
+      },
+      {
+        "fieldname": "measurement_entries",
+        "fieldtype": "Table",
+        "label": "Measurement Entries",
+        "options": "MB Entry"
+      },
+      {
+        "fieldname": "section_break_10",
+        "fieldtype": "Section Break",
+        "label": "Certification"
+      },
+      {
+        "fieldname": "total_quantity",
+        "fieldtype": "Float",
+        "label": "Total Quantity",
+        "read_only": 1
+      },
+      {
+        "fieldname": "certification_status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Certification Status",
+        "options": "Draft\nSubmitted\nCertified\nRejected",
+        "default": "Draft"
+      },
+      {
+        "fieldname": "certified_by",
+        "fieldtype": "Link",
+        "label": "Certified By",
+        "options": "User"
+      },
+      {
+        "fieldname": "certified_date",
+        "fieldtype": "Date",
+        "label": "Certified Date"
+      },
+      {
+        "fieldname": "column_break_16",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "boq_reference",
+        "fieldtype": "Link",
+        "label": "BOQ Reference",
+        "options": "Custom BOQ"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Site Supervisor",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1
+      }
+    ]
+  },
+  {
+    "name": "MB Entry",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "istable": 1,
+    "fields": [
+      {
+        "fieldname": "sl_no",
+        "fieldtype": "Int",
+        "label": "SL No",
+        "reqd": 1
+      },
+      {
+        "fieldname": "item_code",
+        "fieldtype": "Link",
+        "label": "Item Code",
+        "options": "Item",
+        "reqd": 1
+      },
+      {
+        "fieldname": "item_description",
+        "fieldtype": "Data",
+        "label": "Item Description"
+      },
+      {
+        "fieldname": "column_break_3",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "uom",
+        "fieldtype": "Link",
+        "label": "UOM",
+        "options": "UOM"
+      },
+      {
+        "fieldname": "length",
+        "fieldtype": "Float",
+        "label": "Length"
+      },
+      {
+        "fieldname": "breadth",
+        "fieldtype": "Float",
+        "label": "Breadth"
+      },
+      {
+        "fieldname": "height",
+        "fieldtype": "Float",
+        "label": "Height"
+      },
+      {
+        "fieldname": "no_of_items",
+        "fieldtype": "Int",
+        "label": "No. of Items"
+      },
+      {
+        "fieldname": "quantity",
+        "fieldtype": "Float",
+        "label": "Quantity",
+        "in_list_view": 1,
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_10",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ]
+  },
+  {
+    "name": "Daily Progress Report",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "editable_grid": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "report_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Report Date",
+        "reqd": 1,
+        "default": "Today"
+      },
+      {
+        "fieldname": "supervisor",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Supervisor",
+        "options": "User",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_3",
+        "fieldtype": "Section Break",
+        "label": "Site Conditions"
+      },
+      {
+        "fieldname": "site_zone",
+        "fieldtype": "Link",
+        "label": "Site Zone",
+        "options": "Site Zone"
+      },
+      {
+        "fieldname": "weather_conditions",
+        "fieldtype": "Select",
+        "label": "Weather Conditions",
+        "options": "Clear\nCloudy\nRainy\nStormy\nFoggy"
+      },
+      {
+        "fieldname": "work_shifts",
+        "fieldtype": "Int",
+        "label": "Number of Shifts",
+        "default": "1"
+      },
+      {
+        "fieldname": "column_break_6",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "labor_count",
+        "fieldtype": "Int",
+        "label": "Total Labor on Site"
+      },
+      {
+        "fieldname": "equipment_count",
+        "fieldtype": "Int",
+        "label": "Equipment Deployed"
+      },
+      {
+        "fieldname": "progress_entries",
+        "fieldtype": "Table",
+        "label": "Progress Entries",
+        "options": "DPR Entry"
+      },
+      {
+        "fieldname": "section_break_10",
+        "fieldtype": "Section Break",
+        "label": "Summary"
+      },
+      {
+        "fieldname": "overall_progress",
+        "fieldtype": "Float",
+        "label": "Overall Progress %",
+        "precision": 2
+      },
+      {
+        "fieldname": "column_break_12",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "label": "Status",
+        "options": "Draft\nSubmitted\nApproved",
+        "default": "Draft"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Site Supervisor",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "submit": 1
+      }
+    ]
+  },
+  {
+    "name": "DPR Entry",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "istable": 1,
+    "fields": [
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "label": "WBS Item",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "boq_item",
+        "fieldtype": "Link",
+        "label": "BOQ Item",
+        "options": "Custom BOQ"
+      },
+      {
+        "fieldname": "activity",
+        "fieldtype": "Data",
+        "label": "Activity Description"
+      },
+      {
+        "fieldname": "measurement_method",
+        "fieldtype": "Select",
+        "label": "Measurement Method",
+        "options": "Unit-Based\nPercentage-Based\nMilestone-Based",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_3",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "unit",
+        "fieldtype": "Link",
+        "label": "UOM",
+        "options": "UOM"
+      },
+      {
+        "fieldname": "planned_quantity",
+        "fieldtype": "Float",
+        "label": "Planned Qty"
+      },
+      {
+        "fieldname": "quantity_executed",
+        "fieldtype": "Float",
+        "label": "Qty Executed Today",
+        "in_list_view": 1
+      },
+      {
+        "fieldname": "cumulative_quantity",
+        "fieldtype": "Float",
+        "label": "Cumulative Qty",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_6",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "percent_complete",
+        "fieldtype": "Float",
+        "label": "% Complete",
+        "precision": 2
+      },
+      {
+        "fieldname": "is_milestone_achieved",
+        "fieldtype": "Check",
+        "label": "Milestone Achieved"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ]
+  }
+]

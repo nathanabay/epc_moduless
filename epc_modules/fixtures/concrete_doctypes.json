@@ -1,0 +1,1199 @@
+[
+  {
+    "name": "Concrete Mix Design",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "mix_design_code",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Mix Design Code",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "label": "WBS Item",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "section_break_3",
+        "fieldtype": "Section Break",
+        "label": "Mix Specifications"
+      },
+      {
+        "fieldname": "concrete_grade",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Concrete Grade",
+        "options": "M15\nM20\nM25\nM30\nM35\nM40\nM45\nM50\nM55\nM60",
+        "reqd": 1
+      },
+      {
+        "fieldname": "mix_type",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Mix Type",
+        "options": "Ready Mix\nSite Mix\nPumped Concrete",
+        "reqd": 1
+      },
+      {
+        "fieldname": "exposure_condition",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Exposure Condition",
+        "options": "Mild\nModerate\nSevere\nVery Severe\nExtreme",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_6",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "design_slump_mm",
+        "fieldtype": "Float",
+        "label": "Design Slump (mm)",
+        "description": "IS 456 Table 2 - Slump values"
+      },
+      {
+        "fieldname": "max_aggregate_size_mm",
+        "fieldtype": "Int",
+        "label": "Max Aggregate Size (mm)",
+        "options": "10\n20\n40"
+      },
+      {
+        "fieldname": "section_break_8",
+        "fieldtype": "Section Break",
+        "label": "Mix Design Parameters"
+      },
+      {
+        "fieldname": "cement_type",
+        "fieldtype": "Select",
+        "label": "Cement Type",
+        "options": "OPC 33\nOPC 43\nOPC 53\nPPC\nPSC",
+        "reqd": 1
+      },
+      {
+        "fieldname": "cement_content_kg",
+        "fieldtype": "Float",
+        "label": "Cement Content (kg/m³)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_10",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "max_water_cement_ratio",
+        "fieldtype": "Float",
+        "label": "Max Water/Cement Ratio",
+        "precision": 2,
+        "reqd": 1
+      },
+      {
+        "fieldname": "flyash_content_kg",
+        "fieldtype": "Float",
+        "label": "Fly Ash Content (kg/m³)"
+      },
+      {
+        "fieldname": "section_break_12",
+        "fieldtype": "Section Break",
+        "label": "Aggregate Content"
+      },
+      {
+        "fieldname": "sand_content_kg",
+        "fieldtype": "Float",
+        "label": "Fine Aggregate (kg/m³)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "coarse_aggregate_kg",
+        "fieldtype": "Float",
+        "label": "Coarse Aggregate (kg/m³)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_14",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "admixture_type",
+        "fieldtype": "Data",
+        "label": "Admixture Type"
+      },
+      {
+        "fieldname": "admixture_dosage",
+        "fieldtype": "Float",
+        "label": "Admixture Dosage (ml/kg)"
+      },
+      {
+        "fieldname": "section_break_16",
+        "fieldtype": "Section Break",
+        "label": "Compliance & Approval"
+      },
+      {
+        "fieldname": "min_cement_content_kg",
+        "fieldtype": "Float",
+        "label": "Min Cement (IS 456 Table 5)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "design_compressive_strength_mpa",
+        "fieldtype": "Float",
+        "label": "fck at 28 days (MPa)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_18",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "trial_mix_required",
+        "fieldtype": "Check",
+        "label": "Trial Mix Required",
+        "read_only": 1
+      },
+      {
+        "fieldname": "approval_status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Approval Status",
+        "options": "Draft\nUnder Review\nApproved\nRejected",
+        "default": "Draft"
+      },
+      {
+        "fieldname": "approved_by",
+        "fieldtype": "Link",
+        "label": "Approved By",
+        "options": "User"
+      },
+      {
+        "fieldname": "approval_date",
+        "fieldtype": "Date",
+        "label": "Approval Date"
+      },
+      {
+        "fieldname": "validity_period_months",
+        "fieldtype": "Int",
+        "label": "Validity Period (months)",
+        "default": "6"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "QC Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Cube Test Result",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "cube_test_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Cube Test ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "label": "WBS Item",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "mix_design",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Mix Design",
+        "options": "Concrete Mix Design",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_5",
+        "fieldtype": "Section Break",
+        "label": "Specimen Details"
+      },
+      {
+        "fieldname": "cube_number",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Cube Number",
+        "reqd": 1
+      },
+      {
+        "fieldname": "casting_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Casting Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "casting_location",
+        "fieldtype": "Data",
+        "label": "Casting Location/Element",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_7",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "grade_of_concrete",
+        "fieldtype": "Data",
+        "label": "Grade",
+        "read_only": 1
+      },
+      {
+        "fieldname": "specimen_shape",
+        "fieldtype": "Select",
+        "label": "Specimen Shape",
+        "options": "Cube\nCylinder",
+        "default": "Cube"
+      },
+      {
+        "fieldname": "size_mm",
+        "fieldtype": "Int",
+        "label": "Size (mm)",
+        "default": "150"
+      },
+      {
+        "fieldname": "section_break_10",
+        "fieldtype": "Section Break",
+        "label": "Test Details"
+      },
+      {
+        "fieldname": "age_days",
+        "fieldtype": "Int",
+        "in_list_view": 1,
+        "label": "Age (days)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "test_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Test Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_12",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "weight_kg",
+        "fieldtype": "Float",
+        "label": "Weight (kg)"
+      },
+      {
+        "fieldname": "cross_sectional_area_mm2",
+        "fieldtype": "Float",
+        "label": "Cross-sectional Area (mm²)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "crushing_load_kn",
+        "fieldtype": "Float",
+        "label": "Crushing Load (kN)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_15",
+        "fieldtype": "Section Break",
+        "label": "Results"
+      },
+      {
+        "fieldname": "compressive_strength_mpa",
+        "fieldtype": "Float",
+        "label": "Compressive Strength (MPa)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "avg_28_day_strength_mpa",
+        "fieldtype": "Float",
+        "label": "Avg 28-day Strength (MPa)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_17",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "is_pass",
+        "fieldtype": "Check",
+        "label": "Pass",
+        "read_only": 1
+      },
+      {
+        "fieldname": "is_within_tolerance",
+        "fieldtype": "Check",
+        "label": "Within Tolerance",
+        "read_only": 1
+      },
+      {
+        "fieldname": "section_break_20",
+        "fieldtype": "Section Break",
+        "label": "Laboratory Details"
+      },
+      {
+        "fieldname": "test_standard",
+        "fieldtype": "Data",
+        "label": "Test Standard",
+        "default": "IS 516"
+      },
+      {
+        "fieldname": "lab_name",
+        "fieldtype": "Data",
+        "label": "Testing Laboratory"
+      },
+      {
+        "fieldname": "lab_report_number",
+        "fieldtype": "Data",
+        "label": "Lab Report Number"
+      },
+      {
+        "fieldname": "column_break_22",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "QC Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Cement Register",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "entry_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Entry ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "batch_number",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Batch Number",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_3",
+        "fieldtype": "Section Break",
+        "label": "Cement Details"
+      },
+      {
+        "fieldname": "cement_brand",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Brand Name",
+        "reqd": 1
+      },
+      {
+        "fieldname": "cement_type",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Cement Type",
+        "options": "OPC 33\nOPC 43\nOPC 53\nPPC\nPSC",
+        "reqd": 1
+      },
+      {
+        "fieldname": "grade",
+        "fieldtype": "Select",
+        "label": "Grade",
+        "options": "33\n43\n53",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_5",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "manufacturer",
+        "fieldtype": "Data",
+        "label": "Manufacturer",
+        "reqd": 1
+      },
+      {
+        "fieldname": "quantity_tonnes",
+        "fieldtype": "Float",
+        "in_list_view": 1,
+        "label": "Quantity (tonnes)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_8",
+        "fieldtype": "Section Break",
+        "label": "Dates & Certification"
+      },
+      {
+        "fieldname": "date_received",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Date Received",
+        "reqd": 1
+      },
+      {
+        "fieldname": "date_of_manufacture",
+        "fieldtype": "Date",
+        "label": "Date of Manufacture",
+        "reqd": 1
+      },
+      {
+        "fieldname": "date_of_expiry",
+        "fieldtype": "Date",
+        "label": "Expiry Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_10",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "test_certificate_ref",
+        "fieldtype": "Attach",
+        "label": "Test Certificate"
+      },
+      {
+        "fieldname": "is_approved",
+        "fieldtype": "Check",
+        "label": "Approved",
+        "default": "0"
+      },
+      {
+        "fieldname": "section_break_12",
+        "fieldtype": "Section Break",
+        "label": "Storage & Usage"
+      },
+      {
+        "fieldname": "storage_location",
+        "fieldtype": "Data",
+        "label": "Storage Location",
+        "reqd": 1
+      },
+      {
+        "fieldname": "is_used",
+        "fieldtype": "Check",
+        "label": "Used",
+        "default": "0"
+      },
+      {
+        "fieldname": "column_break_14",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "total_consumed_tonnes",
+        "fieldtype": "Float",
+        "label": "Total Consumed (tonnes)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Site Supervisor",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Steel Reinforcement Register",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "entry_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Entry ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "heat_number",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Heat/Lot Number",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_3",
+        "fieldtype": "Section Break",
+        "label": "Steel Details"
+      },
+      {
+        "fieldname": "bar_mark",
+        "fieldtype": "Data",
+        "label": "Bar Mark",
+        "reqd": 1
+      },
+      {
+        "fieldname": "diameter_mm",
+        "fieldtype": "Int",
+        "in_list_view": 1,
+        "label": "Diameter (mm)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "steel_grade",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Steel Grade",
+        "options": "Fe 415\nFe 415D\nFe 500\nFe 500D\nFe 550\nFe 550D\nFe 600",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_5",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "manufacturer",
+        "fieldtype": "Data",
+        "label": "Manufacturer",
+        "reqd": 1
+      },
+      {
+        "fieldname": "batch_number",
+        "fieldtype": "Data",
+        "label": "Batch Number"
+      },
+      {
+        "fieldname": "quantity_tonnes",
+        "fieldtype": "Float",
+        "in_list_view": 1,
+        "label": "Quantity (tonnes)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_8",
+        "fieldtype": "Section Break",
+        "label": "Receipt Details"
+      },
+      {
+        "fieldname": "date_received",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Date Received",
+        "reqd": 1
+      },
+      {
+        "fieldname": "test_certificate",
+        "fieldtype": "Attach",
+        "label": "Test Certificate (IS 1786)"
+      },
+      {
+        "fieldname": "column_break_10",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "yield_strength_mpa",
+        "fieldtype": "Float",
+        "label": "Yield Strength (MPa)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "tensile_strength_mpa",
+        "fieldtype": "Float",
+        "label": "Tensile Strength (MPa)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "elongation_percent",
+        "fieldtype": "Float",
+        "label": "Elongation %",
+        "read_only": 1
+      },
+      {
+        "fieldname": "section_break_15",
+        "fieldtype": "Section Break",
+        "label": "Quality & Storage"
+      },
+      {
+        "fieldname": "bend_rebend_test",
+        "fieldtype": "Check",
+        "label": "Bend/Rebend Pass",
+        "read_only": 1
+      },
+      {
+        "fieldname": "is_approved",
+        "fieldtype": "Check",
+        "label": "Approved",
+        "default": "0"
+      },
+      {
+        "fieldname": "column_break_17",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "storage_location",
+        "fieldtype": "Data",
+        "label": "Storage Location",
+        "reqd": 1
+      },
+      {
+        "fieldname": "is_used",
+        "fieldtype": "Check",
+        "label": "Issued to Site",
+        "default": "0"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "QC Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Formwork Inspection",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "inspection_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Inspection ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "WBS Item",
+        "options": "WBS Item",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_3",
+        "fieldtype": "Section Break",
+        "label": "Element Details"
+      },
+      {
+        "fieldname": "location",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Location",
+        "reqd": 1
+      },
+      {
+        "fieldname": "formwork_type",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Formwork Type",
+        "options": "Slab\nBeam\nColumn\nWall\nFoundation",
+        "reqd": 1
+      },
+      {
+        "fieldname": "element_description",
+        "fieldtype": "Data",
+        "label": "Element Description"
+      },
+      {
+        "fieldname": "column_break_5",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "dimensions_length_m",
+        "fieldtype": "Float",
+        "label": "Length (m)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "dimensions_breadth_m",
+        "fieldtype": "Float",
+        "label": "Breadth (m)"
+      },
+      {
+        "fieldname": "dimensions_depth_m",
+        "fieldtype": "Float",
+        "label": "Depth (m)"
+      },
+      {
+        "fieldname": "section_break_8",
+        "fieldtype": "Section Break",
+        "label": "Inspection Checks"
+      },
+      {
+        "fieldname": "alignment_check",
+        "fieldtype": "Check",
+        "label": "Alignment Correct",
+        "default": "0"
+      },
+      {
+        "fieldname": "dimensions_check",
+        "fieldtype": "Check",
+        "label": "Dimensions Verified",
+        "default": "0"
+      },
+      {
+        "fieldname": "props_alignment",
+        "fieldtype": "Check",
+        "label": "Props Properly Aligned",
+        "default": "0"
+      },
+      {
+        "fieldname": "cleaning_check",
+        "fieldtype": "Check",
+        "label": "Formwork Cleaned",
+        "default": "0"
+      },
+      {
+        "fieldname": "column_break_10",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "oil_applied",
+        "fieldtype": "Check",
+        "label": "Release Agent Applied",
+        "default": "0"
+      },
+      {
+        "fieldname": "reinforcement_check",
+        "fieldtype": "Check",
+        "label": "Reinforcement Checked",
+        "default": "0"
+      },
+      {
+        "fieldname": "cover_blocks_placed",
+        "fieldtype": "Check",
+        "label": "Cover Blocks Placed",
+        "default": "0"
+      },
+      {
+        "fieldname": "section_break_15",
+        "fieldtype": "Section Break",
+        "label": "Inspection Details"
+      },
+      {
+        "fieldname": "inspector",
+        "fieldtype": "Link",
+        "label": "Inspector",
+        "options": "User",
+        "reqd": 1
+      },
+      {
+        "fieldname": "inspection_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Inspection Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_17",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "is_cleared",
+        "fieldtype": "Check",
+        "label": "Cleared for Pouring",
+        "default": "0"
+      },
+      {
+        "fieldname": "cleared_by",
+        "fieldtype": "Link",
+        "label": "Cleared By",
+        "options": "User"
+      },
+      {
+        "fieldname": "clearance_date",
+        "fieldtype": "Date",
+        "label": "Clearance Date"
+      },
+      {
+        "fieldname": "section_break_20",
+        "fieldtype": "Section Break",
+        "label": "Pour Schedule"
+      },
+      {
+        "fieldname": "proposed_stripping_date",
+        "fieldtype": "Date",
+        "label": "Proposed Stripping Date"
+      },
+      {
+        "fieldname": "actual_stripping_date",
+        "fieldtype": "Date",
+        "label": "Actual Stripping Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "formwork_area_sqm",
+        "fieldtype": "Float",
+        "label": "Formwork Area (m²)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_22",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "QC Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Curing Record",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "record_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Record ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "WBS Item",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "section_break_3",
+        "fieldtype": "Section Break",
+        "label": "Pour Details"
+      },
+      {
+        "fieldname": "element_location",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Element Location",
+        "reqd": 1
+      },
+      {
+        "fieldname": "pour_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Pour Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "concrete_grade",
+        "fieldtype": "Select",
+        "label": "Concrete Grade",
+        "options": "M15\nM20\nM25\nM30\nM35\nM40\nM45\nM50\nM55\nM60",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_5",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "mix_design",
+        "fieldtype": "Link",
+        "label": "Mix Design",
+        "options": "Concrete Mix Design"
+      },
+      {
+        "fieldname": "quantity_cum",
+        "fieldtype": "Float",
+        "label": "Quantity (m³)"
+      },
+      {
+        "fieldname": "section_break_8",
+        "fieldtype": "Section Break",
+        "label": "Curing Details"
+      },
+      {
+        "fieldname": "curing_method",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Curing Method",
+        "options": "Ponding\nSpraying\nWet Burlap\nCuring Compound\nMembrane\nSteam Curing",
+        "reqd": 1
+      },
+      {
+        "fieldname": "curing_start_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Curing Start Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "curing_end_date",
+        "fieldtype": "Date",
+        "label": "Curing End Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_10",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "minimum_curing_days",
+        "fieldtype": "Int",
+        "label": "Min Curing Days (IS 456)",
+        "read_only": 1
+      },
+      {
+        "fieldname": "is_minimum_met",
+        "fieldtype": "Check",
+        "label": "IS 456 Requirement Met",
+        "read_only": 1
+      },
+      {
+        "fieldname": "daily_check_required",
+        "fieldtype": "Check",
+        "label": "Daily Check Required",
+        "default": "1"
+      },
+      {
+        "fieldname": "section_break_15",
+        "fieldtype": "Section Break",
+        "label": "Daily Checks"
+      },
+      {
+        "fieldname": "curing_checks",
+        "fieldtype": "Table",
+        "label": "Daily Curing Checks",
+        "options": "Curing Check Entry"
+      },
+      {
+        "fieldname": "section_break_20",
+        "fieldtype": "Section Break",
+        "label": "Completion"
+      },
+      {
+        "fieldname": "is_completed",
+        "fieldtype": "Check",
+        "label": "Curing Completed",
+        "default": "0"
+      },
+      {
+        "fieldname": "completed_by",
+        "fieldtype": "Link",
+        "label": "Completed By",
+        "options": "User"
+      },
+      {
+        "fieldname": "column_break_22",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "QC Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      },
+      {
+        "role": "Site Supervisor",
+        "read": 1,
+        "write": 1
+      }
+    ]
+  },
+  {
+    "name": "Curing Check Entry",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "istable": 1,
+    "fields": [
+      {
+        "fieldname": "check_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Check Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "day_number",
+        "fieldtype": "Int",
+        "label": "Day #"
+      },
+      {
+        "fieldname": "is_wet_surface",
+        "fieldtype": "Check",
+        "label": "Surface Wet",
+        "default": "0"
+      },
+      {
+        "fieldname": "temperature_c",
+        "fieldtype": "Float",
+        "label": "Temp (°C)"
+      },
+      {
+        "fieldname": "column_break_3",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "is_satisfactory",
+        "fieldtype": "Check",
+        "label": "Satisfactory",
+        "default": "0"
+      },
+      {
+        "fieldname": "checked_by",
+        "fieldtype": "Link",
+        "label": "Checked By",
+        "options": "User"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ]
+  }
+]

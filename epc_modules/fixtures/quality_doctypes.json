@@ -1,0 +1,603 @@
+[
+  {
+    "name": "Master Inspection Template",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "template_name",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Template Name",
+        "reqd": 1
+      },
+      {
+        "fieldname": "applicable_typologies",
+        "fieldtype": "MultiSelect",
+        "in_list_view": 1,
+        "label": "Applicable Typologies",
+        "options": "Electromechanical\nCivil\nStandard Service",
+        "reqd": 1
+      },
+      {
+        "fieldname": "inspection_category",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Inspection Category",
+        "options": "Structural\nMechanical\nElectrical\nPlumbing\nHVAC\nFire Safety\nQuality Control",
+        "reqd": 1
+      },
+      {
+        "fieldname": "description",
+        "fieldtype": "Text",
+        "label": "Description"
+      },
+      {
+        "fieldname": "is_active",
+        "fieldtype": "Check",
+        "in_list_view": 1,
+        "label": "Is Active",
+        "default": "1"
+      },
+      {
+        "fieldname": "section_break_5",
+        "fieldtype": "Section Break",
+        "label": "Inspection Hold Points"
+      },
+      {
+        "fieldname": "hold_points",
+        "fieldtype": "Table",
+        "label": "Hold Points",
+        "options": "Inspection Hold Point"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Quality Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Inspection Hold Point",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "istable": 1,
+    "fields": [
+      {
+        "fieldname": "sequence",
+        "fieldtype": "Int",
+        "in_list_view": 1,
+        "label": "Sequence",
+        "reqd": 1
+      },
+      {
+        "fieldname": "hold_point_name",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Hold Point Name",
+        "reqd": 1
+      },
+      {
+        "fieldname": "description",
+        "fieldtype": "Small Text",
+        "label": "Description"
+      },
+      {
+        "fieldname": "inspection_type",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Inspection Type",
+        "options": "Visual\nQuantitative\nDestructive\nDocument Review",
+        "reqd": 1
+      },
+      {
+        "fieldname": "acceptance_criteria",
+        "fieldtype": "Text",
+        "label": "Acceptance Criteria",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_6",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "tolerance_min",
+        "fieldtype": "Float",
+        "label": "Tolerance Min"
+      },
+      {
+        "fieldname": "tolerance_max",
+        "fieldtype": "Float",
+        "label": "Tolerance Max"
+      },
+      {
+        "fieldname": "tolerance_unit",
+        "fieldtype": "Data",
+        "label": "Unit"
+      },
+      {
+        "fieldname": "column_break_9",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "required_evidence",
+        "fieldtype": "MultiSelect",
+        "label": "Required Evidence",
+        "options": "Photo\nReading\nCertificate\nTest Report\nMeasurement Log\nVideo"
+      },
+      {
+        "fieldname": "is_mandatory",
+        "fieldtype": "Check",
+        "in_list_view": 1,
+        "label": "Is Mandatory",
+        "default": "1"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ]
+  },
+  {
+    "name": "Project Inspection Plan",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "itp_code",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "ITP Code",
+        "reqd": 1
+      },
+      {
+        "fieldname": "source_template",
+        "fieldtype": "Link",
+        "label": "Source Template",
+        "options": "Master Inspection Template",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "label": "WBS Item",
+        "options": "WBS Item"
+      },
+      {
+        "fieldname": "boq_item",
+        "fieldtype": "Link",
+        "label": "BOQ Item",
+        "options": "Custom BOQ"
+      },
+      {
+        "fieldname": "section_break_5",
+        "fieldtype": "Section Break",
+        "label": "Schedule"
+      },
+      {
+        "fieldname": "planned_start",
+        "fieldtype": "Date",
+        "label": "Planned Start"
+      },
+      {
+        "fieldname": "planned_end",
+        "fieldtype": "Date",
+        "label": "Planned End"
+      },
+      {
+        "fieldname": "column_break_7",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "responsible_qa",
+        "fieldtype": "Link",
+        "label": "QA Manager",
+        "options": "User"
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Draft\nActive\nIn Progress\nCompleted\nCancelled",
+        "default": "Draft"
+      },
+      {
+        "fieldname": "section_break_10",
+        "fieldtype": "Section Break",
+        "label": "Inspection Records"
+      },
+      {
+        "fieldname": "inspection_records",
+        "fieldtype": "Table",
+        "label": "Inspection Records",
+        "options": "Inspection Record"
+      },
+      {
+        "fieldname": "section_break_15",
+        "fieldtype": "Section Break",
+        "label": "Summary"
+      },
+      {
+        "fieldname": "total_hold_points",
+        "fieldtype": "Int",
+        "label": "Total Hold Points",
+        "read_only": 1
+      },
+      {
+        "fieldname": "completed_hold_points",
+        "fieldtype": "Int",
+        "label": "Completed",
+        "read_only": 1
+      },
+      {
+        "fieldname": "pending_hold_points",
+        "fieldtype": "Int",
+        "label": "Pending",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_18",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "passed_hold_points",
+        "fieldtype": "Int",
+        "label": "Passed",
+        "read_only": 1
+      },
+      {
+        "fieldname": "failed_hold_points",
+        "fieldtype": "Int",
+        "label": "Failed",
+        "read_only": 1
+      },
+      {
+        "fieldname": "progress_percentage",
+        "fieldtype": "Float",
+        "label": "Progress %",
+        "read_only": 1
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Quality Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1
+      }
+    ]
+  },
+  {
+    "name": "Inspection Record",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "istable": 1,
+    "fields": [
+      {
+        "fieldname": "hold_point",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Hold Point",
+        "options": "Inspection Hold Point",
+        "reqd": 1
+      },
+      {
+        "fieldname": "hold_point_name",
+        "fieldtype": "Data",
+        "label": "Hold Point Name",
+        "read_only": 1
+      },
+      {
+        "fieldname": "sequence",
+        "fieldtype": "Int",
+        "label": "Sequence",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_3",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "scheduled_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Scheduled Date"
+      },
+      {
+        "fieldname": "actual_date",
+        "fieldtype": "Date",
+        "label": "Actual Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "inspector",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Inspector",
+        "options": "User"
+      },
+      {
+        "fieldname": "column_break_6",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Pending\nPass\nFail\nWaived",
+        "default": "Pending"
+      },
+      {
+        "fieldname": "actual_reading",
+        "fieldtype": "Float",
+        "label": "Actual Reading"
+      },
+      {
+        "fieldname": "is_within_tolerance",
+        "fieldtype": "Check",
+        "label": "Within Tolerance",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_9",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "evidence_attachments",
+        "fieldtype": "Attach",
+        "label": "Evidence Attachments"
+      },
+      {
+        "fieldname": "non_conformance",
+        "fieldtype": "Link",
+        "label": "Linked NCR",
+        "options": "Non-Conformance Report"
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Small Text",
+        "label": "Remarks"
+      }
+    ]
+  },
+  {
+    "name": "Non-Conformance Report",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "editable_grid": 1,
+    "track_changes": 1,
+    "autoname": "field:ncr_number",
+    "fields": [
+      {
+        "fieldname": "ncr_number",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "NCR Number",
+        "reqd": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "wbs_item",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "WBS Item",
+        "options": "WBS Item",
+        "reqd": 1
+      },
+      {
+        "fieldname": "inspection_record",
+        "fieldtype": "Link",
+        "label": "Inspection Record",
+        "options": "Inspection Record"
+      },
+      {
+        "fieldname": "boq_item",
+        "fieldtype": "Link",
+        "label": "BOQ Item",
+        "options": "Custom BOQ"
+      },
+      {
+        "fieldname": "section_break_5",
+        "fieldtype": "Section Break",
+        "label": "Non-Conformance Details"
+      },
+      {
+        "fieldname": "description",
+        "fieldtype": "Text",
+        "in_list_view": 1,
+        "label": "Description",
+        "reqd": 1
+      },
+      {
+        "fieldname": "severity",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Severity",
+        "options": "Critical\nMajor\nMinor",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_8",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "identified_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Identified Date",
+        "default": "Today",
+        "reqd": 1
+      },
+      {
+        "fieldname": "identified_by",
+        "fieldtype": "Link",
+        "label": "Identified By",
+        "options": "User",
+        "default": " frappe.session.user"
+      },
+      {
+        "fieldname": "section_break_10",
+        "fieldtype": "Section Break",
+        "label": "Root Cause Analysis"
+      },
+      {
+        "fieldname": "root_cause",
+        "fieldtype": "Text",
+        "label": "Root Cause"
+      },
+      {
+        "fieldname": "corrective_action",
+        "fieldtype": "Text",
+        "label": "Corrective Action"
+      },
+      {
+        "fieldname": "column_break_12",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "preventive_action",
+        "fieldtype": "Text",
+        "label": "Preventive Action"
+      },
+      {
+        "fieldname": "section_break_15",
+        "fieldtype": "Section Break",
+        "label": "Closure"
+      },
+      {
+        "fieldname": "target_close_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Target Close Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "actual_close_date",
+        "fieldtype": "Date",
+        "label": "Actual Close Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_17",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "closed_by",
+        "fieldtype": "Link",
+        "label": "Closed By",
+        "options": "User"
+      },
+      {
+        "fieldname": "section_break_20",
+        "fieldtype": "Section Break",
+        "label": "Status"
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Open\nIn Progress\nClosed\nVerified",
+        "default": "Open"
+      },
+      {
+        "fieldname": "closure_remarks",
+        "fieldtype": "Text",
+        "label": "Closure Remarks"
+      },
+      {
+        "fieldname": "section_break_25",
+        "fieldtype": "Section Break",
+        "label": "Verification"
+      },
+      {
+        "fieldname": "verification_date",
+        "fieldtype": "Date",
+        "label": "Verification Date"
+      },
+      {
+        "fieldname": "verified_by",
+        "fieldtype": "Link",
+        "label": "Verified By",
+        "options": "User"
+      },
+      {
+        "fieldname": "verification_remarks",
+        "fieldtype": "Text",
+        "label": "Verification Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "QC Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1
+      }
+    ]
+  }
+]

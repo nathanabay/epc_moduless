@@ -1,0 +1,73 @@
+[
+  {
+    "name": "EPC Management Dashboard",
+    "doctype": "Dashboard",
+    "module": "EPC Modules",
+    "dashboards": [
+      {
+        "name": "epc_kpi_overview",
+        "doctype": "Dashboard Chart",
+        "chart_name": "Active Projects Count",
+        "chart_type": "Number",
+        "is_public": 1,
+        "module": "EPC Modules",
+        "document_type": "Project",
+        "based_on": "Count",
+        "filters_json": "{\"status\": \"Active\", \"is_epc_project\": 1}",
+        "number_display": "Integer"
+      },
+      {
+        "name": "epc_billing_by_typology",
+        "doctype": "Dashboard Chart",
+        "chart_name": "Billing by Typology",
+        "chart_type": "Pie",
+        "is_public": 1,
+        "module": "EPC Modules",
+        "document_type": "RA Bill",
+        "group_by_field": "project.project_typology",
+        "based_on": "Sum",
+        "value_field": "total_invoice_value",
+        "filters_json": "{\"docstatus\": 1}"
+      },
+      {
+        "name": "epc_monthly_billing_trend",
+        "doctype": "Dashboard Chart",
+        "chart_name": "Monthly Billing Trend",
+        "chart_type": "Line",
+        "is_public": 1,
+        "module": "EPC Modules",
+        "document_type": "RA Bill",
+        "based_on": "Sum",
+        "value_field": "total_invoice_value",
+        "filters_json": "{\"docstatus\": 1}",
+        "timeseries": 1,
+        "timeseries_based_on": "billing_period_end",
+        "time_interval": "Monthly"
+      },
+      {
+        "name": "epc_ncr_by_severity",
+        "doctype": "Dashboard Chart",
+        "chart_name": "Open NCRs by Severity",
+        "chart_type": "Donut",
+        "is_public": 1,
+        "module": "EPC Modules",
+        "document_type": "Non-Conformance Report",
+        "group_by_field": "severity",
+        "based_on": "Count",
+        "filters_json": "{\"status\": [\"in\", [\"Open\", \"In Progress\"]]}"
+      },
+      {
+        "name": "epc_project_progress_chart",
+        "doctype": "Dashboard Chart",
+        "chart_name": "Project Progress",
+        "chart_type": "Progress",
+        "is_public": 1,
+        "module": "EPC Modules",
+        "document_type": "Project",
+        "based_on": "Average",
+        "value_field": "percent_complete",
+        "filters_json": "{\"status\": \"Active\", \"is_epc_project\": 1}"
+      }
+    ]
+  }
+]

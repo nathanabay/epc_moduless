@@ -1,0 +1,11 @@
+include MANIFEST.in
+include README.md
+include LICENSE
+include pyproject.toml
+
+recursive-include epc_modules *.py
+recursive-include epc_modules *.json
+recursive-include epc_modules *.js
+recursive-include epc_modules *.css
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

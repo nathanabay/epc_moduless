@@ -1,0 +1,155 @@
+[
+  {
+    "name": "epc_management_dashboard",
+    "doctype": "Dashboard Chart",
+    "chart_name": "EPC Management Overview",
+    "chart_type": "Number",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "source_std_field": "name",
+    "document_type": "Project",
+    "filters_json": "{\"status\": \"Active\", \"is_epc_project\": 1}",
+    "based_on": "Count",
+    "stats_direction": "Desc",
+    "number_backend_position": "Right",
+    "number_display": "currency",
+    "chart Mapping": []
+  },
+  {
+    "name": "epc_billing_by_typology",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Billing by Typology",
+    "chart_type": "Pie",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "source_std_field": "name",
+    "document_type": "RA Bill",
+    "group_by_field": "project.project_typology",
+    "based_on": "Sum",
+    "value_field": "total_invoice_value",
+    "filters_json": "{\"docstatus\": 1}",
+    "chart Mapping": [
+      {
+        "color": "#5A5BE0",
+        "label": "Electromechanical",
+        "condition": "Electromechanical"
+      },
+      {
+        "color": "#17A2B8",
+        "label": "Civil",
+        "condition": "Civil"
+      },
+      {
+        "color": "#28A745",
+        "label": "Standard Service",
+        "condition": "Standard Service"
+      }
+    ]
+  },
+  {
+    "name": "epc_monthly_billing_trend",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Monthly Billing Trend",
+    "chart_type": "Line",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "document_type": "RA Bill",
+    "based_on": "Sum",
+    "value_field": "total_invoice_value",
+    "filters_json": "{\"docstatus\": 1}",
+    "timeseries": 1,
+    "timeseries_based_on": "billing_period_end",
+    "time_interval": "Monthly",
+    "chart Mapping": []
+  },
+  {
+    "name": "epc_ncr_by_severity",
+    "doctype": "Dashboard Chart",
+    "chart_name": "NCR by Severity",
+    "chart_type": "Donut",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "document_type": "Non-Conformance Report",
+    "based_on": "Count",
+    "group_by_field": "severity",
+    "filters_json": "{\"status\": [\"in\", [\"Open\", \"In Progress\"]]}",
+    "chart Mapping": [
+      {
+        "color": "#DC3545",
+        "label": "Critical"
+      },
+      {
+        "color": "#FFC107",
+        "label": "Major"
+      },
+      {
+        "color": "#17A2B8",
+        "label": "Minor"
+      }
+    ]
+  },
+  {
+    "name": "epc_project_progress",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Project Progress Overview",
+    "chart_type": "Progress",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "document_type": "Project",
+    "based_on": "Average",
+    "value_field": "percent_complete",
+    "filters_json": "{\"status\": \"Active\", \"is_epc_project\": 1}",
+    "chart Mapping": []
+  },
+  {
+    "name": "epc_equipment_utilization",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Equipment Utilization",
+    "chart_type": "Bar",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "document_type": "Equipment Register",
+    "based_on": "Count",
+    "group_by_field": "equipment_status",
+    "filters_json": "{}",
+    "chart Mapping": []
+  },
+  {
+    "name": "epc_quality_metrics",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Quality Metrics",
+    "chart_type": "Column",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "document_type": "Cube Test Result",
+    "based_on": "Count",
+    "group_by_field": "is_pass",
+    "filters_json": "{}",
+    "timeseries": 1,
+    "timeseries_based_on": "test_date",
+    "time_interval": "Weekly",
+    "chart Mapping": [
+      {
+        "color": "#28A745",
+        "label": "Pass"
+      },
+      {
+        "color": "#DC3545",
+        "label": "Fail"
+      }
+    ]
+  },
+  {
+    "name": "epc_alerts_overview",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Active Alerts",
+    "chart_type": "Number",
+    "is_public": 1,
+    "module": "EPC Modules",
+    "document_type": "Non-Conformance Report",
+    "based_on": "Count",
+    "filters_json": "{\"target_close_date\": [\"<\", \"{{ Now }}]}}",
+    "number_display": "Integer",
+    "chart Mapping": []
+  }
+]

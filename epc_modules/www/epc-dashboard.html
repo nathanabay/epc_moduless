@@ -1,0 +1,691 @@
+---
+permalink: epc-dashboard.html
+---
+
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="epc-dashboard" data-asset-path="epc_modules/epc_modules/www/epc-dashboard.css">
+    <!-- KPI Cards Row -->
+    <div class="kpi-cards-row">
+        <div class="kpi-card kpi-projects">
+            <div class="kpi-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value" id="kpi-active-projects">--</div>
+                <div class="kpi-label">Active Projects</div>
+            </div>
+        </div>
+
+        <div class="kpi-card kpi-progress">
+            <div class="kpi-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value" id="kpi-avg-progress">--%</div>
+                <div class="kpi-label">Avg Progress</div>
+            </div>
+        </div>
+
+        <div class="kpi-card kpi-billing">
+            <div class="kpi-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value" id="kpi-total-billed">ETB --</div>
+                <div class="kpi-label">Total Certified</div>
+            </div>
+        </div>
+
+        <div class="kpi-card kpi-quality">
+            <div class="kpi-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value" id="kpi-open-ncrs">--</div>
+                <div class="kpi-label">Open NCRs</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts Banner -->
+    <div class="alerts-banner hidden" id="alerts-banner">
+        <div class="alerts-header">
+            <span class="alerts-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <span id="alerts-count">0</span> Active Alerts
+            </span>
+            <button class="btn btn-secondary btn-sm" onclick="refreshAlerts()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+                Refresh
+            </button>
+        </div>
+        <div class="alerts-list" id="alerts-list"></div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+        <div class="chart-card chart-project-progress">
+            <div class="chart-header">
+                <h3 class="chart-title">Project Progress Overview</h3>
+                <div class="chart-actions">
+                    <select id="progress-project-filter" class="form-control form-control-sm"
+                            onchange="loadProjectProgress(this.value)">
+                        <option value="">All Projects</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-body">
+                <div class="progress-bars-container" id="progress-bars">
+                    <!-- Dynamic progress bars loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-card chart-billing-trend">
+            <div class="chart-header">
+                <h3 class="chart-title">Monthly Billing Trend</h3>
+                <div class="chart-actions">
+                    <select id="billing-period" class="form-control form-control-sm"
+                            onchange="loadBillingTrend(this.value)">
+                        <option value="6">Last 6 Months</option>
+                        <option value="12">Last 12 Months</option>
+                        <option value="24">Last 24 Months</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-body">
+                <canvas id="billing-trend-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card chart-typology-breakdown">
+            <div class="chart-header">
+                <h3 class="chart-title">Projects by Typology</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="typology-donut-chart"></canvas>
+                <div class="chart-legend" id="typology-legend"></div>
+            </div>
+        </div>
+
+        <div class="chart-card chart-ncr-analysis">
+            <div class="chart-header">
+                <h3 class="chart-title">NCR Analysis</h3>
+                <div class="chart-actions">
+                    <select id="ncr-project-filter" class="form-control form-control-sm"
+                            onchange="loadQualityMetrics(this.value)">
+                        <option value="">All Projects</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-body">
+                <canvas id="ncr-donut-chart"></canvas>
+                <div class="chart-legend" id="ncr-legend"></div>
+            </div>
+        </div>
+
+        <div class="chart-card chart-equipment">
+            <div class="chart-header">
+                <h3 class="chart-title">Equipment Utilization</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="equipment-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card chart-health-score">
+            <div class="chart-header">
+                <h3 class="chart-title">Project Health Scores</h3>
+            </div>
+            <div class="chart-body">
+                <div class="health-scores-grid" id="health-scores">
+                    <!-- Dynamic health score cards -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Table -->
+    <div class="recent-activity-section">
+        <div class="section-header">
+            <h3 class="section-title">Recent RA Bills</h3>
+            <a href="/app/ra-bill" class="btn btn-primary btn-sm">
+                View All
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                </svg>
+            </a>
+        </div>
+        <div class="activity-table-wrapper">
+            <table class="activity-table" id="recent-ra-bills">
+                <thead>
+                    <tr>
+                        <th>RA Bill #</th>
+                        <th>Project</th>
+                        <th>Period</th>
+                        <th>Gross Value</th>
+                        <th>Net Payable</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ra-bills-body">
+                    <tr class="loading-row">
+                        <td colspan="6">
+                            <div class="loading-spinner">
+                                <div class="spinner-border" role="status"></div>
+                                Loading...
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+// EPC Dashboard JavaScript Controller
+frappe.provide('epc_dashboard');
+
+const epc_dashboard = {
+    initialized: false,
+
+    init() {
+        if (this.initialized) return;
+        this.initialized = true;
+
+        this.loadDashboardData();
+        this.setupAutoRefresh();
+    },
+
+    async loadDashboardData() {
+        try {
+            await Promise.all([
+                this.loadManagementKPIs(),
+                this.loadProjectsList(),
+                this.loadAlerts(),
+                this.loadProjectProgress(),
+                this.loadBillingTrend(6),
+                this.loadTypologyBreakdown(),
+                this.loadQualityMetrics(''),
+                this.loadEquipmentUtilization(),
+                this.loadHealthScores(),
+                this.loadRecentRABills()
+            ]);
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+            frappe.show_alert({
+                indicator: 'red',
+                message: 'Error loading dashboard data'
+            });
+        }
+    },
+
+    async loadManagementKPIs() {
+        const data = await frappe.call('epc_modules.api.dashboard_api.get_management_dashboard');
+
+        if (data && data.message) {
+            const d = data.message;
+
+            // Update KPI cards
+            frappe.dom.set_text('#kpi-active-projects', d.projects.active_count || 0);
+            frappe.dom.set_text('#kpi-avg-progress', (d.projects.avg_progress || 0) + '%');
+            frappe.dom.set_text('#kpi-total-billed', this.format_currency(d.billing.total_certified || 0));
+            frappe.dom.set_text('#kpi-open-ncrs', d.quality.open_ncrs || 0);
+
+            // Animate values
+            this.animateKPIValue('#kpi-active-projects', d.projects.active_count || 0);
+            this.animateKPIValue('#kpi-avg-progress', d.projects.avg_progress || 0, '%');
+            this.animateKPIValue('#kpi-total-billed', d.billing.total_certified || 0, 'currency');
+            this.animateKPIValue('#kpi-open-ncrs', d.quality.open_ncrs || 0);
+        }
+    },
+
+    async loadProjectsList() {
+        const projects = await frappe.call({
+            method: 'frappe.client.get_list',
+            args: {
+                doctype: 'Project',
+                filters: { status: 'Active', is_epc_project: 1 },
+                fields: ['name', 'project_name']
+            }
+        });
+
+        const options = projects.message || [];
+        const select = document.getElementById('progress-project-filter');
+        const ncrSelect = document.getElementById('ncr-project-filter');
+
+        const projectOptions = options.map(p =>
+            `<option value="${p.name}">${p.project_name || p.name}</option>`
+        ).join('');
+
+        select.innerHTML = '<option value="">All Projects</option>' + projectOptions;
+        ncrSelect.innerHTML = '<option value="">All Projects</option>' + projectOptions;
+    },
+
+    async loadAlerts() {
+        const data = await frappe.call('epc_modules.api.dashboard_api.get_notification_alerts');
+
+        if (data && data.message && data.message.alerts) {
+            const alerts = data.message.alerts;
+            const banner = document.getElementById('alerts-banner');
+            const list = document.getElementById('alerts-list');
+            const count = document.getElementById('alerts-count');
+
+            if (alerts.length > 0) {
+                banner.classList.remove('hidden');
+                count.textContent = data.message.count;
+
+                list.innerHTML = alerts.slice(0, 5).map(alert => `
+                    <div class="alert-item alert-${alert.severity}" data-type="${alert.type}">
+                        <div class="alert-indicator"></div>
+                        <div class="alert-content">
+                            <div class="alert-title">${alert.title}</div>
+                            <div class="alert-description">${alert.description}</div>
+                            ${alert.project ? `<a href="/app/project/${alert.project}">View Project</a>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+    },
+
+    async loadProjectProgress(project) {
+        const progressBars = document.getElementById('progress-bars');
+        progressBars.innerHTML = '<div class="loading-placeholder">Loading...</div>';
+
+        let url = '/api/method/epc_modules.api.dashboard_api.get_management_dashboard';
+        if (project) {
+            url += `?project=${encodeURIComponent(project)}`;
+        }
+
+        const data = await frappe.call({
+            method: 'epc_modules.api.dashboard_api.get_management_dashboard'
+        });
+
+        const projects = data.message?.projects || {};
+
+        if (!project) {
+            // Show top 5 projects by progress
+            const projectList = await frappe.call({
+                method: 'frappe.client.get_list',
+                args: {
+                    doctype: 'Project',
+                    filters: { status: 'Active', is_epc_project: 1 },
+                    fields: ['name', 'project_name', 'percent_complete', 'project_typology', 'contract_value']
+                }
+            });
+
+            const projects = (projectList.message || []).slice(0, 5);
+            progressBars.innerHTML = projects.map(p => this.renderProgressBar(p)).join('');
+        } else {
+            const kpis = await frappe.call({
+                method: 'epc_modules.api.dashboard_api.get_project_dashboard_kpis',
+                args: { project }
+            });
+
+            const p = kpis.message;
+            progressBars.innerHTML = `
+                <div class="project-progress-detail">
+                    <div class="progress-header">
+                        <h4>${p.project_name}</h4>
+                        <span class="progress-badge">${p.status}</span>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="stat">
+                            <span class="stat-value">${p.progress.percent_complete}%</span>
+                            <span class="stat-label">Completion</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">${p.progress.completed_wbs}/${p.progress.wbs_items}</span>
+                            <span class="stat-label">WBS Completed</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">${p.billing.total_billed || 0}</span>
+                            <span class="stat-label">Billed</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    },
+
+    async loadBillingTrend(months) {
+        const data = await frappe.call({
+            method: 'epc_modules.api.dashboard_api.get_billing_trend',
+            args: { months: parseInt(months) }
+        });
+
+        const monthlyData = data.message?.data || [];
+        this.renderLineChart('billing-trend-chart', monthlyData);
+    },
+
+    async loadTypologyBreakdown() {
+        const data = await frappe.call('epc_modules.api.dashboard_api.get_management_dashboard');
+        const byTypology = data.message?.projects?.by_typology || {};
+
+        const chartData = Object.entries(byTypology).map(([typology, stats]) => ({
+            label: typology,
+            value: stats.count,
+            color: this.getTypologyColor(typology)
+        }));
+
+        this.renderDonutChart('typology-donut-chart', chartData, 'typology-legend');
+    },
+
+    async loadQualityMetrics(project) {
+        const data = await frappe.call({
+            method: 'epc_modules.api.dashboard_api.get_quality_metrics',
+            args: { project: project || undefined }
+        });
+
+        const ncr = data.message?.ncr || {};
+        const chartData = [
+            { label: 'Critical', value: ncr.critical || 0, color: '#DC3545' },
+            { label: 'Major', value: ncr.major || 0, color: '#FFC107' },
+            { label: 'Minor', value: ncr.minor || 0, color: '#17A2B8' }
+        ];
+
+        this.renderDonutChart('ncr-donut-chart', chartData, 'ncr-legend');
+    },
+
+    async loadEquipmentUtilization() {
+        const data = await frappe.call('epc_modules.api.dashboard_api.get_resource_utilization');
+
+        const equipment = data.message?.equipment || {};
+        const chartData = [
+            { label: 'In Use', value: equipment.in_use || 0, color: '#28A745' },
+            { label: 'Available', value: equipment.available || 0, color: '#17A2B8' },
+            { label: 'Maintenance', value: equipment.maintenance || 0, color: '#FFC107' }
+        ];
+
+        this.renderBarChart('equipment-chart', chartData);
+    },
+
+    async loadHealthScores() {
+        const projectList = await frappe.call({
+            method: 'frappe.client.get_list',
+            args: {
+                doctype: 'Project',
+                filters: { status: 'Active', is_epc_project: 1 },
+                fields: ['name', 'project_name']
+            }
+        });
+
+        const projects = projectList.message || [];
+        const healthContainer = document.getElementById('health-scores');
+
+        const healthPromises = projects.slice(0, 6).map(async (p) => {
+            const score = await frappe.call({
+                method: 'epc_modules.api.dashboard_api.get_project_health_score',
+                args: { project: p.name }
+            });
+            return {
+                name: p.project_name || p.name,
+                ...score.message
+            };
+        });
+
+        const healthScores = await Promise.all(healthPromises);
+
+        healthContainer.innerHTML = healthScores.map(h => `
+            <div class="health-card health-${h.status.toLowerCase()}">
+                <div class="health-score-circle" style="--score: ${h.health_score}">
+                    <span class="score-value">${h.health_score}</span>
+                </div>
+                <div class="health-info">
+                    <div class="health-name">${h.name}</div>
+                    <div class="health-status">${h.status}</div>
+                </div>
+            </div>
+        `).join('');
+    },
+
+    async loadRecentRABills() {
+        const bills = await frappe.call({
+            method: 'frappe.client.get_list',
+            args: {
+                doctype: 'RA Bill',
+                filters: { docstatus: 1 },
+                fields: ['name', 'ra_bill_number', 'project', 'billing_period_start',
+                        'billing_period_end', 'gross_certified_value', 'net_payable', 'status'],
+                order_by: 'creation desc',
+                limit: 10
+            }
+        });
+
+        const tbody = document.getElementById('ra-bills-body');
+        if (bills.message && bills.message.length > 0) {
+            tbody.innerHTML = bills.message.map(b => `
+                <tr onclick="location.href='/app/ra-bill/${b.name}'" style="cursor: pointer;">
+                    <td>${b.ra_bill_number}</td>
+                    <td>${b.project}</td>
+                    <td>${frappe.datetime.format_date(b.billing_period_start)} - ${frappe.datetime.format_date(b.billing_period_end)}</td>
+                    <td>${this.format_currency(b.gross_certified_value)}</td>
+                    <td>${this.format_currency(b.net_payable)}</td>
+                    <td><span class="badge badge-${this.getStatusBadge(b.status)}">${b.status}</span></td>
+                </tr>
+            `).join('');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No RA Bills found</td></tr>';
+        }
+    },
+
+    // Chart rendering utilities
+    renderProgressBar(project) {
+        const color = this.getProgressColor(project.percent_complete);
+        return `
+            <div class="progress-item" onclick="location.href='/app/project/${project.name}'">
+                <div class="progress-info">
+                    <span class="project-name">${project.project_name || project.name}</span>
+                    <span class="project-typology">${project.project_typology || 'Standard'}</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar" style="width: ${project.percent_complete}%; background: ${color};">
+                        <span class="progress-text">${project.percent_complete}%</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    renderDonutChart(canvasId, data, legendId) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const total = data.reduce((sum, d) => sum + d.value, 0);
+
+        let startAngle = 0;
+        data.forEach((d, i) => {
+            const sliceAngle = (d.value / total) * 2 * Math.PI;
+            ctx.fillStyle = d.color;
+            ctx.beginPath();
+            ctx.moveTo(100, 100);
+            ctx.arc(100, 100, 80, startAngle, startAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fill();
+            startAngle += sliceAngle;
+        });
+
+        // Legend
+        const legend = document.getElementById(legendId);
+        if (legend) {
+            legend.innerHTML = data.map(d => `
+                <div class="legend-item">
+                    <span class="legend-color" style="background: ${d.color}"></span>
+                    <span class="legend-label">${d.label}: ${d.value}</span>
+                </div>
+            `).join('');
+        }
+    },
+
+    renderLineChart(canvasId, data) {
+        // Simplified line chart - in production use Chart.js
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const labels = data.map(d => d.month);
+        const values = data.map(d => d.total_value);
+
+        const maxValue = Math.max(...values);
+        const padding = 40;
+        const chartWidth = canvas.width - padding * 2;
+        const chartHeight = canvas.height - padding * 2;
+
+        ctx.strokeStyle = '#5A5BE0';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+
+        values.forEach((v, i) => {
+            const x = padding + (i / (values.length - 1 || 1)) * chartWidth;
+            const y = padding + chartHeight - (v / maxValue) * chartHeight;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+
+        ctx.stroke();
+
+        // Labels
+        ctx.fillStyle = '#666';
+        ctx.font = '12px sans-serif';
+        labels.forEach((label, i) => {
+            const x = padding + (i / (labels.length - 1 || 1)) * chartWidth;
+            ctx.fillText(label, x - 20, canvas.height - 10);
+        });
+    },
+
+    renderBarChart(canvasId, data) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const maxValue = Math.max(...data.map(d => d.value));
+        const barWidth = 60;
+        const padding = 40;
+
+        data.forEach((d, i) => {
+            const x = padding + i * (barWidth + 20);
+            const barHeight = (d.value / maxValue) * 150;
+            const y = 200 - barHeight;
+
+            ctx.fillStyle = d.color;
+            ctx.fillRect(x, y, barWidth, barHeight);
+
+            ctx.fillStyle = '#666';
+            ctx.fillText(d.label, x, 215);
+            ctx.fillText(d.value, x, y - 5);
+        });
+    },
+
+    // Utility functions
+    format_currency(value) {
+        if (!value) return 'ETB 0';
+        return 'ETB ' + frappe.formatter.format(value, { currency: 'ETB' });
+    },
+
+    animateKPIValue(selector, value, suffix = '') {
+        const el = document.querySelector(selector);
+        if (!el) return;
+
+        const duration = 1000;
+        const steps = 30;
+        const stepValue = value / steps;
+        let current = 0;
+
+        const interval = setInterval(() => {
+            current += stepValue;
+            if (current >= value) {
+                current = value;
+                clearInterval(interval);
+            }
+
+            if (suffix === 'currency') {
+                el.textContent = this.format_currency(current);
+            } else if (suffix === '%') {
+                el.textContent = Math.round(current) + '%';
+            } else {
+                el.textContent = Math.round(current);
+            }
+        }, duration / steps);
+    },
+
+    getTypologyColor(typology) {
+        const colors = {
+            'Electromechanical': '#5A5BE0',
+            'Civil': '#17A2B8',
+            'Standard Service': '#28A745'
+        };
+        return colors[typology] || '#666';
+    },
+
+    getProgressColor(percent) {
+        if (percent >= 80) return '#28A745';
+        if (percent >= 50) return '#FFC107';
+        return '#DC3545';
+    },
+
+    getStatusBadge(status) {
+        const badges = {
+            'Draft': 'secondary',
+            'Submitted': 'info',
+            'Certified': 'success',
+            'Invoiced': 'primary',
+            'Paid': 'success'
+        };
+        return badges[status] || 'secondary';
+    },
+
+    setupAutoRefresh() {
+        // Refresh alerts every 5 minutes
+        setInterval(() => {
+            this.loadAlerts();
+        }, 5 * 60 * 1000);
+    }
+};
+
+// Global functions for onclick handlers
+function refreshAlerts() {
+    epc_dashboard.loadAlerts();
+}
+
+function loadProjectProgress(project) {
+    epc_dashboard.loadProjectProgress(project);
+}
+
+function loadBillingTrend(months) {
+    epc_dashboard.loadBillingTrend(months);
+}
+
+function loadQualityMetrics(project) {
+    epc_dashboard.loadQualityMetrics(project);
+}
+
+// Initialize on page load
+frappe.ready(() => {
+    epc_dashboard.init();
+});
+</script>
