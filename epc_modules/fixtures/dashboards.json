@@ -1,0 +1,16 @@
+[
+  {
+    "doctype": "Dashboard",
+    "name": "EPC Management Dashboard",
+    "dashboard_name": "EPC Management Dashboard",
+    "module": "EPC Modules",
+    "is_standard": 1,
+    "charts": [
+      {"chart_name": "Active Projects Count", "width": "Full"},
+      {"chart_name": "Billing by Typology", "width": "Half"},
+      {"chart_name": "Monthly Billing Trend", "width": "Half"},
+      {"chart_name": "Open NCRs by Severity", "width": "Half"},
+      {"chart_name": "Project Progress", "width": "Half"}
+    ]
+  }
+]
