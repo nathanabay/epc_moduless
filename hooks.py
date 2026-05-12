@@ -15,29 +15,29 @@ app_license = "MIT"
 app_version = "1.0.0"
 
 # App hooks
-after_install = "epc_modules.hooks.after_install"
+after_install = "epc_modules.event_handlers.after_install"
 
 # doctype event hooks
 doc_events = {
     "Project": {
-        "after_insert": "epc_modules.hooks.on_project_created",
-        "on_update": "epc_modules.hooks.on_project_updated",
+        "after_insert": "epc_modules.event_handlers.on_project_created",
+        "on_update": "epc_modules.event_handlers.on_project_updated",
         "validate": [
-            "epc_modules.hooks.validate_project_typology",
-            "epc_modules.hooks.validate_project",
+            "epc_modules.event_handlers.validate_project_typology",
+            "epc_modules.event_handlers.validate_project",
         ]
     },
     "Purchase Order": {
-        "validate": "epc_modules.hooks.on_po_validate"
+        "validate": "epc_modules.event_handlers.on_po_validate"
     },
     "Purchase Receipt": {
-        "validate": "epc_modules.hooks.validate_site_zone_allocation"
+        "validate": "epc_modules.event_handlers.validate_site_zone_allocation"
     },
     "Stock Entry": {
-        "validate": "epc_modules.hooks.validate_stock_entry_project"
+        "validate": "epc_modules.event_handlers.validate_stock_entry_project"
     },
     "Sales Invoice": {
-        "validate": "epc_modules.hooks.validate_ra_bill_integration"
+        "validate": "epc_modules.event_handlers.validate_ra_bill_integration"
     }
 }
 
@@ -59,15 +59,15 @@ scheduler_events = {
 
 # Permissions
 has_web_permission = {
-    "Project": "epc_modules.hooks.web_permission_for_project"
+    "Project": "epc_modules.event_handlers.web_permission_for_project"
 }
 
 permission_query_conditions = {
-    "Project": "epc_modules.hooks.project_permission_query"
+    "Project": "epc_modules.event_handlers.project_permission_query"
 }
 
 get_match_filters = {
-    "Project": "epc_modules.hooks.get_project_match_conditions"
+    "Project": "epc_modules.event_handlers.get_project_match_conditions"
 }
 
 # Fixtures to load (data records only; DocType schemas are in doctype/ directory)
@@ -78,7 +78,7 @@ fixtures = [
     {"dt": "Property Setter", "filters": [["doc_type", "=", "Project"]]},
     # Default typology data records
     {"dt": "Project Typology", "filters": []},
-    # Dashboard configurations
-    {"dt": "Dashboard", "filters": []},
-    {"dt": "Dashboard Chart", "filters": []},
+    # Dashboard configurations (loaded via sync_dashboards, not fixture JSON files)
+    # {"dt": "Dashboard", "filters": [["module", "=", "EPC Modules"]]},
+    # {"dt": "Dashboard Chart", "filters": [["module", "=", "EPC Modules"]]},
 ]

@@ -1,0 +1,172 @@
+{
+  "name": "Steel Reinforcement Register",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "entry_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Entry ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "heat_number",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Heat/Lot Number",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_3",
+      "fieldtype": "Section Break",
+      "label": "Steel Details"
+    },
+    {
+      "fieldname": "bar_mark",
+      "fieldtype": "Data",
+      "label": "Bar Mark",
+      "reqd": 1
+    },
+    {
+      "fieldname": "diameter_mm",
+      "fieldtype": "Int",
+      "in_list_view": 1,
+      "label": "Diameter (mm)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "steel_grade",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Steel Grade",
+      "options": "Fe 415\nFe 415D\nFe 500\nFe 500D\nFe 550\nFe 550D\nFe 600",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_5",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "manufacturer",
+      "fieldtype": "Data",
+      "label": "Manufacturer",
+      "reqd": 1
+    },
+    {
+      "fieldname": "batch_number",
+      "fieldtype": "Data",
+      "label": "Batch Number"
+    },
+    {
+      "fieldname": "quantity_tonnes",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Quantity (tonnes)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_8",
+      "fieldtype": "Section Break",
+      "label": "Receipt Details"
+    },
+    {
+      "fieldname": "date_received",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Date Received",
+      "reqd": 1
+    },
+    {
+      "fieldname": "test_certificate",
+      "fieldtype": "Attach",
+      "label": "Test Certificate (IS 1786)"
+    },
+    {
+      "fieldname": "column_break_10",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "yield_strength_mpa",
+      "fieldtype": "Float",
+      "label": "Yield Strength (MPa)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "tensile_strength_mpa",
+      "fieldtype": "Float",
+      "label": "Tensile Strength (MPa)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "elongation_percent",
+      "fieldtype": "Float",
+      "label": "Elongation %",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_break_15",
+      "fieldtype": "Section Break",
+      "label": "Quality & Storage"
+    },
+    {
+      "fieldname": "bend_rebend_test",
+      "fieldtype": "Check",
+      "label": "Bend/Rebend Pass",
+      "read_only": 1
+    },
+    {
+      "fieldname": "is_approved",
+      "fieldtype": "Check",
+      "label": "Approved",
+      "default": "0"
+    },
+    {
+      "fieldname": "column_break_17",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "storage_location",
+      "fieldtype": "Data",
+      "label": "Storage Location",
+      "reqd": 1
+    },
+    {
+      "fieldname": "is_used",
+      "fieldtype": "Check",
+      "label": "Issued to Site",
+      "default": "0"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "QC Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

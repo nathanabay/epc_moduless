@@ -1,0 +1,93 @@
+{
+  "name": "Equipment Movement",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "movement_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Movement ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "equipment",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Equipment",
+      "options": "Equipment Register",
+      "reqd": 1
+    },
+    {
+      "fieldname": "movement_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "from_project",
+      "fieldtype": "Link",
+      "label": "From Project",
+      "options": "Project"
+    },
+    {
+      "fieldname": "to_project",
+      "fieldtype": "Link",
+      "label": "To Project",
+      "options": "Project"
+    },
+    {
+      "fieldname": "movement_type",
+      "fieldtype": "Select",
+      "label": "Type",
+      "options": "Transfer\nDeployment\nReturn\nSale",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_6",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "transportation_mode",
+      "fieldtype": "Select",
+      "label": "Transport Mode",
+      "options": "Self\nHired Transport\nTowing"
+    },
+    {
+      "fieldname": "transportation_cost",
+      "fieldtype": "Currency",
+      "label": "Transport Cost"
+    },
+    {
+      "fieldname": "authorized_by",
+      "fieldtype": "Link",
+      "label": "Authorized By",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "purpose",
+      "fieldtype": "Text",
+      "label": "Purpose"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

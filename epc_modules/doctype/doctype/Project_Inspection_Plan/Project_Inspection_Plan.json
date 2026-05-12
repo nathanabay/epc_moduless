@@ -1,0 +1,157 @@
+{
+  "name": "Project Inspection Plan",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "itp_code",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "ITP Code",
+      "reqd": 1
+    },
+    {
+      "fieldname": "source_template",
+      "fieldtype": "Link",
+      "label": "Source Template",
+      "options": "Master Inspection Template",
+      "reqd": 1
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "label": "WBS Item",
+      "options": "WBS Item"
+    },
+    {
+      "fieldname": "boq_item",
+      "fieldtype": "Link",
+      "label": "BOQ Item",
+      "options": "Custom BOQ"
+    },
+    {
+      "fieldname": "section_break_5",
+      "fieldtype": "Section Break",
+      "label": "Schedule"
+    },
+    {
+      "fieldname": "planned_start",
+      "fieldtype": "Date",
+      "label": "Planned Start"
+    },
+    {
+      "fieldname": "planned_end",
+      "fieldtype": "Date",
+      "label": "Planned End"
+    },
+    {
+      "fieldname": "column_break_7",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "responsible_qa",
+      "fieldtype": "Link",
+      "label": "QA Manager",
+      "options": "User"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Draft\nActive\nIn Progress\nCompleted\nCancelled",
+      "default": "Draft"
+    },
+    {
+      "fieldname": "section_break_10",
+      "fieldtype": "Section Break",
+      "label": "Inspection Records"
+    },
+    {
+      "fieldname": "inspection_records",
+      "fieldtype": "Table",
+      "label": "Inspection Records",
+      "options": "Inspection Record"
+    },
+    {
+      "fieldname": "section_break_15",
+      "fieldtype": "Section Break",
+      "label": "Summary"
+    },
+    {
+      "fieldname": "total_hold_points",
+      "fieldtype": "Int",
+      "label": "Total Hold Points",
+      "read_only": 1
+    },
+    {
+      "fieldname": "completed_hold_points",
+      "fieldtype": "Int",
+      "label": "Completed",
+      "read_only": 1
+    },
+    {
+      "fieldname": "pending_hold_points",
+      "fieldtype": "Int",
+      "label": "Pending",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_18",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "passed_hold_points",
+      "fieldtype": "Int",
+      "label": "Passed",
+      "read_only": 1
+    },
+    {
+      "fieldname": "failed_hold_points",
+      "fieldtype": "Int",
+      "label": "Failed",
+      "read_only": 1
+    },
+    {
+      "fieldname": "progress_percentage",
+      "fieldtype": "Float",
+      "label": "Progress %",
+      "read_only": 1
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Quality Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "name": "Site Zone",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "autoname": "field:zone_name",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "zone_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Zone Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "zone_code",
+      "fieldtype": "Data",
+      "label": "Zone Code"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "label": "Description"
+    },
+    {
+      "fieldname": "section_break_location",
+      "fieldtype": "Section Break",
+      "label": "Location"
+    },
+    {
+      "fieldname": "building",
+      "fieldtype": "Data",
+      "label": "Building"
+    },
+    {
+      "fieldname": "floor",
+      "fieldtype": "Data",
+      "label": "Floor"
+    },
+    {
+      "fieldname": "area_sqm",
+      "fieldtype": "Float",
+      "label": "Area (sqm)"
+    },
+    {
+      "fieldname": "column_break_location",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "parent_zone",
+      "fieldtype": "Link",
+      "label": "Parent Zone",
+      "options": "Site Zone"
+    },
+    {
+      "fieldname": "zone_type",
+      "fieldtype": "Select",
+      "label": "Zone Type",
+      "options": "Building\nFloor\nRoom\nArea\nExternal"
+    },
+    {
+      "fieldname": "section_break_status",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Active\nInactive",
+      "default": "Active"
+    },
+    {
+      "fieldname": "column_break_status",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "label": "Is Active",
+      "default": "1"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "name": "Master Inspection Template",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "template_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Template Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "applicable_typologies",
+      "fieldtype": "MultiSelect",
+      "in_list_view": 1,
+      "label": "Applicable Typologies",
+      "options": "Electromechanical\nCivil\nStandard/Service",
+      "reqd": 1
+    },
+    {
+      "fieldname": "inspection_category",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Inspection Category",
+      "options": "Structural\nMechanical\nElectrical\nPlumbing\nHVAC\nFire Safety\nQuality Control",
+      "reqd": 1
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Text",
+      "label": "Description"
+    },
+    {
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Active",
+      "default": "1"
+    },
+    {
+      "fieldname": "section_break_5",
+      "fieldtype": "Section Break",
+      "label": "Inspection Hold Points"
+    },
+    {
+      "fieldname": "hold_points",
+      "fieldtype": "Table",
+      "label": "Hold Points",
+      "options": "Inspection Hold Point"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Quality Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "doctype": "Project",
+    "fieldname": "project_name",
+    "property": "reqd",
+    "property_type": "Check",
+    "value": "1",
+    "name": "Project-project_name-reqd"
+  },
+  {
+    "doctype": "Project",
+    "fieldname": "status",
+    "property": "options",
+    "property_type": "Text",
+    "value": "Draft\nOpen\nHold\nCompleted\nCancelled\nTypology Assigned\nResources Allocated\nActive\nOn Hold",
+    "name": "Project-status-options"
+  }
+]

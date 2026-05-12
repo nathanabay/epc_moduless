@@ -1,0 +1,974 @@
+[
+  {
+    "name": "Risk Register",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "risk_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Risk ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "risk_category",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Risk Category",
+        "options": "Safety\nFinancial\nTechnical\nSchedule\nLegal\nEnvironmental",
+        "reqd": 1
+      },
+      {
+        "fieldname": "risk_title",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Risk Title",
+        "reqd": 1
+      },
+      {
+        "fieldname": "probability",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Probability",
+        "options": "Very Low\nLow\nMedium\nHigh\nVery High",
+        "reqd": 1
+      },
+      {
+        "fieldname": "impact",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Impact",
+        "options": "Very Low\nLow\nMedium\nHigh\nVery High",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_8",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "risk_score",
+        "fieldtype": "Int",
+        "label": "Risk Score",
+        "read_only": 1
+      },
+      {
+        "fieldname": "risk_rating",
+        "fieldtype": "Select",
+        "label": "Risk Rating",
+        "options": "Critical\nHigh\nMedium\nLow",
+        "read_only": 1
+      },
+      {
+        "fieldname": "section_break_12",
+        "fieldtype": "Section Break",
+        "label": "Risk Details"
+      },
+      {
+        "fieldname": "triggered_by",
+        "fieldtype": "Data",
+        "label": "Triggered By"
+      },
+      {
+        "fieldname": "potential_impact",
+        "fieldtype": "Text",
+        "label": "Potential Impact",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_15",
+        "fieldtype": "Section Break",
+        "label": "Risk Response"
+      },
+      {
+        "fieldname": "mitigation_strategy",
+        "fieldtype": "Text",
+        "label": "Mitigation Strategy",
+        "reqd": 1
+      },
+      {
+        "fieldname": "contingency_plan",
+        "fieldtype": "Text",
+        "label": "Contingency Plan"
+      },
+      {
+        "fieldname": "column_break_18",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "responsible_person",
+        "fieldtype": "Link",
+        "label": "Risk Owner",
+        "options": "User",
+        "reqd": 1
+      },
+      {
+        "fieldname": "review_date",
+        "fieldtype": "Date",
+        "label": "Review Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_22",
+        "fieldtype": "Section Break",
+        "label": "Risk Actions"
+      },
+      {
+        "fieldname": "risk_actions",
+        "fieldtype": "Table",
+        "label": "Response Actions",
+        "options": "Risk Response Action"
+      },
+      {
+        "fieldname": "section_break_26",
+        "fieldtype": "Section Break",
+        "label": "Status"
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Identified\nMitigating\nActive\nMaterialized\nClosed",
+        "default": "Identified"
+      },
+      {
+        "fieldname": "column_break_29",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "actual_impact",
+        "fieldtype": "Currency",
+        "label": "Actual Impact"
+      },
+      {
+        "fieldname": "is_closed",
+        "fieldtype": "Check",
+        "label": "Closed",
+        "default": "0"
+      },
+      {
+        "fieldname": "closure_date",
+        "fieldtype": "Date",
+        "label": "Closure Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "lessons_learned",
+        "fieldtype": "Text",
+        "label": "Lessons Learned"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Risk Response Action",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "istable": 1,
+    "fields": [
+      {
+        "fieldname": "action_description",
+        "fieldtype": "Data",
+        "label": "Action",
+        "reqd": 1
+      },
+      {
+        "fieldname": "responsible",
+        "fieldtype": "Link",
+        "label": "Owner",
+        "options": "User",
+        "reqd": 1
+      },
+      {
+        "fieldname": "due_date",
+        "fieldtype": "Date",
+        "label": "Due Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "label": "Status",
+        "options": "Pending\nIn Progress\nCompleted\nOverdue",
+        "default": "Pending"
+      },
+      {
+        "fieldname": "completed_date",
+        "fieldtype": "Date",
+        "label": "Completed Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "cost_impact",
+        "fieldtype": "Currency",
+        "label": "Cost Impact"
+      }
+    ]
+  },
+  {
+    "name": "Claim Register",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "claim_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Claim ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "contract",
+        "fieldtype": "Link",
+        "label": "Contract",
+        "options": "Contract"
+      },
+      {
+        "fieldname": "claim_type",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Claim Type",
+        "options": "Extension of Time\nPrice Escalation\nVariation\nForce Majeure\nSuspension\nTermination",
+        "reqd": 1
+      },
+      {
+        "fieldname": "claim_reference",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Claim Reference",
+        "reqd": 1
+      },
+      {
+        "fieldname": "claim_title",
+        "fieldtype": "Data",
+        "label": "Title",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_6",
+        "fieldtype": "Section Break",
+        "label": "Claim Details"
+      },
+      {
+        "fieldname": "narrative",
+        "fieldtype": "Long Text",
+        "label": "Narrative",
+        "reqd": 1
+      },
+      {
+        "fieldname": "legal_basis",
+        "fieldtype": "Text",
+        "label": "Legal Basis"
+      },
+      {
+        "fieldname": "column_break_9",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "event_date",
+        "fieldtype": "Date",
+        "label": "Event Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "notice_date",
+        "fieldtype": "Date",
+        "label": "Notice Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "notice_deadline",
+        "fieldtype": "Date",
+        "label": "Notice Deadline",
+        "read_only": 1
+      },
+      {
+        "fieldname": "section_break_12",
+        "fieldtype": "Section Break",
+        "label": "Financial Impact"
+      },
+      {
+        "fieldname": "delay_days",
+        "fieldtype": "Int",
+        "label": "Delay Days"
+      },
+      {
+        "fieldname": "cost_impact",
+        "fieldtype": "Currency",
+        "label": "Cost Impact"
+      },
+      {
+        "fieldname": "column_break_15",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "supporting_documents",
+        "fieldtype": "Attach",
+        "label": "Supporting Documents"
+      },
+      {
+        "fieldname": "relationship_to_risk",
+        "fieldtype": "Link",
+        "label": "Linked Risk",
+        "options": "Risk Register"
+      },
+      {
+        "fieldname": "section_break_18",
+        "fieldtype": "Section Break",
+        "label": "Status"
+      },
+      {
+        "fieldname": "status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Draft\nSubmitted\nUnder Review\nNegotiating\nSettled\nDisputed\nWithdrawn",
+        "default": "Draft"
+      },
+      {
+        "fieldname": "submitted_to",
+        "fieldtype": "Data",
+        "label": "Submitted To",
+        "reqd": 1
+      },
+      {
+        "fieldname": "submitted_date",
+        "fieldtype": "Date",
+        "label": "Submitted Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "response_received",
+        "fieldtype": "Date",
+        "label": "Response Received"
+      },
+      {
+        "fieldname": "column_break_23",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "settlement_amount",
+        "fieldtype": "Currency",
+        "label": "Settlement Amount"
+      },
+      {
+        "fieldname": "settlement_date",
+        "fieldtype": "Date",
+        "label": "Settlement Date",
+        "read_only": 1
+      },
+      {
+        "fieldname": "escalation_level",
+        "fieldtype": "Int",
+        "label": "Escalation Level",
+        "default": "1"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Equipment Register",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "equipment_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Equipment ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "equipment_name",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Equipment Name",
+        "reqd": 1
+      },
+      {
+        "fieldname": "equipment_category",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Category",
+        "options": "Earthmoving\nLifting\nConcrete\nTransport\nPower\nTools",
+        "reqd": 1
+      },
+      {
+        "fieldname": "manufacturer",
+        "fieldtype": "Data",
+        "label": "Manufacturer"
+      },
+      {
+        "fieldname": "model_number",
+        "fieldtype": "Data",
+        "label": "Model"
+      },
+      {
+        "fieldname": "serial_number",
+        "fieldtype": "Data",
+        "label": "Serial/VIN"
+      },
+      {
+        "fieldname": "column_break_6",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "year_of_manufacture",
+        "fieldtype": "Int",
+        "label": "Year of Manufacture"
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "label": "Current Project",
+        "options": "Project"
+      },
+      {
+        "fieldname": "equipment_status",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Status",
+        "options": "Available\nIn Use\nUnder Maintenance\nUnder Repair\nScrapped\nSold",
+        "default": "Available"
+      },
+      {
+        "fieldname": "section_break_10",
+        "fieldtype": "Section Break",
+        "label": "Ownership"
+      },
+      {
+        "fieldname": "ownership_type",
+        "fieldtype": "Select",
+        "label": "Ownership Type",
+        "options": "Owned\nLeased\nRented\nSubcontractor Owned",
+        "reqd": 1
+      },
+      {
+        "fieldname": "lease_vendor",
+        "fieldtype": "Link",
+        "label": "Lease Vendor",
+        "options": "Supplier"
+      },
+      {
+        "fieldname": "lease_start_date",
+        "fieldtype": "Date",
+        "label": "Lease Start"
+      },
+      {
+        "fieldname": "column_break_13",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "lease_end_date",
+        "fieldtype": "Date",
+        "label": "Lease End"
+      },
+      {
+        "fieldname": "lease_rate",
+        "fieldtype": "Currency",
+        "label": "Lease Rate"
+      },
+      {
+        "fieldname": "section_break_16",
+        "fieldtype": "Section Break",
+        "label": "Fuel & Operations"
+      },
+      {
+        "fieldname": "fuel_type",
+        "fieldtype": "Select",
+        "label": "Fuel Type",
+        "options": "Diesel\nPetrol\nElectric\nHybrid\nCNG"
+      },
+      {
+        "fieldname": "fuel_capacity_ltr",
+        "fieldtype": "Float",
+        "label": "Fuel Capacity (L)"
+      },
+      {
+        "fieldname": "average_fuel_consumption",
+        "fieldtype": "Float",
+        "label": "Avg Consumption"
+      },
+      {
+        "fieldname": "column_break_19",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "operator_required",
+        "fieldtype": "Check",
+        "label": "Operator Required"
+      },
+      {
+        "fieldname": "section_break_22",
+        "fieldtype": "Section Break",
+        "label": "Compliance"
+      },
+      {
+        "fieldname": "insurance_expiry",
+        "fieldtype": "Date",
+        "label": "Insurance Expiry"
+      },
+      {
+        "fieldname": "road_tax_expiry",
+        "fieldtype": "Date",
+        "label": "Road Tax Expiry"
+      },
+      {
+        "fieldname": "fitness_certificate_expiry",
+        "fieldtype": "Date",
+        "label": "Fitness Cert Expiry"
+      },
+      {
+        "fieldname": "column_break_25",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "current_location",
+        "fieldtype": "Data",
+        "label": "Current Location"
+      },
+      {
+        "fieldname": "odometer_reading",
+        "fieldtype": "Float",
+        "label": "Odometer/KM"
+      },
+      {
+        "fieldname": "hour_meter_reading",
+        "fieldtype": "Float",
+        "label": "Hour Meter"
+      },
+      {
+        "fieldname": "image",
+        "fieldtype": "Attach",
+        "label": "Photo"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Equipment Utilization Log",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "log_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Log ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "equipment",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Equipment",
+        "options": "Equipment Register",
+        "reqd": 1
+      },
+      {
+        "fieldname": "project",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Project",
+        "options": "Project",
+        "reqd": 1
+      },
+      {
+        "fieldname": "log_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "operator",
+        "fieldtype": "Link",
+        "label": "Operator",
+        "options": "Employee"
+      },
+      {
+        "fieldname": "work_description",
+        "fieldtype": "Data",
+        "label": "Work Description"
+      },
+      {
+        "fieldname": "section_break_6",
+        "fieldtype": "Section Break",
+        "label": "Hours"
+      },
+      {
+        "fieldname": "hours_worked",
+        "fieldtype": "Float",
+        "label": "Hours Worked",
+        "reqd": 1
+      },
+      {
+        "fieldname": "idle_hours",
+        "fieldtype": "Float",
+        "label": "Idle Hours"
+      },
+      {
+        "fieldname": "column_break_9",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "fuel_consumed_ltr",
+        "fieldtype": "Float",
+        "label": "Fuel (L)"
+      },
+      {
+        "fieldname": "location",
+        "fieldtype": "Data",
+        "label": "Location"
+      },
+      {
+        "fieldname": "section_break_12",
+        "fieldtype": "Section Break",
+        "label": "Output"
+      },
+      {
+        "fieldname": "output_quantity",
+        "fieldtype": "Float",
+        "label": "Output Qty"
+      },
+      {
+        "fieldname": "output_unit",
+        "fieldtype": "Data",
+        "label": "Unit"
+      },
+      {
+        "fieldname": "column_break_15",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "operator_rate",
+        "fieldtype": "Currency",
+        "label": "Operator Rate"
+      },
+      {
+        "fieldname": "fuel_cost",
+        "fieldtype": "Currency",
+        "label": "Fuel Cost"
+      },
+      {
+        "fieldname": "total_cost",
+        "fieldtype": "Currency",
+        "label": "Total Cost",
+        "read_only": 1
+      },
+      {
+        "fieldname": "remarks",
+        "fieldtype": "Text",
+        "label": "Remarks"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Equipment Maintenance Schedule",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "schedule_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Schedule ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "equipment",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Equipment",
+        "options": "Equipment Register",
+        "reqd": 1
+      },
+      {
+        "fieldname": "maintenance_type",
+        "fieldtype": "Select",
+        "in_list_view": 1,
+        "label": "Type",
+        "options": "Daily\nWeekly\nMonthly\nQuarterly\nAnnual\nBreakdown",
+        "reqd": 1
+      },
+      {
+        "fieldname": "description",
+        "fieldtype": "Data",
+        "label": "Description",
+        "reqd": 1
+      },
+      {
+        "fieldname": "section_break_5",
+        "fieldtype": "Section Break",
+        "label": "Schedule"
+      },
+      {
+        "fieldname": "interval_days",
+        "fieldtype": "Int",
+        "label": "Interval (Days)",
+        "reqd": 1
+      },
+      {
+        "fieldname": "last_service_date",
+        "fieldtype": "Date",
+        "label": "Last Service"
+      },
+      {
+        "fieldname": "next_service_date",
+        "fieldtype": "Date",
+        "label": "Next Service",
+        "read_only": 1
+      },
+      {
+        "fieldname": "column_break_8",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "last_service_hours",
+        "fieldtype": "Float",
+        "label": "Hours at Last Service"
+      },
+      {
+        "fieldname": "next_service_hours",
+        "fieldtype": "Float",
+        "label": "Hours for Next Service",
+        "read_only": 1
+      },
+      {
+        "fieldname": "section_break_11",
+        "fieldtype": "Section Break",
+        "label": "Alerts"
+      },
+      {
+        "fieldname": "is_scheduled",
+        "fieldtype": "Check",
+        "label": "In Schedule",
+        "default": "1"
+      },
+      {
+        "fieldname": "alerts_enabled",
+        "fieldtype": "Check",
+        "label": "Send Alerts",
+        "default": "1"
+      },
+      {
+        "fieldname": "alert_days_before",
+        "fieldtype": "Int",
+        "label": "Alert Days Before",
+        "default": "7"
+      },
+      {
+        "fieldname": "column_break_14",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "estimated_cost",
+        "fieldtype": "Currency",
+        "label": "Est. Cost"
+      },
+      {
+        "fieldname": "responsible_vendor",
+        "fieldtype": "Link",
+        "label": "Service Vendor",
+        "options": "Supplier"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  },
+  {
+    "name": "Equipment Movement",
+    "doctype": "DocType",
+    "module": "EPC Modules",
+    "is_submittable": 1,
+    "track_changes": 1,
+    "fields": [
+      {
+        "fieldname": "movement_id",
+        "fieldtype": "Data",
+        "in_list_view": 1,
+        "label": "Movement ID",
+        "read_only": 1
+      },
+      {
+        "fieldname": "equipment",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Equipment",
+        "options": "Equipment Register",
+        "reqd": 1
+      },
+      {
+        "fieldname": "movement_date",
+        "fieldtype": "Date",
+        "in_list_view": 1,
+        "label": "Date",
+        "reqd": 1
+      },
+      {
+        "fieldname": "from_project",
+        "fieldtype": "Link",
+        "label": "From Project",
+        "options": "Project"
+      },
+      {
+        "fieldname": "to_project",
+        "fieldtype": "Link",
+        "label": "To Project",
+        "options": "Project"
+      },
+      {
+        "fieldname": "movement_type",
+        "fieldtype": "Select",
+        "label": "Type",
+        "options": "Transfer\nDeployment\nReturn\nSale",
+        "reqd": 1
+      },
+      {
+        "fieldname": "column_break_6",
+        "fieldtype": "Column Break"
+      },
+      {
+        "fieldname": "transportation_mode",
+        "fieldtype": "Select",
+        "label": "Transport Mode",
+        "options": "Self\nHired Transport\nTowing"
+      },
+      {
+        "fieldname": "transportation_cost",
+        "fieldtype": "Currency",
+        "label": "Transport Cost"
+      },
+      {
+        "fieldname": "authorized_by",
+        "fieldtype": "Link",
+        "label": "Authorized By",
+        "options": "User",
+        "reqd": 1
+      },
+      {
+        "fieldname": "purpose",
+        "fieldtype": "Text",
+        "label": "Purpose"
+      }
+    ],
+    "permissions": [
+      {
+        "role": "System Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1,
+        "delete": 1,
+        "submit": 1
+      },
+      {
+        "role": "Project Manager",
+        "read": 1,
+        "write": 1,
+        "create": 1
+      }
+    ]
+  }
+]

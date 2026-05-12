@@ -1,0 +1,186 @@
+{
+  "name": "Claim Register",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "claim_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Claim ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "contract",
+      "fieldtype": "Link",
+      "label": "Contract",
+      "options": "Contract"
+    },
+    {
+      "fieldname": "claim_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Claim Type",
+      "options": "Extension of Time\nPrice Escalation\nVariation\nForce Majeure\nSuspension\nTermination",
+      "reqd": 1
+    },
+    {
+      "fieldname": "claim_reference",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Claim Reference",
+      "reqd": 1
+    },
+    {
+      "fieldname": "claim_title",
+      "fieldtype": "Data",
+      "label": "Title",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_6",
+      "fieldtype": "Section Break",
+      "label": "Claim Details"
+    },
+    {
+      "fieldname": "narrative",
+      "fieldtype": "Long Text",
+      "label": "Narrative",
+      "reqd": 1
+    },
+    {
+      "fieldname": "legal_basis",
+      "fieldtype": "Text",
+      "label": "Legal Basis"
+    },
+    {
+      "fieldname": "column_break_9",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "event_date",
+      "fieldtype": "Date",
+      "label": "Event Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "notice_date",
+      "fieldtype": "Date",
+      "label": "Notice Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "notice_deadline",
+      "fieldtype": "Date",
+      "label": "Notice Deadline",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_break_12",
+      "fieldtype": "Section Break",
+      "label": "Financial Impact"
+    },
+    {
+      "fieldname": "delay_days",
+      "fieldtype": "Int",
+      "label": "Delay Days"
+    },
+    {
+      "fieldname": "cost_impact",
+      "fieldtype": "Currency",
+      "label": "Cost Impact"
+    },
+    {
+      "fieldname": "column_break_15",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "supporting_documents",
+      "fieldtype": "Attach",
+      "label": "Supporting Documents"
+    },
+    {
+      "fieldname": "relationship_to_risk",
+      "fieldtype": "Link",
+      "label": "Linked Risk",
+      "options": "Risk Register"
+    },
+    {
+      "fieldname": "section_break_18",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Draft\nSubmitted\nUnder Review\nNegotiating\nSettled\nDisputed\nWithdrawn",
+      "default": "Draft"
+    },
+    {
+      "fieldname": "submitted_to",
+      "fieldtype": "Data",
+      "label": "Submitted To",
+      "reqd": 1
+    },
+    {
+      "fieldname": "submitted_date",
+      "fieldtype": "Date",
+      "label": "Submitted Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "response_received",
+      "fieldtype": "Date",
+      "label": "Response Received"
+    },
+    {
+      "fieldname": "column_break_23",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "settlement_amount",
+      "fieldtype": "Currency",
+      "label": "Settlement Amount"
+    },
+    {
+      "fieldname": "settlement_date",
+      "fieldtype": "Date",
+      "label": "Settlement Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "escalation_level",
+      "fieldtype": "Int",
+      "label": "Escalation Level",
+      "default": "1"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

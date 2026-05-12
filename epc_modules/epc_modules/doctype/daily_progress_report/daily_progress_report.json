@@ -1,0 +1,126 @@
+{
+  "name": "Daily Progress Report",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "editable_grid": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "report_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Report Date",
+      "reqd": 1,
+      "default": "Today"
+    },
+    {
+      "fieldname": "supervisor",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Supervisor",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_3",
+      "fieldtype": "Section Break",
+      "label": "Site Conditions"
+    },
+    {
+      "fieldname": "site_zone",
+      "fieldtype": "Link",
+      "label": "Site Zone",
+      "options": "Site Zone"
+    },
+    {
+      "fieldname": "weather_conditions",
+      "fieldtype": "Select",
+      "label": "Weather Conditions",
+      "options": "Clear\nCloudy\nRainy\nStormy\nFoggy"
+    },
+    {
+      "fieldname": "work_shifts",
+      "fieldtype": "Int",
+      "label": "Number of Shifts",
+      "default": "1"
+    },
+    {
+      "fieldname": "column_break_6",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "labor_count",
+      "fieldtype": "Int",
+      "label": "Total Labor on Site"
+    },
+    {
+      "fieldname": "equipment_count",
+      "fieldtype": "Int",
+      "label": "Equipment Deployed"
+    },
+    {
+      "fieldname": "progress_entries",
+      "fieldtype": "Table",
+      "label": "Progress Entries",
+      "options": "DPR Entry"
+    },
+    {
+      "fieldname": "section_break_10",
+      "fieldtype": "Section Break",
+      "label": "Summary"
+    },
+    {
+      "fieldname": "overall_progress",
+      "fieldtype": "Float",
+      "label": "Overall Progress %",
+      "precision": 2
+    },
+    {
+      "fieldname": "column_break_12",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nSubmitted\nApproved",
+      "default": "Draft"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "submit": 1
+    }
+  ]
+}

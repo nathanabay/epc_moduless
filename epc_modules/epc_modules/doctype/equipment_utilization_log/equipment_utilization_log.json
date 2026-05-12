@@ -1,0 +1,136 @@
+{
+  "name": "Equipment Utilization Log",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "log_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Log ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "equipment",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Equipment",
+      "options": "Equipment Register",
+      "reqd": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "log_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "operator",
+      "fieldtype": "Link",
+      "label": "Operator",
+      "options": "Employee"
+    },
+    {
+      "fieldname": "work_description",
+      "fieldtype": "Data",
+      "label": "Work Description"
+    },
+    {
+      "fieldname": "section_break_6",
+      "fieldtype": "Section Break",
+      "label": "Hours"
+    },
+    {
+      "fieldname": "hours_worked",
+      "fieldtype": "Float",
+      "label": "Hours Worked",
+      "reqd": 1
+    },
+    {
+      "fieldname": "idle_hours",
+      "fieldtype": "Float",
+      "label": "Idle Hours"
+    },
+    {
+      "fieldname": "column_break_9",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "fuel_consumed_ltr",
+      "fieldtype": "Float",
+      "label": "Fuel (L)"
+    },
+    {
+      "fieldname": "location",
+      "fieldtype": "Data",
+      "label": "Location"
+    },
+    {
+      "fieldname": "section_break_12",
+      "fieldtype": "Section Break",
+      "label": "Output"
+    },
+    {
+      "fieldname": "output_quantity",
+      "fieldtype": "Float",
+      "label": "Output Qty"
+    },
+    {
+      "fieldname": "output_unit",
+      "fieldtype": "Data",
+      "label": "Unit"
+    },
+    {
+      "fieldname": "column_break_15",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "operator_rate",
+      "fieldtype": "Currency",
+      "label": "Operator Rate"
+    },
+    {
+      "fieldname": "fuel_cost",
+      "fieldtype": "Currency",
+      "label": "Fuel Cost"
+    },
+    {
+      "fieldname": "total_cost",
+      "fieldtype": "Currency",
+      "label": "Total Cost",
+      "read_only": 1
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

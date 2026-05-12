@@ -1,0 +1,197 @@
+{
+  "name": "Non-Conformance Report",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "editable_grid": 1,
+  "track_changes": 1,
+  "autoname": "field:ncr_number",
+  "fields": [
+    {
+      "fieldname": "ncr_number",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "NCR Number",
+      "reqd": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "WBS Item",
+      "options": "WBS Item",
+      "reqd": 1
+    },
+    {
+      "fieldname": "inspection_record",
+      "fieldtype": "Link",
+      "label": "Inspection Record",
+      "options": "Inspection Record"
+    },
+    {
+      "fieldname": "boq_item",
+      "fieldtype": "Link",
+      "label": "BOQ Item",
+      "options": "Custom BOQ"
+    },
+    {
+      "fieldname": "section_break_5",
+      "fieldtype": "Section Break",
+      "label": "Non-Conformance Details"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Text",
+      "in_list_view": 1,
+      "label": "Description",
+      "reqd": 1
+    },
+    {
+      "fieldname": "severity",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Severity",
+      "options": "Critical\nMajor\nMinor",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_8",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "identified_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Identified Date",
+      "default": "Today",
+      "reqd": 1
+    },
+    {
+      "fieldname": "identified_by",
+      "fieldtype": "Link",
+      "label": "Identified By",
+      "options": "User",
+      "default": " frappe.session.user"
+    },
+    {
+      "fieldname": "section_break_10",
+      "fieldtype": "Section Break",
+      "label": "Root Cause Analysis"
+    },
+    {
+      "fieldname": "root_cause",
+      "fieldtype": "Text",
+      "label": "Root Cause"
+    },
+    {
+      "fieldname": "corrective_action",
+      "fieldtype": "Text",
+      "label": "Corrective Action"
+    },
+    {
+      "fieldname": "column_break_12",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "preventive_action",
+      "fieldtype": "Text",
+      "label": "Preventive Action"
+    },
+    {
+      "fieldname": "section_break_15",
+      "fieldtype": "Section Break",
+      "label": "Closure"
+    },
+    {
+      "fieldname": "target_close_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Target Close Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "actual_close_date",
+      "fieldtype": "Date",
+      "label": "Actual Close Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_17",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "closed_by",
+      "fieldtype": "Link",
+      "label": "Closed By",
+      "options": "User"
+    },
+    {
+      "fieldname": "section_break_20",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Open\nIn Progress\nClosed\nVerified",
+      "default": "Open"
+    },
+    {
+      "fieldname": "closure_remarks",
+      "fieldtype": "Text",
+      "label": "Closure Remarks"
+    },
+    {
+      "fieldname": "section_break_25",
+      "fieldtype": "Section Break",
+      "label": "Verification"
+    },
+    {
+      "fieldname": "verification_date",
+      "fieldtype": "Date",
+      "label": "Verification Date"
+    },
+    {
+      "fieldname": "verified_by",
+      "fieldtype": "Link",
+      "label": "Verified By",
+      "options": "User"
+    },
+    {
+      "fieldname": "verification_remarks",
+      "fieldtype": "Text",
+      "label": "Verification Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "QC Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1
+    }
+  ]
+}

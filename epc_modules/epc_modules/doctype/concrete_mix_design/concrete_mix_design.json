@@ -1,0 +1,213 @@
+{
+  "name": "Concrete Mix Design",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "mix_design_code",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Mix Design Code",
+      "read_only": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "label": "WBS Item",
+      "options": "WBS Item"
+    },
+    {
+      "fieldname": "section_break_3",
+      "fieldtype": "Section Break",
+      "label": "Mix Specifications"
+    },
+    {
+      "fieldname": "concrete_grade",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Concrete Grade",
+      "options": "M15\nM20\nM25\nM30\nM35\nM40\nM45\nM50\nM55\nM60",
+      "reqd": 1
+    },
+    {
+      "fieldname": "mix_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Mix Type",
+      "options": "Ready Mix\nSite Mix\nPumped Concrete",
+      "reqd": 1
+    },
+    {
+      "fieldname": "exposure_condition",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Exposure Condition",
+      "options": "Mild\nModerate\nSevere\nVery Severe\nExtreme",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_6",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "design_slump_mm",
+      "fieldtype": "Float",
+      "label": "Design Slump (mm)",
+      "description": "IS 456 Table 2 - Slump values"
+    },
+    {
+      "fieldname": "max_aggregate_size_mm",
+      "fieldtype": "Int",
+      "label": "Max Aggregate Size (mm)",
+      "options": "10\n20\n40"
+    },
+    {
+      "fieldname": "section_break_8",
+      "fieldtype": "Section Break",
+      "label": "Mix Design Parameters"
+    },
+    {
+      "fieldname": "cement_type",
+      "fieldtype": "Select",
+      "label": "Cement Type",
+      "options": "OPC 33\nOPC 43\nOPC 53\nPPC\nPSC",
+      "reqd": 1
+    },
+    {
+      "fieldname": "cement_content_kg",
+      "fieldtype": "Float",
+      "label": "Cement Content (kg/m³)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_10",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "max_water_cement_ratio",
+      "fieldtype": "Float",
+      "label": "Max Water/Cement Ratio",
+      "precision": 2,
+      "reqd": 1
+    },
+    {
+      "fieldname": "flyash_content_kg",
+      "fieldtype": "Float",
+      "label": "Fly Ash Content (kg/m³)"
+    },
+    {
+      "fieldname": "section_break_12",
+      "fieldtype": "Section Break",
+      "label": "Aggregate Content"
+    },
+    {
+      "fieldname": "sand_content_kg",
+      "fieldtype": "Float",
+      "label": "Fine Aggregate (kg/m³)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "coarse_aggregate_kg",
+      "fieldtype": "Float",
+      "label": "Coarse Aggregate (kg/m³)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_14",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "admixture_type",
+      "fieldtype": "Data",
+      "label": "Admixture Type"
+    },
+    {
+      "fieldname": "admixture_dosage",
+      "fieldtype": "Float",
+      "label": "Admixture Dosage (ml/kg)"
+    },
+    {
+      "fieldname": "section_break_16",
+      "fieldtype": "Section Break",
+      "label": "Compliance & Approval"
+    },
+    {
+      "fieldname": "min_cement_content_kg",
+      "fieldtype": "Float",
+      "label": "Min Cement (IS 456 Table 5)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "design_compressive_strength_mpa",
+      "fieldtype": "Float",
+      "label": "fck at 28 days (MPa)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_18",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "trial_mix_required",
+      "fieldtype": "Check",
+      "label": "Trial Mix Required",
+      "read_only": 1
+    },
+    {
+      "fieldname": "approval_status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Approval Status",
+      "options": "Draft\nUnder Review\nApproved\nRejected",
+      "default": "Draft"
+    },
+    {
+      "fieldname": "approved_by",
+      "fieldtype": "Link",
+      "label": "Approved By",
+      "options": "User"
+    },
+    {
+      "fieldname": "approval_date",
+      "fieldtype": "Date",
+      "label": "Approval Date"
+    },
+    {
+      "fieldname": "validity_period_months",
+      "fieldtype": "Int",
+      "label": "Validity Period (months)",
+      "default": "6"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "QC Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

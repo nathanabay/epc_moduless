@@ -1,0 +1,173 @@
+{
+  "name": "Subcontractor Work Order",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "work_order_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Work Order ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "subcontractor",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Subcontractor",
+      "options": "Subcontractor Profile",
+      "reqd": 1
+    },
+    {
+      "fieldname": "work_order_number",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "WO Number",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_4",
+      "fieldtype": "Section Break",
+      "label": "Scope & Schedule"
+    },
+    {
+      "fieldname": "scope_of_work",
+      "fieldtype": "Text",
+      "label": "Scope of Work",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_6",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "start_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "Start Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "end_date",
+      "fieldtype": "Date",
+      "in_list_view": 1,
+      "label": "End Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_9",
+      "fieldtype": "Section Break",
+      "label": "Financial Terms"
+    },
+    {
+      "fieldname": "contract_value",
+      "fieldtype": "Currency",
+      "in_list_view": 1,
+      "label": "Contract Value",
+      "reqd": 1
+    },
+    {
+      "fieldname": "payment_terms",
+      "fieldtype": "Select",
+      "label": "Payment Terms",
+      "options": "Monthly\nMilestone\nAdvance + Retainer",
+      "reqd": 1
+    },
+    {
+      "fieldname": "retention_percentage",
+      "fieldtype": "Float",
+      "label": "Retention %",
+      "default": "10"
+    },
+    {
+      "fieldname": "column_break_12",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "mobilization_advance",
+      "fieldtype": "Currency",
+      "label": "Mobilization Advance"
+    },
+    {
+      "fieldname": "advance_recovery_percentage",
+      "fieldtype": "Float",
+      "label": "Advance Recovery %",
+      "default": "20"
+    },
+    {
+      "fieldname": "insurance_required",
+      "fieldtype": "Check",
+      "label": "Insurance Required",
+      "default": "1"
+    },
+    {
+      "fieldname": "safety_docs_submitted",
+      "fieldtype": "Check",
+      "label": "Safety Docs Submitted",
+      "default": "0"
+    },
+    {
+      "fieldname": "section_break_15",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Draft\nSubmitted\nAccepted\nIn Progress\nCompleted\nTerminated",
+      "default": "Draft"
+    },
+    {
+      "fieldname": "accepted_date",
+      "fieldtype": "Date",
+      "label": "Accepted Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "actual_start_date",
+      "fieldtype": "Date",
+      "label": "Actual Start",
+      "read_only": 1
+    },
+    {
+      "fieldname": "actual_end_date",
+      "fieldtype": "Date",
+      "label": "Actual End",
+      "read_only": 1
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1
+    }
+  ]
+}

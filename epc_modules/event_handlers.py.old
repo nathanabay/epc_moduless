@@ -1,0 +1,28 @@
+"""
+EPC Module Hooks
+
+This is a compatibility shim so Frappe's `epc_modules.hooks` resolution
+(finds module at epc_modules/epc_modules/) picks up the real hooks from
+event_handlers.py while also exposing app-level config attributes.
+
+Keep app_* attributes here (not in event_handlers.py) so Frappe's
+_load_app_hooks() reads them from this module.
+"""
+
+# App-level configuration (must be in the module Frappe resolves as "epc_modules.hooks")
+app_name = "epc_modules"
+app_title = "EPC Project Management"
+app_publisher = "EPC Development Team"
+app_description = "Comprehensive EPC Module for ERPNext"
+app_email = "dev@organization.com"
+app_icon = "octicon octicon-project"
+app_color = "#3498db"
+app_license = "MIT"
+app_version = "1.0.0"
+
+# Re-export all actual hooks from the module-level event_handlers.py
+# (imported by absolute name since this module is loaded as epc_modules.hooks)
+import epc_modules.event_handlers
+for name in dir(epc_modules.event_handlers):
+    if not name.startswith("_"):
+        globals()[name] = getattr(epc_modules.event_handlers, name)
