@@ -82,9 +82,14 @@ def generate_from_boq(project, boq_filters=None):
     """
     frappe.has_permission("Material Plan", "write", throw=True)
 
+    # Get all Custom BOQ names for this project first
+    boq_names = [d.name for d in frappe.get_all("Custom BOQ", filters={"project": project})]
+    if not boq_names:
+        return []
+
     boq_items = frappe.get_all(
         "Custom BOQ Item",
-        filters={"parent": ["in", [d.name for d in frappe.get_all("Custom BOQ", filters={"project": project})]]},
+        filters={"parent": ["in", boq_names]},
         fields=["item_code", "item_name", "description", "uom", "qty", "rate"]
     )
 

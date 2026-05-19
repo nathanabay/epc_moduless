@@ -194,7 +194,7 @@ class AratKiloBOQImporter:
                     "wbs_code": item["wbs_code"],
                     "measurement_method": "Unit-Based",
                 })
-                doc.insert(ignore_permissions=True)
+                doc.insert(ignore_permissions=True, ignore_links=True)
                 total_value += item["total"]
                 imported.append(item["item_no"])
             except Exception as e:

@@ -570,7 +570,7 @@ def create_ra_bill_template(project_name, data):
 
     boq_items = frappe.get_all(
         "Custom BOQ",
-        filters={"project": project_name},
+        filters={"parent": project_name},
         fields=["name", "item_code", "description", "boq_quantity", "unit_rate",
                 "total_value", "wbs_code", "measurement_method"]
     )

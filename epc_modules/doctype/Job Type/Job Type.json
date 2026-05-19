@@ -14,5 +14,8 @@
     { "fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order", "default": 0 },
     { "fieldname": "breakdown_rates", "fieldtype": "Table", "options": "Job Type Breakdown Rate", "label": "Breakdown Rates by Typology" }
   ],
-  "permissions": [{ "role": "System Manager", "read": 1, "write": 1 }]
+  "permissions": [
+    { "role": "System Manager", "read": 1, "write": 1, "create": 1 },
+    { "role": "Projects User", "read": 1 }
+  ]
 }

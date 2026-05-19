@@ -2,6 +2,7 @@
  "doctype": "DocType",
  "name": "Cost Line Breakdown",
  "module": "EPC Modules",
+ "autoname": "hash",
  "istable": 0,
  "permissions": [
   {

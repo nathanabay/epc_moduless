@@ -2,6 +2,7 @@
   "doctype": "DocType",
   "name": "Material Plan",
   "module": "EPC Modules",
+  "autoname": "hash",
   "is_submittable": 1,
   "fields": [
     { "fieldname": "project", "fieldtype": "Link", "options": "Project", "label": "Project", "reqd": 1 },

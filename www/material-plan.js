@@ -129,18 +129,19 @@ epc_modules.materialplan.App = class MaterialPlanApp {
     }
 
     showNewPlanModal() {
-        // Simple prompt for demo - in production would be a proper modal
-        const project = prompt("Enter project name:");
-        if (project) {
+        const me = this;
+        frappe.prompt([
+            { fieldname: "project", fieldtype: "Link", label: "Project", options: "Project", reqd: 1 }
+        ], function(values) {
             frappe.call({
                 method: "epc_modules.api.material_plan_api.create_material_plan",
-                args: { project: project },
-                callback: async () => {
-                    await this.loadPlans();
-                    this.render();
+                args: { project: values.project },
+                callback: async function() {
+                    await me.loadPlans();
+                    me.render();
                 }
             });
-        }
+        }, "Create Material Plan", "Create");
     }
 
     showAddItemModal() {

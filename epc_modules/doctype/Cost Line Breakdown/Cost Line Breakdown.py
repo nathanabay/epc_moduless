@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
-from frappe.utils import flt
+from frappe.utils import flt, now
+
 
 class CostLineBreakdown(frappe.Model):
     def validate(self):
@@ -12,3 +13,6 @@ class CostLineBreakdown(frappe.Model):
         self.total_estimated_cost = total_estimated
         self.total_actual_cost = total_actual
         self.variance = flt(self.total_actual_cost) - flt(self.total_estimated_cost)
+
+
+doctype = "Cost Line Breakdown"

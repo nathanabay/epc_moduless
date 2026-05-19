@@ -51,7 +51,7 @@
    "fieldname": "idx",
    "fieldtype": "Int",
    "label": "Sort Order",
-   "default": "0"
+   "default": 0
   }
  ],
  "sync_on_migrate": 1

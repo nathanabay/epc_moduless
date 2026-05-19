@@ -151,6 +151,10 @@ fixtures = [
     {"dt": "Dashboard Chart", "filters": [["module", "=", "EPC Modules"]]},
     # Job Type configuration
     {"dt": "Job Type", "filters": []},
+    # Cost Line Breakdown
+    {"dt": "Cost Line Breakdown", "filters": []},
+    # Material Plan
+    {"dt": "Material Plan", "filters": []},
 ]
 
 # Website route rules

@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
-from frappe.utils import flt
+from frappe.utils import flt, now
+
 
 class MaterialPlan(frappe.Model):
     def validate(self):
@@ -13,3 +14,6 @@ class MaterialPlan(frappe.Model):
     def on_submit(self):
         if self.status == "Draft":
             self.db_set("status", "Approved")
+
+
+doctype = "Material Plan"

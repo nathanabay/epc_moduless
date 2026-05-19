@@ -77,28 +77,28 @@ epc_modules.jobtype.Config = class JobTypeConfig {
     }
 
     showModal() {
-        const jobType = prompt("Enter job type name:");
-        if (!jobType) return;
-
-        const category = prompt("Enter category (Labor/Equipment/Material/Professional Services/Other):");
-        if (!category) return;
-
-        const rate = prompt("Enter default rate:", "0");
-        const uom = prompt("Enter UOM:", "Hour");
-
-        frappe.call({
-            method: "epc_modules.api.job_type_api.create_job_type",
-            args: {
-                job_type: jobType,
-                job_category: category,
-                default_rate: parseFloat(rate) || 0,
-                uom: uom || "Hour"
-            },
-            callback: async () => {
-                await this.loadJobTypes();
-                this.render();
-            }
-        });
+        const me = this;
+        frappe.prompt([
+            { fieldname: "job_type", fieldtype: "Data", label: "Job Type", reqd: 1 },
+            { fieldname: "job_category", fieldtype: "Select", label: "Category",
+              options: "Labor\nEquipment\nMaterial\nProfessional Services\nOther", reqd: 1 },
+            { fieldname: "default_rate", fieldtype: "Currency", label: "Default Rate" },
+            { fieldname: "uom", fieldtype: "Link", label: "UOM", options: "UOM" }
+        ], function(values) {
+            frappe.call({
+                method: "epc_modules.api.job_type_api.create_job_type",
+                args: {
+                    job_type: values.job_type,
+                    job_category: values.job_category,
+                    default_rate: values.default_rate || 0,
+                    uom: values.uom || "Hour"
+                },
+                callback: async function() {
+                    await me.loadJobTypes();
+                    me.render();
+                }
+            });
+        }, "Add Job Type", "Create");
     }
 
     formatCurrency(value) {
