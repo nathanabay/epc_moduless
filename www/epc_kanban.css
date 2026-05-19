@@ -1,0 +1,252 @@
+/* EPC Kanban Board Styles */
+
+.kanban-container {
+    padding: 24px;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.kanban-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.kanban-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.kanban-board {
+    display: flex;
+    gap: 16px;
+    min-height: 500px;
+}
+
+.kanban-column {
+    flex: 0 0 300px;
+    min-width: 300px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 200px);
+}
+
+.kanban-column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4px 12px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: 12px;
+}
+
+.kanban-column-header h3 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+/* Typology column headers */
+.kanban-column[data-group="typology"] .kanban-column-header[data-typology="Electromechanical"] {
+    border-bottom-color: #3b82f6;
+}
+.kanban-column[data-group="typology"] .kanban-column-header[data-typology="Civil"] {
+    border-bottom-color: #f97316;
+}
+.kanban-column[data-group="typology"] .kanban-column-header[data-typology="Standard/Service"] {
+    border-bottom-color: #22c55e;
+}
+
+/* Health column headers */
+.kanban-column[data-group="health"] .kanban-column-header[data-health="Healthy"] {
+    border-bottom-color: #22c55e;
+}
+.kanban-column[data-group="health"] .kanban-column-header[data-health="At Risk"] {
+    border-bottom-color: #eab308;
+}
+.kanban-column[data-group="health"] .kanban-column-header[data-health="Critical"] {
+    border-bottom-color: #ef4444;
+}
+
+.kanban-column-count {
+    background: #e5e7eb;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.kanban-cards {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px;
+}
+
+.kanban-card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.kanban-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.kanban-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.kanban-card-subtitle {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.kanban-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.kanban-badge.electromechanical {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.kanban-badge.civil {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.kanban-badge.standard {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.kanban-card-dates {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 12px;
+}
+
+.kanban-progress {
+    margin-bottom: 12px;
+}
+
+.kanban-progress-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.kanban-progress-fill {
+    height: 100%;
+    background: #3b82f6;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.kanban-progress-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.kanban-card-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.kanban-card-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.kanban-card-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.kanban-card-stats .stat-value {
+    font-weight: 600;
+    color: #374151;
+}
+
+.kanban-empty-column {
+    text-align: center;
+    padding: 40px 20px;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+/* Column visibility animation */
+.kanban-column {
+    animation: columnFadeIn 0.3s ease;
+}
+
+@keyframes columnFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scrollbar styling */
+.kanban-cards::-webkit-scrollbar {
+    width: 6px;
+}
+
+.kanban-cards::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.kanban-cards::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.kanban-cards::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Loading state */
+.kanban-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    color: #6b7280;
+}

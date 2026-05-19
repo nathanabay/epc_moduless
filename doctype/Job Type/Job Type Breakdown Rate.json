@@ -1,0 +1,13 @@
+{
+  "doctype": "DocType",
+  "name": "Job Type Breakdown Rate",
+  "module": "EPC Modules",
+  "istable": 1,
+  "fields": [
+    { "fieldname": "project_typology", "fieldtype": "Link", "options": "Project Typology", "label": "Typology" },
+    { "fieldname": "rate", "fieldtype": "Currency", "label": "Rate" },
+    { "fieldname": "notes", "fieldtype": "Text", "label": "Notes" },
+    { "fieldname": "idx", "fieldtype": "Int", "label": "Sort Order", "default": 0 }
+  ],
+  "permissions": []
+}

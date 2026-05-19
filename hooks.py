@@ -13,6 +13,7 @@ app_icon = "octicon octicon-project"
 app_color = "#3498db"
 app_license = "MIT"
 app_version = "1.0.0"
+required_apps = ["erpnext"]
 
 # App hooks
 after_install = "epc_modules.event_handlers.after_install"
@@ -38,6 +39,73 @@ doc_events = {
     },
     "Sales Invoice": {
         "validate": "epc_modules.event_handlers.validate_ra_bill_integration"
+    },
+    # WBS Item
+    "WBS Item": {
+        "validate": "epc_modules.event_handlers.validate_wbs_completion"
+    },
+    # Non-Conformance Report
+    "Non-Conformance Report": {
+        "on_update": "epc_modules.event_handlers.on_ncr_status_change"
+    },
+    # Daily Progress Report / Concrete Pour Record
+    "Daily Progress Report": {
+        "validate": "epc_modules.event_handlers.validate_concrete_pour"
+    },
+    "Concrete Pour Record": {
+        "validate": "epc_modules.event_handlers.validate_concrete_pour"
+    },
+    # Cube Test Result
+    "Cube Test Result": {
+        "on_update": "epc_modules.event_handlers.on_cube_test_submit"
+    },
+    # Concrete Mix Design
+    "Concrete Mix Design": {
+        "on_update": "epc_modules.event_handlers.on_mix_design_approval"
+    },
+    # Formwork Inspection
+    "Formwork Inspection": {
+        "on_update": "epc_modules.event_handlers.on_formwork_inspection_cleared"
+    },
+    # Curing Record
+    "Curing Record": {
+        "validate": "epc_modules.event_handlers.on_curing_record_check"
+    },
+    # ITP Inspection Record
+    "ITP Inspection Record": {
+        "on_update": "epc_modules.event_handlers.on_itp_inspection_record_update"
+    },
+    # Risk Register
+    "Risk Register": {
+        "on_update": "epc_modules.event_handlers.on_risk_materialized"
+    },
+    # Equipment Register
+    "Equipment Register": {
+        "on_update": "epc_modules.event_handlers.on_equipment_status_change"
+    },
+    # Equipment Maintenance Schedule
+    "Equipment Maintenance Schedule": {
+        "on_update": "epc_modules.event_handlers.on_maintenance_due"
+    },
+    # HSE Incident
+    "HSE Incident": {
+        "on_update": "epc_modules.event_handlers.on_hse_incident_reported"
+    },
+    # Safety Inspection
+    "Safety Inspection": {
+        "on_update": "epc_modules.event_handlers.on_safety_inspection_completed"
+    },
+    # Project Document
+    "Project Document": {
+        "on_update": "epc_modules.event_handlers.on_document_review_required"
+    },
+    # RFI
+    "RFI": {
+        "on_update": "epc_modules.event_handlers.on_rfi_overdue"
+    },
+    # Subcontractor Profile
+    "Subcontractor Profile": {
+        "on_update": "epc_modules.event_handlers.on_subcontractor_insurance_expiry"
     }
 }
 
@@ -81,4 +149,15 @@ fixtures = [
     # Dashboard configurations
     {"dt": "Dashboard", "filters": [["module", "=", "EPC Modules"]]},
     {"dt": "Dashboard Chart", "filters": [["module", "=", "EPC Modules"]]},
+    # Job Type configuration
+    {"dt": "Job Type", "filters": []},
+]
+
+# Website route rules
+website_route_rules = [
+    {"from_route": "/kanban-project-overview", "to_route": "kanban-project-overview"},
+    {"from_route": "/wip-report", "to_route": "wip-report"},
+    {"from_route": "/cost-line-breakdown", "to_route": "cost-line-breakdown"},
+    {"from_route": "/material-plan", "to_route": "material-plan"},
+    {"from_route": "/job-type-config", "to_route": "job-type-config"},
 ]

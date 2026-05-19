@@ -1,0 +1,30 @@
+---
+permalink: kanban-project-overview.html
+---
+
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="kanban-container">
+    <div class="kanban-header">
+        <h1>Project Kanban</h1>
+        <select id="view-selector" class="form-control">
+            <option value="typology">Group by Typology</option>
+            <option value="health">Group by Health</option>
+            <option value="status">Group by Status</option>
+            <option value="date_status">Group by Date Status</option>
+        </select>
+    </div>
+    <div class="kanban-board" id="kanban-board">
+        <div class="kanban-loading">Loading...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ include_script("epc_kanban.bundle.js") }}
+{% endblock %}
+
+{% block style %}
+{{ include_style("epc_kanban.css") }}
+{% endblock %}

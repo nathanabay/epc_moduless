@@ -1,0 +1,7 @@
+[
+    { "doctype": "Job Type", "job_type": "Civil Labor", "job_category": "Labor", "description": "General civil construction labor", "default_rate": 15, "uom": "Hour", "is_active": 1, "sort_order": 1 },
+    { "doctype": "Job Type", "job_type": "Skilled Electrician", "job_category": "Labor", "description": "Electrical installation work", "default_rate": 25, "uom": "Hour", "is_active": 1, "sort_order": 2 },
+    { "doctype": "Job Type", "job_type": "Equipment Operator", "job_category": "Equipment", "description": "Heavy equipment operation", "default_rate": 30, "uom": "Hour", "is_active": 1, "sort_order": 3 },
+    { "doctype": "Job Type", "job_type": "Surveyor", "job_category": "Professional Services", "description": "Survey and measurement services", "default_rate": 35, "uom": "Hour", "is_active": 1, "sort_order": 4 },
+    { "doctype": "Job Type", "job_type": "Project Manager", "job_category": "Professional Services", "description": "Project management services", "default_rate": 50, "uom": "Hour", "is_active": 1, "sort_order": 5 }
+]

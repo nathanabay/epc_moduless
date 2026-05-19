@@ -1,0 +1,196 @@
+/* EPC WIP Report Styles */
+
+.wip-container {
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.wip-header {
+    margin-bottom: 24px;
+}
+
+.wip-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 16px;
+}
+
+/* Filters */
+.wip-filters {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.wip-filters select,
+.wip-filters input {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Tabs */
+.wip-tabs {
+    display: flex;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 24px;
+}
+
+.wip-tab {
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.wip-tab:hover {
+    color: #374151;
+}
+
+.wip-tab.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+}
+
+.wip-content {
+    display: none;
+}
+
+.wip-content.active {
+    display: block;
+}
+
+/* Summary Cards */
+.wip-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.wip-summary-card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.wip-summary-card .label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.wip-summary-card .value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.wip-summary-card.warning .value {
+    color: #eab308;
+}
+
+.wip-summary-card.danger .value {
+    color: #ef4444;
+}
+
+/* Table */
+.wip-table-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.wip-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.wip-table th {
+    background: #f9fafb;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.wip-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+}
+
+.wip-table tr:last-child td {
+    border-bottom: none;
+}
+
+.wip-table tr:hover td {
+    background: #f9fafb;
+}
+
+/* Status Badges */
+.wip-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.wip-badge.on-track {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.wip-badge.behind {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.wip-badge.critical {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.wip-badge.billed {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.wip-badge.unbilled {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+/* Export Button */
+.wip-export-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.wip-export-btn:hover {
+    background: #2563eb;
+}
+
+/* Loading */
+.wip-loading {
+    text-align: center;
+    padding: 60px;
+    color: #6b7280;
+}

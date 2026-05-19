@@ -1,0 +1,98 @@
+---
+permalink: wip-report.html
+---
+
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="wip-container" id="wip-container">
+    <div class="wip-header">
+        <h1>Work-in-Progress Report</h1>
+        <div class="wip-filters">
+            <select id="project-filter" class="form-control">
+                <option value="">All Projects</option>
+            </select>
+            <button class="wip-export-btn" onclick="window.print()">Export PDF</button>
+        </div>
+    </div>
+
+    <div class="wip-tabs">
+        <div class="wip-tab active" data-tab="financial">Financial WIP</div>
+        <div class="wip-tab" data-tab="progress">Progress WIP</div>
+        <div class="wip-tab" data-tab="resource">Resource WIP</div>
+    </div>
+
+    <div id="wip-financial" class="wip-content active">
+        <div class="wip-summary" id="wip-financial-summary"></div>
+        <div class="wip-table-container">
+            <table class="wip-table">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Contract Value</th>
+                        <th>Certified Value</th>
+                        <th>Invoiced Value</th>
+                        <th>WIP Value</th>
+                        <th>Retention</th>
+                        <th>Recoverable</th>
+                    </tr>
+                </thead>
+                <tbody id="wip-financial-table">
+                    <tr><td colspan="7" class="wip-loading">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="wip-progress" class="wip-content">
+        <div class="wip-summary" id="wip-progress-summary"></div>
+        <div class="wip-table-container">
+            <table class="wip-table">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>WBS Item</th>
+                        <th>Code</th>
+                        <th>Planned</th>
+                        <th>Actual</th>
+                        <th>Variance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="wip-progress-table">
+                    <tr><td colspan="7" class="wip-loading">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="wip-resource" class="wip-content">
+        <div class="wip-summary" id="wip-resource-summary"></div>
+        <div class="wip-table-container">
+            <table class="wip-table">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Total Hours</th>
+                        <th>Labor Cost</th>
+                        <th>Billed Hours</th>
+                        <th>Unbilled Hours</th>
+                        <th>Billing Status</th>
+                    </tr>
+                </thead>
+                <tbody id="wip-resource-table">
+                    <tr><td colspan="6" class="wip-loading">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ include_script("epc_wip.bundle.js") }}
+{% endblock %}
+
+{% block style %}
+{{ include_style("epc_wip.css") }}
+{% endblock %}

@@ -1,0 +1,36 @@
+---
+permalink: job-type-config.html
+---
+
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="job-type-container">
+  <div class="job-type-header">
+    <h1>Job Types Configuration</h1>
+    <button id="new-job-type-btn" class="btn-primary">Add Job Type</button>
+  </div>
+
+  <table class="job-type-table">
+    <thead>
+      <tr>
+        <th>Job Type</th>
+        <th>Category</th>
+        <th>Default Rate</th>
+        <th>UOM</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="job-type-list"></tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ include_script("job-type-config.bundle.js") }}
+{% endblock %}
+
+{% block style %}
+{{ include_style("job-type-config.css") }}
+{% endblock %}

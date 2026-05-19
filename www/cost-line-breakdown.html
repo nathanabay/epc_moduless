@@ -1,0 +1,48 @@
+---
+permalink: cost-line-breakdown.html
+---
+
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="cost-line-container">
+  <div class="cost-line-header">
+    <h1>Cost Line Breakdown</h1>
+    <select id="project-selector" class="form-control">
+      <option value="">All Projects</option>
+    </select>
+  </div>
+
+  <div class="cost-line-tabs">
+    <div class="tab active" data-tab="project">Project Summary</div>
+    <div class="tab" data-tab="wbs">WBS Breakdown</div>
+  </div>
+
+  <div id="tab-project" class="tab-content active">
+    <div class="summary-cards"></div>
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Estimated</th>
+          <th>Actual</th>
+          <th>Variance</th>
+        </tr>
+      </thead>
+      <tbody id="cost-project-table"></tbody>
+    </table>
+  </div>
+
+  <div id="tab-wbs" class="tab-content">
+    <div class="wbs-list" id="wbs-breakdown-list"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ include_script("cost-line-breakdown.bundle.js") }}
+{% endblock %}
+
+{% block style %}
+{{ include_style("cost-line-breakdown.css") }}
+{% endblock %}

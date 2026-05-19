@@ -73,7 +73,6 @@ def on_project_created(doc, method):
         # Add project to correct role visibility
         add_project_role(doc)
 
-        frappe.db.commit()
         _lazy_logger().info(f"EPC project {doc.name} initialized with typology: {typology.name}")
 
     except Exception as e:

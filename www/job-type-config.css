@@ -1,0 +1,13 @@
+.job-type-container { padding: 20px; }
+.job-type-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.job-type-header h1 { margin: 0; }
+.job-type-table { width: 100%; border-collapse: collapse; }
+.job-type-table th, .job-type-table td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+.job-type-table th { background: #f5f5f5; font-weight: 500; }
+.job-type-table tr:hover { background: #fafafa; }
+.btn-primary { background: #0074c7; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+.btn-sm { padding: 4px 8px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; }
+.btn-enable { background: #28a745; color: white; }
+.btn-disable { background: #dc3545; color: white; }
+.status-active { color: #28a745; font-weight: 500; }
+.status-inactive { color: #dc3545; font-weight: 500; }

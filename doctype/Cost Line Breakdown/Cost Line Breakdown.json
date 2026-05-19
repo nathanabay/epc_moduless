@@ -1,0 +1,59 @@
+{
+ "doctype": "DocType",
+ "name": "Cost Line Breakdown",
+ "module": "EPC Modules",
+ "istable": 0,
+ "permissions": [
+  {
+   "role": "Projects User",
+   "read": 1,
+   "write": 1
+  }
+ ],
+ "fields": [
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "options": "Project",
+   "label": "Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "wbs_item",
+   "fieldtype": "Link",
+   "options": "WBS Item",
+   "label": "WBS Item"
+  },
+  {
+   "fieldname": "cost_category",
+   "fieldtype": "Select",
+   "options": "Material\nLabor\nEquipment\nOverhead\nOther",
+   "label": "Cost Category"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Cost Line Item",
+   "label": "Cost Line Items"
+  },
+  {
+   "fieldname": "total_estimated_cost",
+   "fieldtype": "Currency",
+   "label": "Total Estimated Cost",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_actual_cost",
+   "fieldtype": "Currency",
+   "label": "Total Actual Cost",
+   "read_only": 1
+  },
+  {
+   "fieldname": "variance",
+   "fieldtype": "Currency",
+   "label": "Variance",
+   "read_only": 1
+  }
+ ],
+ "sync_on_migrate": 1
+}

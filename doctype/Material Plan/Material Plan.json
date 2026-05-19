@@ -1,0 +1,16 @@
+{
+  "doctype": "DocType",
+  "name": "Material Plan",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "fields": [
+    { "fieldname": "project", "fieldtype": "Link", "options": "Project", "label": "Project", "reqd": 1 },
+    { "fieldname": "plan_date", "fieldtype": "Date", "label": "Plan Date", "default": "Today" },
+    { "fieldname": "status", "fieldtype": "Select", "label": "Status",
+      "options": "Draft\nApproved\nPartially Procured\nFully Procured", "default": "Draft" },
+    { "fieldname": "items", "fieldtype": "Table", "options": "Material Plan Item", "label": "Items" },
+    { "fieldname": "estimated_total", "fieldtype": "Currency", "label": "Estimated Total", "read_only": 1 },
+    { "fieldname": "notes", "fieldtype": "Text", "label": "Notes" }
+  ],
+  "permissions": [{ "role": "Projects User", "read": 1, "write": 1 }]
+}

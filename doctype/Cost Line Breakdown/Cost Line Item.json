@@ -1,0 +1,58 @@
+{
+ "doctype": "DocType",
+ "name": "Cost Line Item",
+ "module": "EPC Modules",
+ "istable": 1,
+ "permissions": [],
+ "fields": [
+  {
+   "fieldname": "cost_line_item_name",
+   "fieldtype": "Data",
+   "label": "Cost Line Item"
+  },
+  {
+   "fieldname": "cost_category",
+   "fieldtype": "Select",
+   "options": "Material\nLabor\nEquipment\nOverhead\nOther",
+   "label": "Category"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "options": "UOM",
+   "label": "UOM"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "unit_rate",
+   "fieldtype": "Currency",
+   "label": "Unit Rate"
+  },
+  {
+   "fieldname": "estimated_cost",
+   "fieldtype": "Currency",
+   "label": "Estimated Cost"
+  },
+  {
+   "fieldname": "actual_cost",
+   "fieldtype": "Currency",
+   "label": "Actual Cost"
+  },
+  {
+   "fieldname": "variance",
+   "fieldtype": "Currency",
+   "label": "Variance"
+  },
+  {
+   "fieldname": "idx",
+   "fieldtype": "Int",
+   "label": "Sort Order",
+   "default": "0"
+  }
+ ],
+ "sync_on_migrate": 1
+}

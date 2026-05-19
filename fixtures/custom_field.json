@@ -1,6 +1,5 @@
 [
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "project_typology",
     "label": "Project Typology",
@@ -19,10 +18,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.project_typology"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "is_epc_project",
     "label": "EPC Project",
@@ -36,10 +35,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.is_epc_project"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "regulatory_context",
     "label": "Regulatory Context",
@@ -54,10 +53,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.regulatory_context"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "vat_registration",
     "label": "VAT Registration No.",
@@ -71,10 +70,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.vat_registration"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "billing_track",
     "label": "Billing Track",
@@ -89,10 +88,10 @@
     "in_standard_filter": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.billing_track"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "contract_value",
     "label": "Contract Value",
@@ -106,10 +105,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.contract_value"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "retention_percentage",
     "label": "Retention Percentage",
@@ -124,10 +123,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.retention_percentage"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "advance_recovery_threshold",
     "label": "Advance Recovery Threshold %",
@@ -142,10 +141,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.advance_recovery_threshold"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Item",
     "fieldname": "is_epc_material",
     "label": "Is EPC Material",
@@ -159,10 +158,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Item.is_epc_material"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Item",
     "fieldname": "is_equipment",
     "label": "Is Equipment",
@@ -176,10 +175,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Item.is_equipment"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Item",
     "fieldname": "equipment_tag",
     "label": "Equipment Tag",
@@ -193,10 +192,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Item.equipment_tag"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "dashboard_priority",
     "label": "Dashboard Priority",
@@ -211,10 +210,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.dashboard_priority"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "health_score_override",
     "label": "Health Score Override",
@@ -228,10 +227,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.health_score_override"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "dashboard_color",
     "label": "Dashboard Color",
@@ -245,10 +244,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.dashboard_color"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "target_close_date",
     "label": "Target Close Date",
@@ -261,10 +260,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.target_close_date"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Project",
     "fieldname": "overdue_alert_sent",
     "label": "Overdue Alert Sent",
@@ -277,10 +276,10 @@
     "read_only": 1,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Project.overdue_alert_sent"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Item",
     "fieldname": "equipment_status",
     "label": "Equipment Status",
@@ -295,10 +294,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Item.equipment_status"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Item",
     "fieldname": "current_project",
     "label": "Current Project",
@@ -312,10 +311,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Item.current_project"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Item",
     "fieldname": "next_service_date",
     "label": "Next Service Date",
@@ -328,10 +327,10 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Item.next_service_date"
   },
   {
-    "doctype": "Custom Field",
     "dt": "Item",
     "fieldname": "equipment_utilization_hours",
     "label": "Utilization Hours (MTD)",
@@ -345,30 +344,7 @@
     "read_only": 0,
     "unique": 0,
     "reqd": 0,
+    "doctype": "Custom Field",
     "name": "Item.equipment_utilization_hours"
-  },
-  {
-    "doctype": "Custom Field",
-    "dt": "Master Inspection Template",
-    "fieldname": "applicable_typologies",
-    "label": "Applicable Typologies",
-    "fieldtype": "MultiSelect",
-    "options": "Electromechanical\nCivil\nStandard/Service",
-    "insert_after": "template_name",
-    "in_list_view": 1,
-    "reqd": 1,
-    "name": "Master Inspection Template.applicable_typologies"
-  },
-  {
-    "doctype": "Custom Field",
-    "dt": "Master Inspection Template",
-    "fieldname": "inspection_category",
-    "label": "Inspection Category",
-    "fieldtype": "Select",
-    "options": "Structural\nMechanical\nElectrical\nPlumbing\nHVAC\nFire Safety\nQuality Control",
-    "insert_after": "applicable_typologies",
-    "in_list_view": 1,
-    "reqd": 1,
-    "name": "Master Inspection Template.inspection_category"
   }
 ]

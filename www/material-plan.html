@@ -1,0 +1,62 @@
+---
+permalink: material-plan.html
+---
+
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="material-plan-container">
+  <div class="plan-header">
+    <h1>Material Plan</h1>
+    <button id="new-plan-btn" class="btn-primary">New Plan</button>
+  </div>
+
+  <table class="plan-list-table">
+    <thead>
+      <tr>
+        <th>Plan Name</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Items</th>
+      </tr>
+    </thead>
+    <tbody id="plan-list"></tbody>
+  </table>
+
+  <div id="plan-detail" class="plan-detail" style="display:none;">
+    <div class="detail-header">
+      <h2 id="detail-title">Plan Details</h2>
+      <button id="close-detail-btn" class="btn-secondary">Close</button>
+    </div>
+    <div class="detail-actions">
+      <button id="generate-boq-btn" class="btn-secondary">Generate from BOQ</button>
+      <button id="generate-wbs-btn" class="btn-secondary">Generate from WBS</button>
+      <button id="add-item-btn" class="btn-secondary">Add Item</button>
+    </div>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Item Code</th>
+          <th>Description</th>
+          <th>UOM</th>
+          <th>Required Qty</th>
+          <th>Ordered Qty</th>
+          <th>Unit Rate</th>
+          <th>Est. Cost</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="plan-items"></tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ include_script("material-plan.bundle.js") }}
+{% endblock %}
+
+{% block style %}
+{{ include_style("material-plan.css") }}
+{% endblock %}
