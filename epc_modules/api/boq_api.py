@@ -5,6 +5,7 @@ REST API endpoints for Bill of Quantities operations.
 """
 
 import frappe
+import os
 from frappe import _
 from epc_modules.utils import get_epc_logger
 from epc_modules.utils.boq_calculator import BOQCalculator
@@ -223,3 +224,66 @@ def calculate_project_value(project_name):
         "variance": (project.contract_value or 0) - summary.get("total_value", 0),
         "item_count": summary.get("item_count", 0)
     }
+
+
+@frappe.whitelist()
+def import_boq_from_csv(project_name, csv_path=None):
+    """Import BOQ from CSV file for Arat Kilo project."""
+    if not frappe.db.exists("Project", project_name):
+        frappe.throw(_("Project {0} does not exist").format(project_name))
+
+    if csv_path is None:
+        csv_path = os.path.join(
+            os.path.dirname(frappe.get_app_path("epc_bespo")),
+            "Arat Kilo  BOQ for BID.csv"
+        )
+
+    if not os.path.exists(csv_path):
+        frappe.throw(_("BOQ CSV file not found at {0}").format(csv_path))
+
+    from epc_modules.utils.boq_importer import AratKiloBOQImporter
+
+    importer = AratKiloBOQImporter()
+    items = importer.parse_csv(csv_path)
+    result = importer.import_to_project(project_name, items)
+
+    logger.info(f"Imported {result['count']} BOQ items for project {project_name}")
+    return result
+
+
+@frappe.whitelist()
+def get_boq_section_summary(project_name):
+    """Get BOQ summary grouped by sections."""
+    from frappe.utils import flt
+
+    items = frappe.get_all(
+        "Custom BOQ",
+        filters={"project": project_name},
+        fields=["item_code", "total_value", "boq_quantity", "unit_rate", "wbs_code"]
+    )
+
+    sections = {}
+    for item in items:
+        # Extract section from wbs_code (e.g., "DEMO-011" -> "01")
+        section = "MISC"
+        if item.get("wbs_code"):
+            for sec_id, sec_info in AratKiloBOQImporter.SECTION_MAP.items():
+                if item.wbs_code.startswith(sec_info["wbs_prefix"]):
+                    section = sec_id
+                    break
+
+        if section not in sections:
+            sections[section] = {"count": 0, "total_value": 0, "total_qty": 0}
+        sections[section]["count"] += 1
+        sections[section]["total_value"] += flt(item.total_value)
+        sections[section]["total_qty"] += flt(item.boq_quantity)
+
+    return {
+        "project": project_name,
+        "sections": sections,
+        "grand_total": sum(s["total_value"] for s in sections.values())
+    }
+
+
+# Import this at module level for reference
+from epc_modules.utils.boq_importer import AratKiloBOQImporter

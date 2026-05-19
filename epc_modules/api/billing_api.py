@@ -549,3 +549,122 @@ def get_vat_calculation(amount, vat_rate=15):
         "total_amount": calc["total_invoice_value"],
         "is_exempt": calc["is_exempt"]
     }
+
+
+@frappe.whitelist()
+def create_ra_bill_template(project_name, data):
+    """
+    Create RA Bill template for Arat Kilo project from BOQ items.
+    """
+    if not frappe.db.exists("Project", project_name):
+        frappe.throw(_("Project {0} does not exist").format(project_name))
+
+    project = frappe.get_doc("Project", project_name)
+
+    if project.billing_track != "RA-Billing":
+        frappe.throw(_("Project uses Milestone-Billing, not RA-Billing"))
+
+    count = frappe.db.count("RA Bill", {"project": project_name}) or 0
+    project_code = project_name[:4].upper()
+    ra_bill_number = f"RA-{project_code}-{count + 1:04d}"
+
+    boq_items = frappe.get_all(
+        "Custom BOQ",
+        filters={"project": project_name},
+        fields=["name", "item_code", "description", "boq_quantity", "unit_rate",
+                "total_value", "wbs_code", "measurement_method"]
+    )
+
+    total_boq_value = sum(flt(item.total_value) for item in boq_items)
+
+    cumulative_certified = frappe.db.sql("""
+        SELECT SUM(gross_certified_value)
+        FROM `tabRA Bill`
+        WHERE project = %s AND docstatus = 1
+    """, project_name)[0][0] or 0
+
+    calc = RABillingCalculator.calculate_ra_bill_totals(
+        project_name,
+        [{"certified_value": 0, "is_certified": 0}]
+    )
+
+    doc = frappe.get_doc({
+        "doctype": "RA Bill",
+        "ra_bill_number": ra_bill_number,
+        "project": project_name,
+        "billing_period_start": data.get("billing_period_start"),
+        "billing_period_end": data.get("billing_period_end"),
+        "gross_certified_value": 0,
+        "mobilization_advance": calc.get("original_advance", 0),
+        "advance_recovered": calc.get("advance_recovered", 0),
+        "cumulative_advance_recovered": calc.get("cumulative_advance_recovered", 0),
+        "net_certified_value": 0,
+        "retention_percentage": 10,
+        "retention_amount": 0,
+        "net_payable": 0,
+        "vat_rate": 15,
+        "vat_amount": 0,
+        "total_invoice_value": 0,
+        "status": "Draft",
+    })
+    doc.insert()
+
+    return {
+        "name": doc.name,
+        "ra_bill_number": doc.ra_bill_number,
+        "project": project_name,
+        "boq_item_count": len(boq_items),
+        "total_boq_value": total_boq_value,
+        "cumulative_certified": cumulative_certified,
+        "gross_certified_value": doc.gross_certified_value,
+        "status": doc.status
+    }
+
+
+@frappe.whitelist()
+def get_ra_bill_schedule(project_name):
+    """
+    Get projected RA Bill billing schedule based on BOQ and contract value.
+    """
+    if not frappe.db.exists("Project", project_name):
+        frappe.throw(_("Project {0} does not exist").format(project_name))
+
+    project = frappe.get_doc("Project", project_name)
+
+    boq_items = frappe.get_all(
+        "Custom BOQ",
+        filters={"project": project_name},
+        fields=["name", "wbs_code", "total_value"]
+    )
+    total_boq_value = sum(flt(item.total_value) for item in boq_items)
+
+    existing_bills = frappe.get_all(
+        "RA Bill",
+        filters={"project": project_name, "docstatus": 1},
+        fields=["name", "ra_bill_number", "gross_certified_value", "certification_date"]
+    )
+    cumulative_certified = sum(flt(b.gross_certified_value) for b in existing_bills)
+
+    contract_value = flt(project.contract_value) or total_boq_value
+    avg_bill_value = contract_value * 0.015
+    estimated_bills = max(1, int(contract_value / avg_bill_value)) if avg_bill_value > 0 else 12
+
+    return {
+        "project": project_name,
+        "contract_value": contract_value,
+        "total_boq_value": total_boq_value,
+        "cumulative_certified": cumulative_certified,
+        "outstanding_value": contract_value - cumulative_certified,
+        "completed_percentage": (cumulative_certified / contract_value * 100) if contract_value > 0 else 0,
+        "estimated_ra_bills": estimated_bills,
+        "avg_bill_value": avg_bill_value,
+        "existing_bill_count": len(existing_bills),
+        "scheduled_bills": [
+            {
+                "bill_number": i + 1,
+                "estimated_value": avg_bill_value,
+                "cumulative": avg_bill_value * (i + 1)
+            }
+            for i in range(estimated_bills)
+        ]
+    }

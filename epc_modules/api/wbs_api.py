@@ -201,3 +201,10 @@ def get_wbs_children(project_name, parent_wbs):
     )
 
     return children
+
+
+@frappe.whitelist()
+def create_arat_kilo_wbs(project_name):
+    """Create Arat Kilo specific WBS structure (Civil Phase-Based)."""
+    from epc_modules.utils.arat_kilo_wbs import create_arat_kilo_wbs as create_fn
+    return create_fn(project_name)

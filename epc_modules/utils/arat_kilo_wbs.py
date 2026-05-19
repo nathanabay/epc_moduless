@@ -1,0 +1,179 @@
+"""
+Arat Kilo Building Construction — WBS Structure Generator
+
+Civil Phase-Based WBS for the 4B+SB+G+25+T high-rise building.
+Maps to the 6 BOQ sections: Demolishing, Excavation, Concrete Sub/Super,
+Block Works, Thermal/Moisture.
+"""
+
+import frappe
+from epc_modules.utils import get_epc_logger
+
+logger = get_epc_logger(__name__)
+
+
+ARAT_KILO_WBS_TEMPLATE = [
+    {
+        "level": 2,
+        "name": "01 - Demolishing Work",
+        "code_prefix": "DEMO",
+        "planned_value": 3520000,
+        "wbs_type": "phase",
+        "children": [
+            {"level": 3, "name": "RC Structure Demolition", "code_prefix": "DEMO-01", "planned_value": 3520000}
+        ]
+    },
+    {
+        "level": 2,
+        "name": "02 - Excavation & Earth Work",
+        "code_prefix": "EXCV",
+        "planned_value": 74000500,
+        "wbs_type": "phase",
+        "children": [
+            {"level": 3, "name": "Hard Rock Excavation 4.5-15m", "code_prefix": "EXCV-01", "planned_value": 62000000},
+            {"level": 3, "name": "Hard Rock Excavation 15-16.8m", "code_prefix": "EXCV-02", "planned_value": 11970000},
+            {"level": 3, "name": "Backfill & Compaction", "code_prefix": "EXCV-03", "planned_value": 973800},
+            {"level": 3, "name": "Hardcore & Blinding", "code_prefix": "EXCV-04", "planned_value": 456000},
+            {"level": 3, "name": "Cart Away Surplus", "code_prefix": "EXCV-05", "planned_value": 9330500},
+        ]
+    },
+    {
+        "level": 2,
+        "name": "03 - Concrete Work (Sub-Structure)",
+        "code_prefix": "CONS-SUB",
+        "planned_value": 44310501.52,
+        "wbs_type": "phase",
+        "children": [
+            {"level": 3, "name": "Lean Concrete C-5", "code_prefix": "CONS-SUB-01", "planned_value": 697500},
+            {"level": 3, "name": "RC Concrete C-40 Sub", "code_prefix": "CONS-SUB-02", "planned_value": 9066545},
+            {"level": 3, "name": "RC Concrete C-50 Sub", "code_prefix": "CONS-SUB-03", "planned_value": 6073732},
+            {"level": 3, "name": "Formwork Sub-Structure", "code_prefix": "CONS-SUB-04", "planned_value": 34157270},
+            {"level": 3, "name": "Steel Reinforcement Sub", "code_prefix": "CONS-SUB-05", "planned_value": 9031570},
+            {"level": 3, "name": "Concrete Ancillaries", "code_prefix": "CONS-SUB-06", "planned_value": 131660},
+        ]
+    },
+    {
+        "level": 2,
+        "name": "04 - Concrete Work (Super-Structure)",
+        "code_prefix": "CONS-SUP",
+        "planned_value": 136384329.04,
+        "wbs_type": "phase",
+        "children": [
+            {"level": 3, "name": "RC Columns & Shear Wall C-50", "code_prefix": "CONS-SUP-01", "planned_value": 9000383},
+            {"level": 3, "name": "RC Floors & Roof Slab C-40", "code_prefix": "CONS-SUP-02", "planned_value": 20142668},
+            {"level": 3, "name": "Formwork Super-Structure", "code_prefix": "CONS-SUP-03", "planned_value": 107484770},
+            {"level": 3, "name": "Steel Reinforcement Sup", "code_prefix": "CONS-SUP-04", "planned_value": 19017438},
+            {"level": 3, "name": "Concrete Finishing & Screed", "code_prefix": "CONS-SUP-05", "planned_value": 9882120},
+        ]
+    },
+    {
+        "level": 2,
+        "name": "05 - Block Works",
+        "code_prefix": "BLKW",
+        "planned_value": 0,
+        "wbs_type": "phase",
+        "children": [
+            {"level": 3, "name": "200mm HCB Wall", "code_prefix": "BLKW-01", "planned_value": 0},
+            {"level": 3, "name": "150mm HCB Wall", "code_prefix": "BLKW-02", "planned_value": 0},
+            {"level": 3, "name": "100mm HCB Wall", "code_prefix": "BLKW-03", "planned_value": 0},
+            {"level": 3, "name": "Solid Concrete Block", "code_prefix": "BLKW-04", "planned_value": 0},
+            {"level": 3, "name": "Double Brick Protection", "code_prefix": "BLKW-05", "planned_value": 0},
+            {"level": 3, "name": "Stone Masonry", "code_prefix": "BLKW-06", "planned_value": 0},
+        ]
+    },
+    {
+        "level": 2,
+        "name": "06 - Thermal & Moisture Protection",
+        "code_prefix": "THRM",
+        "planned_value": 0,
+        "wbs_type": "phase",
+        "children": [
+            {"level": 3, "name": "Bituminous Damp Proofing", "code_prefix": "THRM-01", "planned_value": 0},
+            {"level": 3, "name": "Cementitious Damp Proofing", "code_prefix": "THRM-02", "planned_value": 0},
+            {"level": 3, "name": "Urethane Coating", "code_prefix": "THRM-03", "planned_value": 0},
+            {"level": 3, "name": "PVC Water Stopper", "code_prefix": "THRM-04", "planned_value": 0},
+            {"level": 3, "name": "Granite/Marble Coping", "code_prefix": "THRM-05", "planned_value": 0},
+        ]
+    },
+]
+
+
+def create_arat_kilo_wbs_structure(project_name):
+    """Create complete WBS structure for Arat Kilo building project."""
+    if not frappe.db.exists("Project", project_name):
+        raise ValueError(f"Project {project_name} does not exist")
+
+    project = frappe.get_doc("Project", project_name)
+    project_code = f"P-{project_name[:4].upper()}"
+
+    # Create project root WBS Item
+    if not frappe.db.exists("WBS Item", {"wbs_code": project_code}):
+        root = frappe.get_doc({
+            "doctype": "WBS Item",
+            "project": project_name,
+            "wbs_code": project_code,
+            "wbs_name": f"{project.project_name} - WBS",
+            "level": 1,
+            "is_milestone": 0,
+            "planned_value": 0,
+            "wbs_status": "In Progress",
+        })
+        root.insert(ignore_permissions=True)
+    else:
+        root = frappe.get_doc("WBS Item", {"wbs_code": project_code})
+        project_code = root.wbs_code
+
+    created = []
+
+    for phase in ARAT_KILO_WBS_TEMPLATE:
+        phase_code = phase["code_prefix"]
+
+        if not frappe.db.exists("WBS Item", {"wbs_code": phase_code}):
+            phase_doc = frappe.get_doc({
+                "doctype": "WBS Item",
+                "project": project_name,
+                "wbs_code": phase_code,
+                "wbs_name": phase["name"],
+                "level": 2,
+                "parent_wbs": project_code,
+                "is_milestone": 0,
+                "planned_value": phase["planned_value"],
+                "wbs_status": "Pending",
+            })
+            phase_doc.insert(ignore_permissions=True)
+            created.append({"wbs_code": phase_code, "wbs_name": phase["name"], "level": 2})
+        else:
+            phase_doc = frappe.get_doc("WBS Item", {"wbs_code": phase_code})
+            phase_code = phase_doc.wbs_code
+
+        for child_idx, child in enumerate(phase.get("children", [])):
+            child_code = child["code_prefix"]
+
+            if not frappe.db.exists("WBS Item", {"wbs_code": child_code}):
+                child_doc = frappe.get_doc({
+                    "doctype": "WBS Item",
+                    "project": project_name,
+                    "wbs_code": child_code,
+                    "wbs_name": child["name"],
+                    "level": 3,
+                    "parent_wbs": phase_code,
+                    "is_milestone": 0,
+                    "planned_value": child["planned_value"],
+                    "wbs_status": "Pending",
+                })
+                child_doc.insert(ignore_permissions=True)
+                created.append({"wbs_code": child_code, "wbs_name": child["name"], "level": 3})
+
+    logger.info(f"Created {len(created)} WBS elements for project {project_name}")
+    return created
+
+
+@frappe.whitelist()
+def create_arat_kilo_wbs(project_name):
+    """Whitelist endpoint to create Arat Kilo WBS structure."""
+    elements = create_arat_kilo_wbs_structure(project_name)
+    return {
+        "project": project_name,
+        "elements_created": len(elements),
+        "wbs_codes": [e["wbs_code"] for e in elements]
+    }

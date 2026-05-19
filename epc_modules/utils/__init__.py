@@ -89,9 +89,8 @@ def create_site_warehouse(project_name: str, warehouse_name: str = None) -> str:
 
     # Get parent warehouse (handle missing default_warehouse column gracefully)
     parent_warehouse = None
-    if company:
-        if frappe.db.has_column("Company", "default_warehouse"):
-            parent_warehouse = frappe.db.get_value("Company", company, "default_warehouse") or ""
+    if company and frappe.db.has_column("Company", "default_warehouse"):
+        parent_warehouse = frappe.db.get_value("Company", company, "default_warehouse") or ""
 
     warehouse = frappe.get_doc({
         "doctype": "Warehouse",
