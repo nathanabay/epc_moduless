@@ -237,6 +237,7 @@ class AratKiloBOQImporter:
                     "measurement_method": "Unit-Based",
                 })
                 doc.insert(ignore_permissions=True, ignore_links=True)
+                frappe.db.commit()
                 total_value += item["total"]
                 imported.append(item["item_no"])
             except Exception as e:

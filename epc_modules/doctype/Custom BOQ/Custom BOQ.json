@@ -74,6 +74,8 @@
       "fieldtype": "Currency",
       "in_list_view": 1,
       "label": "Total Value",
+      "precision": 2,
+      "formula": "boq_quantity * unit_rate",
       "read_only": 1
     },
     {
