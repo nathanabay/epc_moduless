@@ -96,6 +96,7 @@
     {
       "fieldname": "earned_value",
       "fieldtype": "Currency",
+      "in_list_view": 1,
       "label": "Earned Value",
       "read_only": 1
     },
@@ -113,11 +114,13 @@
     {
       "fieldname": "budget_allocated",
       "fieldtype": "Currency",
+      "in_list_view": 1,
       "label": "Budget Allocated"
     },
     {
       "fieldname": "cost_incurred",
       "fieldtype": "Currency",
+      "in_list_view": 1,
       "label": "Cost Incurred",
       "read_only": 1
     },

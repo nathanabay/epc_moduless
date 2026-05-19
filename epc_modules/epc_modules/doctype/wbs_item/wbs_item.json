@@ -1,156 +1,218 @@
 {
-  "name": "WBS Item",
-  "doctype": "DocType",
-  "module": "EPC Modules",
-  "autoname": "field:wbs_code",
-  "is_submittable": 1,
-  "track_changes": 1,
-  "fields": [
-    {
-      "fieldname": "project",
-      "fieldtype": "Link",
-      "in_list_view": 1,
-      "label": "Project",
-      "options": "Project",
-      "reqd": 1
-    },
-    {
-      "fieldname": "wbs_code",
-      "fieldtype": "Data",
-      "in_list_view": 1,
-      "label": "WBS Code",
-      "reqd": 1
-    },
-    {
-      "fieldname": "wbs_name",
-      "fieldtype": "Data",
-      "in_list_view": 1,
-      "label": "WBS Name",
-      "reqd": 1
-    },
-    {
-      "fieldname": "parent_wbs",
-      "fieldtype": "Link",
-      "label": "Parent WBS",
-      "options": "WBS Item"
-    },
-    {
-      "fieldname": "wbs_level",
-      "fieldtype": "Int",
-      "in_list_view": 1,
-      "label": "WBS Level",
-      "read_only": 1,
-      "default": "1"
-    },
-    {
-      "fieldname": "is_milestone",
-      "fieldtype": "Check",
-      "label": "Is Milestone"
-    },
-    {
-      "fieldname": "section_break_6",
-      "fieldtype": "Section Break",
-      "label": "Schedule"
-    },
-    {
-      "fieldname": "planned_start",
-      "fieldtype": "Date",
-      "label": "Planned Start"
-    },
-    {
-      "fieldname": "planned_end",
-      "fieldtype": "Date",
-      "label": "Planned End"
-    },
-    {
-      "fieldname": "actual_start",
-      "fieldtype": "Date",
-      "label": "Actual Start"
-    },
-    {
-      "fieldname": "actual_end",
-      "fieldtype": "Date",
-      "label": "Actual End"
-    },
-    {
-      "fieldname": "column_break_9",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "responsible_party",
-      "fieldtype": "Link",
-      "label": "Responsible Party",
-      "options": "User"
-    },
-    {
-      "fieldname": "section_break_10",
-      "fieldtype": "Section Break",
-      "label": "Cost & Progress"
-    },
-    {
-      "fieldname": "planned_value",
-      "fieldtype": "Currency",
-      "in_list_view": 1,
-      "label": "Planned Value"
-    },
-    {
-      "fieldname": "earned_value",
-      "fieldtype": "Currency",
-      "label": "Earned Value",
-      "read_only": 1
-    },
-    {
-      "fieldname": "physical_progress",
-      "fieldtype": "Float",
-      "in_list_view": 1,
-      "label": "Physical Progress %",
-      "precision": 2
-    },
-    {
-      "fieldname": "column_break_14",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "budget_allocated",
-      "fieldtype": "Currency",
-      "label": "Budget Allocated"
-    },
-    {
-      "fieldname": "cost_incurred",
-      "fieldtype": "Currency",
-      "label": "Cost Incurred",
-      "read_only": 1
-    },
-    {
-      "fieldname": "wbs_status",
-      "fieldtype": "Select",
-      "in_list_view": 1,
-      "label": "Status",
-      "options": "Pending\nIn Progress\nCompleted\nOn Hold\nCancelled",
-      "default": "Pending"
-    },
-    {
-      "fieldname": "architecture",
-      "fieldtype": "Select",
-      "label": "WBS Architecture",
-      "options": "Equipment-Based\nPhase-Based\nMilestone-Based",
-      "hidden": 1
-    }
-  ],
-  "permissions": [
-    {
-      "role": "System Manager",
-      "read": 1,
-      "write": 1,
-      "create": 1,
-      "delete": 1,
-      "submit": 1
-    },
-    {
-      "role": "Project Manager",
-      "read": 1,
-      "write": 1,
-      "create": 1
-    }
-  ]
+ "actions": [],
+ "autoname": "field:wbs_code",
+ "creation": "2026-05-12 18:40:49.252973",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "project",
+  "wbs_code",
+  "wbs_name",
+  "parent_wbs",
+  "wbs_level",
+  "is_milestone",
+  "section_break_6",
+  "planned_start",
+  "planned_end",
+  "actual_start",
+  "actual_end",
+  "column_break_9",
+  "responsible_party",
+  "section_break_10",
+  "planned_value",
+  "earned_value",
+  "physical_progress",
+  "column_break_14",
+  "budget_allocated",
+  "cost_incurred",
+  "wbs_status",
+  "architecture",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Project",
+   "options": "Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "wbs_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "WBS Code",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "wbs_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "WBS Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "parent_wbs",
+   "fieldtype": "Link",
+   "label": "Parent WBS",
+   "options": "WBS Item"
+  },
+  {
+   "default": "1",
+   "fieldname": "wbs_level",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "WBS Level",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_milestone",
+   "fieldtype": "Check",
+   "label": "Is Milestone"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break",
+   "label": "Schedule"
+  },
+  {
+   "fieldname": "planned_start",
+   "fieldtype": "Date",
+   "label": "Planned Start"
+  },
+  {
+   "fieldname": "planned_end",
+   "fieldtype": "Date",
+   "label": "Planned End"
+  },
+  {
+   "fieldname": "actual_start",
+   "fieldtype": "Date",
+   "label": "Actual Start"
+  },
+  {
+   "fieldname": "actual_end",
+   "fieldtype": "Date",
+   "label": "Actual End"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "responsible_party",
+   "fieldtype": "Link",
+   "label": "Responsible Party",
+   "options": "User"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break",
+   "label": "Cost & Progress"
+  },
+  {
+   "fieldname": "planned_value",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Planned Value"
+  },
+  {
+   "fieldname": "earned_value",
+   "fieldtype": "Currency",
+   "label": "Earned Value",
+   "read_only": 1
+  },
+  {
+   "fieldname": "physical_progress",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Physical Progress %",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "budget_allocated",
+   "fieldtype": "Currency",
+   "label": "Budget Allocated"
+  },
+  {
+   "fieldname": "cost_incurred",
+   "fieldtype": "Currency",
+   "label": "Cost Incurred",
+   "read_only": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "wbs_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Pending\nIn Progress\nCompleted\nOn Hold\nCancelled"
+  },
+  {
+   "fieldname": "architecture",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "WBS Architecture",
+   "options": "Equipment-Based\nPhase-Based\nMilestone-Based"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "WBS Item",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-19 22:02:38.992184",
+ "modified_by": "Administrator",
+ "module": "EPC Modules",
+ "name": "WBS Item",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Project Manager",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
 }
