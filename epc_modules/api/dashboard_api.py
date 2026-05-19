@@ -21,12 +21,19 @@ def get_management_dashboard():
     Returns:
         dict: Dashboard metrics
     """
-    # Active projects count
+    frappe.has_permission("Project", "read", throw=True)
+
+    # Check cache first
+    cache_key = "epc_management_dashboard"
+    cached = frappe.cache().get_value(cache_key)
+    if cached:
+        return cached
+    # Active projects count - ordered by priority for dashboard display
     active_projects = frappe.get_all(
         "Project",
         filters={"status": "Active", "is_epc_project": 1},
-        fields=["name", "percent_complete", "contract_value", "project_typology"],
-        order_by="creation desc"
+        fields=["name", "percent_complete", "contract_value", "project_typology", "dashboard_priority", "dashboard_color"],
+        order_by="dashboard_priority desc, creation desc"
     )
 
     # Calculate aggregate metrics
@@ -81,13 +88,18 @@ def get_management_dashboard():
         "equipment_status": "In Use"
     })
 
-    return {
+    result = {
         "timestamp": now_datetime(),
         "projects": {
             "active_count": total_projects,
             "avg_progress": round(avg_progress, 2),
             "total_contract_value": total_contract_value,
-            "by_typology": by_typology
+            "by_typology": by_typology,
+            "list": [{"name": p.name, "percent_complete": p.percent_complete,
+                       "contract_value": p.contract_value, "project_typology": p.project_typology,
+                       "priority": p.get("dashboard_priority") or 0,
+                       "color": p.get("dashboard_color") or "#3498db"}
+                      for p in active_projects]
         },
         "billing": {
             "total_certified": total_certified,
@@ -107,6 +119,10 @@ def get_management_dashboard():
         }
     }
 
+    # Cache for 5 minutes
+    frappe.cache().set_value(cache_key, result, expires_in_sec=300)
+    return result
+
 
 @frappe.whitelist()
 def get_project_dashboard_kpis(project):
@@ -119,6 +135,8 @@ def get_project_dashboard_kpis(project):
     Returns:
         dict: Project dashboard metrics
     """
+    frappe.has_permission("Project", "read", throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -126,7 +144,7 @@ def get_project_dashboard_kpis(project):
 
     # Progress metrics
     boq_items = frappe.get_all(
-        "Custom BOQ Item",
+        "Custom BOQ",
         filters={"parent": project},
         fields=["name", "total_value", "measurement_method"]
     )
@@ -517,6 +535,8 @@ def get_notification_alerts():
     Returns:
         list: Active alerts
     """
+    frappe.has_permission("Project", "read", throw=True)
+
     alerts = []
 
     # Overdue NCRs
@@ -616,6 +636,18 @@ def get_project_health_score(project):
     score = 100
     issues = []
 
+    # Check for manual override first
+    if project_doc.get("health_score_override"):
+        return {
+            "project": project,
+            "health_score": project_doc.health_score_override,
+            "status": "Good" if project_doc.health_score_override >= 80 else "Warning" if project_doc.health_score_override >= 50 else "Critical",
+            "issues": ["Manual override applied"],
+            "factors": {
+                "override": project_doc.health_score_override
+            }
+        }
+
     # Schedule health (based on DPR submissions)
     dpr_count = frappe.db.count("Daily Progress Report", {"project": project})
     expected_days = 1  # At least one DPR per day
@@ -657,7 +689,7 @@ def get_project_health_score(project):
     # Scope health (BOQ coverage)
     boq_value = frappe.db.sql("""
         SELECT SUM(total_value)
-        FROM `tabCustom BOQ Item`
+        FROM `tabCustom BOQ`
         WHERE parent = %s
     """, project)[0][0] or 0
 

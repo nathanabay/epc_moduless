@@ -134,8 +134,8 @@ def get_dpr_entry_details(dpr_name):
                 "activity": e.activity,
                 "unit": e.unit,
                 "planned_quantity": e.planned_quantity,
-                "actual_quantity": e.actual_quantity,
-                "progress_percent": e.progress_percent,
+                "quantity_executed": e.quantity_executed,
+                "percent_complete": e.percent_complete,
                 "remarks": e.remarks
             }
             for e in doc.progress_entries
@@ -234,7 +234,7 @@ def get_wbs_progress_summary(project):
     dpr_entries = frappe.get_all(
         "DPR Entry",
         filters={"parenttype": "Daily Progress Report", "parent": project},
-        fields=["wbs_item", "actual_quantity", "progress_percent"],
+        fields=["wbs_item", "quantity_executed", "percent_complete"],
         group_by="wbs_item"
     )
 
@@ -253,14 +253,14 @@ def get_wbs_progress_summary(project):
     for wbs in wbs_items:
         dpr_data = dpr_lookup.get(wbs.name, {})
         planned = wbs.planned_value or 0
-        earned = dpr_data.get("progress_percent", 0) / 100 * planned
+        earned = dpr_data.get("percent_complete", 0) / 100 * planned
 
         summary["wbs_details"].append({
             "wbs_code": wbs.wbs_code,
             "wbs_name": wbs.wbs_name,
             "planned_value": planned,
             "earned_value": earned,
-            "progress_percent": (earned / planned * 100) if planned > 0 else 0
+            "percent_complete": (earned / planned * 100) if planned > 0 else 0
         })
 
         total_planned += planned

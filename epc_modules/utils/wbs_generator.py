@@ -209,12 +209,12 @@ class WBSStructureGenerator:
             Created WBS element
         """
         # Get parent to determine architecture
-        parent = frappe.get_doc("WBS Element", {"wbs_code": parent_wbs})
+        parent = frappe.get_doc("WBS Item", {"wbs_code": parent_wbs})
         architecture = parent.architecture or WBS_PHASE_BASED
 
         # Get next index at this level
         existing = frappe.get_all(
-            "WBS Element",
+            "WBS Item",
             filters={"parent_wbs": parent_wbs},
             fields=["wbs_code"],
             order_by="wbs_code desc",
@@ -234,7 +234,7 @@ class WBSStructureGenerator:
         )
 
         doc = frappe.get_doc({
-            "doctype": "WBS Element",
+            "doctype": "WBS Item",
             "wbs_code": wbs_code,
             "wbs_name": name,
             "level": level,
@@ -259,7 +259,7 @@ class WBSStructureGenerator:
             Hierarchical list of WBS elements
         """
         elements = frappe.get_all(
-            "WBS Element",
+            "WBS Item",
             filters={"project": project_name},
             fields=["wbs_code", "wbs_name", "level", "parent_wbs", "is_milestone", "planned_value"],
             order_by="wbs_code"

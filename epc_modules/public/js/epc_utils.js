@@ -14,12 +14,15 @@ frappe.EPC = {
  */
 frappe.EPC.getTypologyConfig = function(project) {
     return frappe.call({
-        method: "epc_modules.api.project_api.get_typology_config",
+        method: "epc_modules.epc_modules.api.typology_api.get_typology_config",
         args: {
-            project: project
+            typology_name: project
         },
         callback: function(r) {
             return r.message;
+        },
+        error: function(r) {
+            console.log("EPC: Error getting typology config", r);
         }
     });
 };
@@ -68,12 +71,15 @@ frappe.EPC.validateProject = function(frm) {
  */
 frappe.EPC.calculateProgress = function(project, callback) {
     return frappe.call({
-        method: "epc_modules.api.project_api.calculate_project_progress",
+        method: "epc_modules.epc_modules.api.project_api.calculate_project_progress",
         args: {
             project: project
         },
         callback: function(r) {
             if (callback) callback(r.message);
+        },
+        error: function(r) {
+            console.log("EPC: Error calculating progress", r);
         }
     });
 };
@@ -83,12 +89,15 @@ frappe.EPC.calculateProgress = function(project, callback) {
  */
 frappe.EPC.getDashboard = function(project, callback) {
     return frappe.call({
-        method: "epc_modules.api.project_api.get_project_dashboard",
+        method: "epc_modules.epc_modules.api.dashboard_api.get_project_dashboard_kpis",
         args: {
             project: project
         },
         callback: function(r) {
             if (callback) callback(r.message);
+        },
+        error: function(r) {
+            console.log("EPC: Error getting dashboard", r);
         }
     });
 };

@@ -360,14 +360,14 @@ def _update_boq_billed_quantity(mb_doc):
     for item_code, qty in boq_items.items():
         # Find corresponding BOQ item
         boq_item = frappe.get_all(
-            "Custom BOQ Item",
+            "Custom BOQ",
             filters={"parent": mb_doc.project, "item_code": item_code},
             fields=["name", "billed_quantity"]
         )
 
         for item in boq_item:
             current_billed = flt(item.billed_quantity)
-            frappe.db.set_value("Custom BOQ Item", item.name, {
+            frappe.db.set_value("Custom BOQ", item.name, {
                 "billed_quantity": current_billed + qty
             })
 

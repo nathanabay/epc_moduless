@@ -1,0 +1,92 @@
+[
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 1,
+    "type": "DocType",
+    "link_to": "Project",
+    "label": "Project"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 2,
+    "type": "DocType",
+    "link_to": "Project Typology",
+    "label": "Project Typology"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 3,
+    "type": "DocType",
+    "link_to": "Site Zone",
+    "label": "Site Zone"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 4,
+    "type": "DocType",
+    "link_to": "Custom BOQ",
+    "label": "Custom BOQ"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 5,
+    "type": "DocType",
+    "link_to": "RA Bill",
+    "label": "RA Bill"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 6,
+    "type": "DocType",
+    "link_to": "Measurement Book",
+    "label": "Measurement Book"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 7,
+    "type": "DocType",
+    "link_to": "WBS Item",
+    "label": "WBS Item"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 8,
+    "type": "DocType",
+    "link_to": "Daily Progress Report",
+    "label": "Daily Progress Report"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "EPC Management",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 9,
+    "type": "DocType",
+    "link_to": "Non-Conformance Report",
+    "label": "Non-Conformance Report"
+  }
+]

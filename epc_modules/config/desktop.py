@@ -35,7 +35,7 @@ def get_data():
                     "label": "Custom BOQ",
                     "icon": "octicon octicon-list-ordered",
                     "type": "doctype",
-                    "name": "Custom BOQ Item",
+                    "name": "Custom BOQ",
                     "description": "Bill of Quantities"
                 },
                 {

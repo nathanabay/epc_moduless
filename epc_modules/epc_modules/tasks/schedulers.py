@@ -157,7 +157,7 @@ def generate_project_reports():
 			"status": "Active",
 			"is_epc_project": 1
 		},
-		fields=["name", "project_name", "project_manager"]
+		fields=["name", "project_name", "owner"]
 	)
 
 	digests = []
@@ -194,7 +194,7 @@ def generate_project_reports():
 		digests.append({
 			"project": project.name,
 			"project_name": project.project_name,
-			"project_manager": project.project_manager,
+			"project_manager": project.get("owner"),
 			"today_dprs": len(today_dprs),
 			"pending_mb_certifications": pending_mbs,
 			"open_ncrs": open_ncrs,
@@ -241,7 +241,7 @@ def archive_completed_projects():
 			for wbs_item in wbs_items:
 				boq_total = frappe.db.sql("""
 					SELECT SUM(total_value)
-					FROM `tabCustom BOQ Item`
+					FROM `tabCustom BOQ`
 					WHERE wbs_code = %s AND parent = %s
 				""", (wbs_item.wbs_code, project_name))[0][0] or 0
 

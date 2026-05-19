@@ -1,0 +1,97 @@
+{
+  "name": "Space Requirement",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "istable": 1,
+  "fields": [
+    {
+      "fieldname": "space_category",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Space Category",
+      "options": "Classroom\nLaboratory\nOffice\nCirculation\nService\nRecreation\nDining\nStorage\nSanitary\nWorkshop\nLibrary\nClinic\nDormitory",
+      "reqd": 1
+    },
+    {
+      "fieldname": "space_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Space Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "quantity",
+      "fieldtype": "Int",
+      "in_list_view": 1,
+      "label": "Quantity",
+      "default": "1",
+      "reqd": 1
+    },
+    {
+      "fieldname": "unit_area_sqm",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Unit Area (sqm)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "total_area_sqm",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Total Area (sqm)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_break_details",
+      "fieldtype": "Section Break",
+      "label": "Details"
+    },
+    {
+      "fieldname": "capacity",
+      "fieldtype": "Int",
+      "label": "Capacity",
+      "description": "e.g. 30 students, 4 beds"
+    },
+    {
+      "fieldname": "standard_reference",
+      "fieldtype": "Data",
+      "label": "Standard Reference",
+      "description": "e.g. Ethiopian Standard, IS Code"
+    },
+    {
+      "fieldname": "floor",
+      "fieldtype": "Data",
+      "label": "Floor"
+    },
+    {
+      "fieldname": "column_break_details",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "priority",
+      "fieldtype": "Select",
+      "label": "Priority",
+      "options": "Essential\nRecommended\nOptional",
+      "default": "Essential"
+    },
+    {
+      "fieldname": "fixed_furniture",
+      "fieldtype": "Check",
+      "label": "Fixed Furniture Required"
+    },
+    {
+      "fieldname": "special_requirements",
+      "fieldtype": "Small Text",
+      "label": "Special Requirements"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "label": "Description"
+    }
+  ]
+}

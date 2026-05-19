@@ -244,29 +244,33 @@ def web_permission_for_project(doc, ptype, user):
 
 
 def project_permission_query(user):
-    """
-    Permission query condition for projects.
-    Uses parameterized query to prevent SQL injection.
-    """
-    return """
-        (`tabProject`.is_epc_project = 0
-         OR `tabProject`.owner = %s
-         OR `tabProject`.project_manager = %s)
-    """
+    """Permission query condition for projects."""
+    if not user:
+        user = frappe.session.user
+    if user == "Administrator":
+        return ""
+    user = frappe.db.escape(user)
+    return """(`tabProject`.is_epc_project = 0
+         OR `tabProject`.owner = {user}
+         OR EXISTS (
+            SELECT 1 FROM `tabProject User`
+            WHERE `tabProject User`.parent = `tabProject`.name
+            AND `tabProject User`.user = {user}
+         ))""".format(user=user)
 
 
 def get_project_match_conditions(user):
-    """
-    Get match conditions for project listing.
-    Uses parameterized query to prevent SQL injection.
-    """
+    """Get match conditions for project listing."""
     if not user:
         user = frappe.session.user
-
     if user == "Administrator":
-        return None
-
-    return """(is_epc_project = 0 OR owner = %s OR project_manager = %s)"""
+        return ""
+    user = frappe.db.escape(user)
+    return """(is_epc_project = 0 OR owner = {user} OR EXISTS (
+        SELECT 1 FROM `tabProject User`
+        WHERE `tabProject User`.parent = `tabProject`.name
+        AND `tabProject User`.user = {user}
+    ))""".format(user=user)
 
 
 def after_install():

@@ -1,0 +1,66 @@
+{
+  "name": "Design Deliverable",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "istable": 1,
+  "fields": [
+    {
+      "fieldname": "deliverable_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Deliverable Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "document_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Document Type",
+      "options": "Drawing\nReport\nSpecification\nBOQ\nCost Estimate\nPresentation\nModel",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "format",
+      "fieldtype": "Data",
+      "label": "Format",
+      "description": "e.g. A1 Panels, A3 Report"
+    },
+    {
+      "fieldname": "copies_required",
+      "fieldtype": "Int",
+      "label": "Copies Required",
+      "default": "2"
+    },
+    {
+      "fieldname": "section_break_status",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Pending\nIn Progress\nSubmitted\nApproved\nRevision Required",
+      "default": "Pending"
+    },
+    {
+      "fieldname": "column_break_status",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "submission_date",
+      "fieldtype": "Date",
+      "label": "Submission Date"
+    },
+    {
+      "fieldname": "approval_date",
+      "fieldtype": "Date",
+      "label": "Approval Date"
+    }
+  ]
+}

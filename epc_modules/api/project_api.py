@@ -32,7 +32,7 @@ def get_polymorphic_boq(project, measurement_method=None):
         filters["measurement_method"] = measurement_method
 
     boq_items = frappe.get_all(
-        "Custom BOQ Item",
+        "Custom BOQ",
         filters=filters,
         fields=["*"]
     )
@@ -102,7 +102,7 @@ def get_project_dashboard(project):
     # Calculate metrics
     total_boq_value = frappe.db.sql("""
         SELECT SUM(total_value)
-        FROM `tabCustom BOQ Item`
+        FROM `tabCustom BOQ`
         WHERE parent = %s
     """, project)[0][0] or 0
 

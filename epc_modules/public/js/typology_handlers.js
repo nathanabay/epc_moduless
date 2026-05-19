@@ -120,7 +120,7 @@ frappe.EPC.utils.formatDashboard = function(data) {
     html += '<div class="card">';
     html += '<div class="card-body">';
     html += '<h5 class="card-title">' + __("Status") + '</h5>';
-    html += '<h2>' + (data.status || "-") + '</h2>';
+    html += '<h2>' + frappe.utils.escape_html(data.status || "-") + '</h2>';
     html += '</div></div></div>';
 
     // Typology card
@@ -128,7 +128,7 @@ frappe.EPC.utils.formatDashboard = function(data) {
     html += '<div class="card">';
     html += '<div class="card-body">';
     html += '<h5 class="card-title">' + __("Typology") + '</h5>';
-    html += '<h2>' + (data.typology_type || "-") + '</h2>';
+    html += '<h2>' + frappe.utils.escape_html(data.typology_type || "-") + '</h2>';
     html += '</div></div></div>';
 
     // Progress card

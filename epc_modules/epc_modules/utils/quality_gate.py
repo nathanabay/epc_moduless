@@ -80,7 +80,7 @@ class QualityTemplateCloner:
         """
         # Check BOQ items for matching categories
         boq_items = frappe.get_all(
-            "Custom BOQ Item",
+            "Custom BOQ",
             filters={"parent": project.name},
             fields=["name", "item_code", "is_electromechanical", "is_civil"]
         )

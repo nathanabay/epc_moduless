@@ -156,10 +156,10 @@ def update_wbs_progress(project_name, wbs_code, progress_percent, earned_value=N
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
 
-    if not frappe.db.exists("WBS Element", wbs_code):
-        frappe.throw(_("WBS Element {0} does not exist").format(wbs_code))
+    if not frappe.db.exists("WBS Item", wbs_code):
+        frappe.throw(_("WBS Item {0} does not exist").format(wbs_code))
 
-    doc = frappe.get_doc("WBS Element", wbs_code)
+    doc = frappe.get_doc("WBS Item", wbs_code)
     doc.physical_progress = progress_percent
 
     if earned_value is not None:
@@ -194,7 +194,7 @@ def get_wbs_children(project_name, parent_wbs):
         frappe.throw(_("Project {0} does not exist").format(project_name))
 
     children = frappe.get_all(
-        "WBS Element",
+        "WBS Item",
         filters={"project": project_name, "parent_wbs": parent_wbs},
         fields=["wbs_code", "wbs_name", "level", "is_milestone", "physical_progress", "planned_value", "earned_value"],
         order_by="wbs_code"

@@ -5,6 +5,7 @@
     "chart_name": "EPC Management Overview",
     "chart_type": "Number",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "source_std_field": "name",
     "document_type": "Project",
@@ -13,6 +14,7 @@
     "stats_direction": "Desc",
     "number_backend_position": "Right",
     "number_display": "currency",
+    "refresh_interval": 5,
     "chart Mapping": []
   },
   {
@@ -21,6 +23,7 @@
     "chart_name": "Billing by Typology",
     "chart_type": "Pie",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "source_std_field": "name",
     "document_type": "RA Bill",
@@ -28,6 +31,7 @@
     "based_on": "Sum",
     "value_field": "total_invoice_value",
     "filters_json": "{\"docstatus\": 1}",
+    "refresh_interval": 15,
     "chart Mapping": [
       {
         "color": "#5A5BE0",
@@ -52,6 +56,7 @@
     "chart_name": "Monthly Billing Trend",
     "chart_type": "Line",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "document_type": "RA Bill",
     "based_on": "Sum",
@@ -60,6 +65,7 @@
     "timeseries": 1,
     "timeseries_based_on": "billing_period_end",
     "time_interval": "Monthly",
+    "refresh_interval": 60,
     "chart Mapping": []
   },
   {
@@ -68,11 +74,13 @@
     "chart_name": "NCR by Severity",
     "chart_type": "Donut",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "document_type": "Non-Conformance Report",
     "based_on": "Count",
     "group_by_field": "severity",
     "filters_json": "{\"status\": [\"in\", [\"Open\", \"In Progress\"]]}",
+    "refresh_interval": 5,
     "chart Mapping": [
       {
         "color": "#DC3545",
@@ -94,11 +102,13 @@
     "chart_name": "Project Progress Overview",
     "chart_type": "Progress",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "document_type": "Project",
     "based_on": "Average",
     "value_field": "percent_complete",
     "filters_json": "{\"status\": \"Active\", \"is_epc_project\": 1}",
+    "refresh_interval": 10,
     "chart Mapping": []
   },
   {
@@ -107,11 +117,13 @@
     "chart_name": "Equipment Utilization",
     "chart_type": "Bar",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "document_type": "Equipment Register",
     "based_on": "Count",
     "group_by_field": "equipment_status",
     "filters_json": "{}",
+    "refresh_interval": 30,
     "chart Mapping": []
   },
   {
@@ -120,6 +132,7 @@
     "chart_name": "Quality Metrics",
     "chart_type": "Column",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "document_type": "Cube Test Result",
     "based_on": "Count",
@@ -128,6 +141,7 @@
     "timeseries": 1,
     "timeseries_based_on": "test_date",
     "time_interval": "Weekly",
+    "refresh_interval": 60,
     "chart Mapping": [
       {
         "color": "#28A745",
@@ -145,11 +159,43 @@
     "chart_name": "Active Alerts",
     "chart_type": "Number",
     "is_public": 1,
+    "is_standard": 1,
     "module": "EPC Modules",
     "document_type": "Non-Conformance Report",
     "based_on": "Count",
-    "filters_json": "{\"target_close_date\": [\"<\", \"{{ Now }}]}}",
+    "filters_json": "{\"target_close_date\": [\"<\", \"today\"], \"status\": [\"in\", [\"Open\", \"In Progress\"]]}",
     "number_display": "Integer",
+    "refresh_interval": 5,
+    "chart Mapping": []
+  },
+  {
+    "name": "epc_pending_ra_bills",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Pending RA Bills",
+    "chart_type": "Number",
+    "is_public": 1,
+    "is_standard": 1,
+    "module": "EPC Modules",
+    "document_type": "RA Bill",
+    "based_on": "Count",
+    "filters_json": "{\"docstatus\": 0}",
+    "number_display": "Integer",
+    "refresh_interval": 5,
+    "chart Mapping": []
+  },
+  {
+    "name": "epc_open_ncrs",
+    "doctype": "Dashboard Chart",
+    "chart_name": "Open NCRs",
+    "chart_type": "Number",
+    "is_public": 1,
+    "is_standard": 1,
+    "module": "EPC Modules",
+    "document_type": "Non-Conformance Report",
+    "based_on": "Count",
+    "filters_json": "{\"status\": [\"in\", [\"Open\", \"In Progress\"]]}",
+    "number_display": "Integer",
+    "refresh_interval": 5,
     "chart Mapping": []
   }
 ]

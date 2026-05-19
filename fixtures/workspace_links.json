@@ -1,0 +1,60 @@
+[
+  {
+    "doctype": "Workspace Link",
+    "parent": "EPC Management",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "idx": 1,
+    "type": "Card Break",
+    "label": "Project Reports",
+    "icon": null,
+    "description": "Project-related reports and analytics",
+    "hidden": 0,
+    "link_count": 3
+  },
+  {
+    "doctype": "Workspace Link",
+    "parent": "EPC Management",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "idx": 2,
+    "type": "Link",
+    "link_type": "Report",
+    "link_to": "Project Summary",
+    "label": "Project Summary",
+    "onboard": 0,
+    "dependencies": null,
+    "is_query_report": 1,
+    "hidden": 0
+  },
+  {
+    "doctype": "Workspace Link",
+    "parent": "EPC Management",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "idx": 3,
+    "type": "Link",
+    "link_type": "Report",
+    "link_to": "Project Profitability",
+    "label": "Project Profitability",
+    "onboard": 0,
+    "dependencies": null,
+    "is_query_report": 1,
+    "hidden": 0
+  },
+  {
+    "doctype": "Workspace Link",
+    "parent": "EPC Management",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "idx": 4,
+    "type": "Link",
+    "link_type": "Report",
+    "link_to": "Project Billing Summary",
+    "label": "Project Billing Summary",
+    "onboard": 0,
+    "dependencies": null,
+    "is_query_report": 1,
+    "hidden": 0
+  }
+]

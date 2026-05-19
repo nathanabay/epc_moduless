@@ -20,7 +20,7 @@ class BOQCalculator:
         Calculate completion based on measurement method.
 
         Args:
-            boq_item: Custom BOQ Item document
+            boq_item: Custom BOQ document
             dpr_entries: List of DPR Line Item documents
 
         Returns:
@@ -141,7 +141,7 @@ class BOQCalculator:
             typology = frappe.get_doc("Project Typology", project.project_typology)
 
         boq_items = frappe.get_all(
-            "Custom BOQ Item",
+            "Custom BOQ",
             filters={"parent": project_name},
             fields=["name", "item_code", "total_value", "boq_quantity", "measurement_method"]
         )
@@ -205,7 +205,7 @@ class BOQCalculator:
             dict: Summary data
         """
         boq_items = frappe.get_all(
-            "Custom BOQ Item",
+            "Custom BOQ",
             filters={"parent": project_name},
             fields=["name", "item_code", "description", "boq_quantity", "unit_rate", "total_value"]
         )

@@ -346,5 +346,29 @@
     "unique": 0,
     "reqd": 0,
     "name": "Item.equipment_utilization_hours"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Master Inspection Template",
+    "fieldname": "applicable_typologies",
+    "label": "Applicable Typologies",
+    "fieldtype": "MultiSelect",
+    "options": "Electromechanical\nCivil\nStandard/Service",
+    "insert_after": "template_name",
+    "in_list_view": 1,
+    "reqd": 1,
+    "name": "Master Inspection Template.applicable_typologies"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Master Inspection Template",
+    "fieldname": "inspection_category",
+    "label": "Inspection Category",
+    "fieldtype": "Select",
+    "options": "Structural\nMechanical\nElectrical\nPlumbing\nHVAC\nFire Safety\nQuality Control",
+    "insert_after": "applicable_typologies",
+    "in_list_view": 1,
+    "reqd": 1,
+    "name": "Master Inspection Template.inspection_category"
   }
 ]

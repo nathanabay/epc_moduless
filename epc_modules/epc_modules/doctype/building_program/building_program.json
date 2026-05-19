@@ -1,0 +1,123 @@
+{
+  "name": "Building Program",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "autoname": "field:program_code",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "program_code",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Program Code",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "program_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Program Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "building_type",
+      "fieldtype": "Select",
+      "label": "Building Type",
+      "options": "Educational\nHealthcare\nResidential\nCommercial\nIndustrial\nInstitutional",
+      "reqd": 1
+    },
+    {
+      "fieldname": "building_height",
+      "fieldtype": "Data",
+      "label": "Building Height",
+      "description": "e.g. G+3, G+1"
+    },
+    {
+      "fieldname": "total_area_sqm",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Total Area (sqm)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Draft\nApproved\nIn Design\nUnder Review\nImplemented",
+      "default": "Draft"
+    },
+    {
+      "fieldname": "section_break_principles",
+      "fieldtype": "Section Break",
+      "label": "Design Principles"
+    },
+    {
+      "fieldname": "school_type_clustering",
+      "fieldtype": "Small Text",
+      "label": "School Type Clustering"
+    },
+    {
+      "fieldname": "building_character",
+      "fieldtype": "Small Text",
+      "label": "Building Character"
+    },
+    {
+      "fieldname": "column_break_principles",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "building_massing",
+      "fieldtype": "Small Text",
+      "label": "Building Massing"
+    },
+    {
+      "fieldname": "typology_development",
+      "fieldtype": "Small Text",
+      "label": "Typology Development"
+    },
+    {
+      "fieldname": "section_break_spaces",
+      "fieldtype": "Section Break",
+      "label": "Space Requirements"
+    },
+    {
+      "fieldname": "spaces",
+      "fieldtype": "Table",
+      "label": "Spaces",
+      "options": "Space Requirement"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Quality Manager",
+      "read": 1
+    }
+  ]
+}

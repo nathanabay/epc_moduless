@@ -107,7 +107,7 @@ def add_boq_item(project_name, item_code, quantity, rate=None, wbs_code=None):
     project = frappe.get_doc("Project", project_name)
 
     doc = frappe.get_doc({
-        "doctype": "BOQ Item",
+        "doctype": "Custom BOQ",
         "project": project_name,
         "item_code": item_code,
         "qty": quantity,
@@ -139,10 +139,10 @@ def update_boq_item(item_name, quantity=None, rate=None):
     Returns:
         dict: Updated item
     """
-    if not frappe.db.exists("BOQ Item", item_name):
-        frappe.throw(_("BOQ Item {0} does not exist").format(item_name))
+    if not frappe.db.exists("Custom BOQ", item_name):
+        frappe.throw(_("Custom BOQ {0} does not exist").format(item_name))
 
-    doc = frappe.get_doc("BOQ Item", item_name)
+    doc = frappe.get_doc("Custom BOQ", item_name)
 
     if quantity is not None:
         doc.qty = quantity
@@ -167,10 +167,10 @@ def delete_boq_item(item_name):
     Args:
         item_name (str): BOQ item name
     """
-    if not frappe.db.exists("BOQ Item", item_name):
-        frappe.throw(_("BOQ Item {0} does not exist").format(item_name))
+    if not frappe.db.exists("Custom BOQ", item_name):
+        frappe.throw(_("Custom BOQ {0} does not exist").format(item_name))
 
-    frappe.delete_doc("BOQ Item", item_name)
+    frappe.delete_doc("Custom BOQ", item_name)
     logger.info(f"Deleted BOQ item {item_name}")
 
 
@@ -191,7 +191,7 @@ def get_boq_items(project_name, wbs_code=None):
         filters["wbs_code"] = wbs_code
 
     items = frappe.get_all(
-        "BOQ Item",
+        "Custom BOQ",
         filters=filters,
         fields=["*"],
         order_by="idx"

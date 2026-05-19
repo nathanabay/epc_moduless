@@ -126,7 +126,7 @@ def get_project_dashboard_kpis(project):
 
     # Progress metrics
     boq_items = frappe.get_all(
-        "Custom BOQ Item",
+        "Custom BOQ",
         filters={"parent": project},
         fields=["name", "total_value", "measurement_method"]
     )
@@ -657,7 +657,7 @@ def get_project_health_score(project):
     # Scope health (BOQ coverage)
     boq_value = frappe.db.sql("""
         SELECT SUM(total_value)
-        FROM `tabCustom BOQ Item`
+        FROM `tabCustom BOQ`
         WHERE parent = %s
     """, project)[0][0] or 0
 

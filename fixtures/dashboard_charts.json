@@ -148,7 +148,7 @@
     "module": "EPC Modules",
     "document_type": "Non-Conformance Report",
     "based_on": "Count",
-    "filters_json": "{\"target_close_date\": [\"<\", \"{{ Now }}]}}",
+    "filters_json": "{\"target_close_date\": [\"<\", \"today\"]}",
     "number_display": "Integer",
     "chart Mapping": []
   }

@@ -1,0 +1,14 @@
+[
+  {
+    "doctype": "Workspace",
+    "name": "EPC Management",
+    "label": "EPC Management",
+    "title": "EPC Management",
+    "sequence_id": 15.0,
+    "module": "EPC Modules",
+    "icon": "octicon octicon-project",
+    "is_hidden": 0,
+    "public": 1,
+    "content": "[\n  {\"type\": \"chart\", \"data\": {\"chart_name\": \"EPC Management Overview\"}, \"col\": 12},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Shortcuts</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Typology\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Site Zone\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Custom BOQ\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Billing</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"RA Bill\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Measurement Book\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Progress Tracking</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"WBS Item\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Daily Progress Report\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Non-Conformance Report\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Reports</b></span>\"}, \"col\": 12},\n  {\"type\": \"card\", \"data\": {\"card_name\": \"Project Reports\"}, \"col\": 4}\n]"
+  }
+]

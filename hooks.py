@@ -78,7 +78,7 @@ fixtures = [
     {"dt": "Property Setter", "filters": [["doc_type", "=", "Project"]]},
     # Default typology data records
     {"dt": "Project Typology", "filters": []},
-    # Dashboard configurations (loaded via sync_dashboards, not fixture JSON files)
-    # {"dt": "Dashboard", "filters": [["module", "=", "EPC Modules"]]},
-    # {"dt": "Dashboard Chart", "filters": [["module", "=", "EPC Modules"]]},
+    # Dashboard configurations
+    {"dt": "Dashboard", "filters": [["module", "=", "EPC Modules"]]},
+    {"dt": "Dashboard Chart", "filters": [["module", "=", "EPC Modules"]]},
 ]

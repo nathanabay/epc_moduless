@@ -1,0 +1,213 @@
+{
+  "name": "Design Phase",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "autoname": "field:phase_code",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "phase_code",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Phase Code",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "phase_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Phase Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "phase_number",
+      "fieldtype": "Int",
+      "in_list_view": 1,
+      "label": "Phase Number",
+      "reqd": 1
+    },
+    {
+      "fieldname": "parent_phase",
+      "fieldtype": "Link",
+      "label": "Parent Phase",
+      "options": "Design Phase"
+    },
+    {
+      "fieldname": "phase_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Phase Type",
+      "options": "Design\nSpecialty\nDocumentation\nConstruction\nCommissioning",
+      "reqd": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Not Started\nIn Progress\nUnder Review\nApproved\nCompleted",
+      "default": "Not Started"
+    },
+    {
+      "fieldname": "section_break_schedule",
+      "fieldtype": "Section Break",
+      "label": "Schedule"
+    },
+    {
+      "fieldname": "planned_start",
+      "fieldtype": "Date",
+      "label": "Planned Start"
+    },
+    {
+      "fieldname": "planned_end",
+      "fieldtype": "Date",
+      "label": "Planned End"
+    },
+    {
+      "fieldname": "duration_weeks",
+      "fieldtype": "Float",
+      "label": "Duration (Weeks)"
+    },
+    {
+      "fieldname": "column_break_schedule",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "actual_start",
+      "fieldtype": "Date",
+      "label": "Actual Start"
+    },
+    {
+      "fieldname": "actual_end",
+      "fieldtype": "Date",
+      "label": "Actual End"
+    },
+    {
+      "fieldname": "section_break_team",
+      "fieldtype": "Section Break",
+      "label": "Team"
+    },
+    {
+      "fieldname": "team_members",
+      "fieldtype": "Table",
+      "label": "Team Members",
+      "options": "Design Phase Team"
+    },
+    {
+      "fieldname": "section_break_deliverables",
+      "fieldtype": "Section Break",
+      "label": "Deliverables"
+    },
+    {
+      "fieldname": "deliverables",
+      "fieldtype": "Table",
+      "label": "Deliverables",
+      "options": "Design Deliverable"
+    },
+    {
+      "fieldname": "section_break_gate",
+      "fieldtype": "Section Break",
+      "label": "Quality Gate"
+    },
+    {
+      "fieldname": "checklist_template",
+      "fieldtype": "Link",
+      "label": "Checklist Template",
+      "options": "Master Inspection Template"
+    },
+    {
+      "fieldname": "inspection_plan",
+      "fieldtype": "Link",
+      "label": "Inspection Plan",
+      "options": "Project Inspection Plan"
+    },
+    {
+      "fieldname": "column_break_gate",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "gate_status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Gate Status",
+      "options": "Not Required\nPending\nPass\nFail",
+      "default": "Pending"
+    },
+    {
+      "fieldname": "gate_approved_by",
+      "fieldtype": "Link",
+      "label": "Gate Approved By",
+      "options": "User"
+    },
+    {
+      "fieldname": "gate_approval_date",
+      "fieldtype": "Date",
+      "label": "Gate Approval Date"
+    },
+    {
+      "fieldname": "section_break_signoff",
+      "fieldtype": "Section Break",
+      "label": "Sign-off"
+    },
+    {
+      "fieldname": "designer",
+      "fieldtype": "Link",
+      "label": "Designer / Project Architect",
+      "options": "User"
+    },
+    {
+      "fieldname": "checked_by",
+      "fieldtype": "Link",
+      "label": "Checked By",
+      "options": "User"
+    },
+    {
+      "fieldname": "column_break_signoff",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "team_leader",
+      "fieldtype": "Link",
+      "label": "Team Leader",
+      "options": "User"
+    },
+    {
+      "fieldname": "general_remarks",
+      "fieldtype": "Text",
+      "label": "General Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Quality Manager",
+      "read": 1,
+      "write": 1
+    }
+  ]
+}

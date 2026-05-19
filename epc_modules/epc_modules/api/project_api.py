@@ -32,7 +32,7 @@ def get_polymorphic_boq(project, measurement_method=None):
         filters["measurement_method"] = measurement_method
 
     boq_items = frappe.get_all(
-        "Custom BOQ Item",
+        "Custom BOQ",
         filters=filters,
         fields=["*"]
     )
@@ -102,7 +102,7 @@ def get_project_dashboard(project):
     # Calculate metrics
     total_boq_value = frappe.db.sql("""
         SELECT SUM(total_value)
-        FROM `tabCustom BOQ Item`
+        FROM `tabCustom BOQ`
         WHERE parent = %s
     """, project)[0][0] or 0
 
@@ -173,3 +173,50 @@ def calculate_project_progress(project):
             "status": "error",
             "message": str(e)
         }
+
+
+# =============================================
+# Design Phase & Building Program APIs
+# =============================================
+
+@frappe.whitelist()
+def get_design_phases(project):
+    """Get all design phases for a project."""
+    from epc_modules.utils.design_phase_generator import get_design_phases as _get_phases
+    return _get_phases(project)
+
+
+@frappe.whitelist()
+def generate_design_phases(project, typology_type=None):
+    """Auto-generate design phases based on typology."""
+    from epc_modules.utils.design_phase_generator import generate_design_phases as _gen
+    return _gen(project, typology_type)
+
+
+@frappe.whitelist()
+def advance_design_phase(design_phase, new_status=None):
+    """Advance a design phase to the next status."""
+    from epc_modules.utils.design_phase_generator import advance_design_phase as _advance
+    return _advance(design_phase, new_status)
+
+
+@frappe.whitelist()
+def get_building_program(project):
+    """Get building program for a project."""
+    programs = frappe.get_all(
+        "Building Program",
+        filters={"project": project},
+        fields=["name", "program_code", "program_name", "building_type",
+                "building_height", "total_area_sqm", "status"]
+    )
+
+    for prog in programs:
+        prog["spaces"] = frappe.get_all(
+            "Space Requirement",
+            filters={"parent": prog["name"]},
+            fields=["space_category", "space_name", "quantity", "unit_area_sqm",
+                    "total_area_sqm", "capacity", "priority", "floor"],
+            order_by="idx asc"
+        )
+
+    return programs

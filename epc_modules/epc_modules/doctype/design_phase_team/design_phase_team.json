@@ -1,0 +1,46 @@
+{
+  "name": "Design Phase Team",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "istable": 1,
+  "fields": [
+    {
+      "fieldname": "discipline",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Discipline",
+      "options": "Architectural\nStructural\nElectrical\nSanitary\nMechanical\nQuantity",
+      "reqd": 1
+    },
+    {
+      "fieldname": "role",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Role",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "professional",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Professional",
+      "options": "User"
+    },
+    {
+      "fieldname": "no_of_professionals",
+      "fieldtype": "Int",
+      "in_list_view": 1,
+      "label": "No. of Professionals",
+      "default": "1"
+    },
+    {
+      "fieldname": "hours_allocated",
+      "fieldtype": "Float",
+      "label": "Hours Allocated"
+    }
+  ]
+}
