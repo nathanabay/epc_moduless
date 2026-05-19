@@ -61,15 +61,15 @@ class AratKiloBOQImporter:
             rate = self._parse_num(row[self.COL_RATE])
             total = self._parse_num(row[self.COL_TOTAL])
 
-            # Detect section headers
+            # Detect section headers in description column (e.g., "01) DEMOLISHING WORK", "A-SUB STRUCTURE")
             section_match = re.match(r'^\s*0?(\d+)\)', description)
-            if section_match and not item_no:
+            if section_match:
                 section_id = section_match.group(1).zfill(2)
                 if section_id in self.SECTION_MAP:
                     current_section = section_id
                 continue
 
-            # Also check for section patterns like "3. CONCRETE WORK"
+            # Also check for section patterns like "02. EXCAVATION & EARTH WORK"
             section_pattern_match = re.match(r'^(\d+)\.\s+[A-Z]', description, re.IGNORECASE)
             if section_pattern_match and not qty:
                 section_id = section_pattern_match.group(1).zfill(2)
@@ -77,10 +77,19 @@ class AratKiloBOQImporter:
                     current_section = section_id
                 continue
 
-            # Skip subsection headers without quantities
-            subsection_match = re.match(r'^(\d+\.\d+)\s*,?\s*(.*)', item_no or description)
-            if subsection_match and not qty:
-                continue
+            # Handle sub-items: extract the sub-item letter from description when item_no is "a)" or "b)"
+            sub_item_letter = None
+            if qty is not None and not item_no:
+                sub_match = re.match(r'^([a-z])\)\s*(.*)', description)
+                if sub_match:
+                    sub_item_letter = sub_match.group(1).lower()
+                    # Keep description as-is (it's the actual description, not just sub-item label)
+
+            # Skip subsection headers (numeric item_no with no qty, like "3.02")
+            if item_no:
+                subsection_match = re.match(r'^(\d+\.\d+)\s*,?\s*(.*)', item_no)
+                if subsection_match and not qty:
+                    continue
 
             # Skip rows without valid description
             if not description or description in ("Description", "Total Carried To Summary", ""):
@@ -89,23 +98,40 @@ class AratKiloBOQImporter:
             if "Total Carried To Summary" in description:
                 continue
 
-            parsed_item_no = self._parse_item_no(item_no, description)
+            if qty is None:
+                continue
 
-            if parsed_item_no and qty is not None:
-                item = {
-                    "idx": idx,
-                    "item_no": parsed_item_no,
-                    "description": description[:500],
-                    "unit": unit or "NOS",
-                    "qty": qty,
-                    "rate": rate if rate and rate > 0 else 0,
-                    "total": total if total and total > 0 else (qty * rate if qty and rate else 0),
-                    "section": current_section,
-                    "wbs_code": self._generate_wbs_code(current_section, parsed_item_no),
-                    "wbs_name": description[:100],
-                }
-                items.append(item)
-                idx += 1
+            # Build item_no and wbs_code
+            if item_no:
+                parsed_item_no = self._parse_item_no(item_no, description, qty)
+            elif sub_item_letter:
+                parsed_item_no = sub_item_letter
+            else:
+                parsed_item_no = self._parse_item_no(item_no, description, qty)
+
+            # Skip rows that look like description continuations (no item_no, starts with lowercase or "material")
+            if not item_no and not sub_item_letter and parsed_item_no is None:
+                # Description-only rows without qty - these are sub-descriptions
+                if not qty or description.startswith(('material', 'Responsibility', 'Testing', 'a)', 'b)', 'c)')):
+                    continue
+
+            wbs_code = self._generate_wbs_code(current_section, parsed_item_no)
+            wbs_name = description[:100] if description else ""
+
+            item = {
+                "idx": idx,
+                "item_no": parsed_item_no,
+                "description": description[:500],
+                "unit": unit or "NOS",
+                "qty": qty,
+                "rate": rate if rate and rate > 0 else 0,
+                "total": total if total and total > 0 else (qty * rate if qty and rate else 0),
+                "section": current_section,
+                "wbs_code": wbs_code,
+                "wbs_name": wbs_name,
+            }
+            items.append(item)
+            idx += 1
 
         logger.info(f"Parsed {len(items)} BOQ items from CSV")
         self.items = items
@@ -127,23 +153,16 @@ class AratKiloBOQImporter:
         except ValueError:
             return None
 
-    def _parse_item_no(self, item_no, description):
+    def _parse_item_no(self, item_no, description, qty=None):
         if not item_no:
-            # Try to extract from description
-            match = re.match(r'^(\d+\.\d+\.?\d*)\s*,?\s*(.*)', description)
-            if match:
-                return match.group(1)
-            match = re.match(r'^(\d+\.\d+)\s*,?\s*(.*)', description)
-            if match:
-                return match.group(1)
             return None
 
         item_no = item_no.strip()
 
-        # Handle sub-items like "a)", "b)"
-        sub_match = re.match(r'^([a-z])\)\s*(.*)', item_no, re.IGNORECASE)
-        if sub_match:
-            return sub_match.group(1)
+        # Handle sub-items like "a)", "b)" (from item_no column when no qty)
+        sub_match = re.match(r'^([a-z])\)\s*$', item_no, re.IGNORECASE)
+        if sub_match and not qty:
+            return sub_match.group(1).lower()
 
         # Handle main items like "2.6", "3.01"
         match = re.match(r'^(\d+\.\d+\.?\d*|\d+\.\d+)', item_no)
@@ -158,13 +177,17 @@ class AratKiloBOQImporter:
         prefix = self.SECTION_MAP[section]["wbs_prefix"]
 
         if item_no:
+            # Check if it's a sub-item letter (a, b, c, etc.)
+            if re.match(r'^[a-z]$', item_no, re.IGNORECASE):
+                return f"{prefix}-{item_no.lower()}"
+
             # Extract numeric parts from item_no
             item_id = re.sub(r'[^\d.]', '', item_no)
             if item_id:
                 parts = item_id.split('.')
                 if len(parts) == 2:
                     return f"{prefix}-{parts[0]}{parts[1].zfill(2)}"
-                elif len(parts) == 3:
+                elif len(parts) >= 3:
                     return f"{prefix}-{parts[0]}{parts[1].zfill(2)}{parts[2].zfill(2)}"
         return prefix
 
@@ -182,16 +205,24 @@ class AratKiloBOQImporter:
 
         for item in items:
             try:
+                # Derive parent_wbs from wbs_code: "DEMO-01" -> "DEMO", "CONS-SUB-a" -> "CONS-SUB"
+                wbs_code = item.get("wbs_code", "")
+                if wbs_code and "-" in wbs_code:
+                    parent_wbs = wbs_code.rsplit("-", 1)[0]
+                else:
+                    parent_wbs = None
+
                 doc = frappe.get_doc({
                     "doctype": "Custom BOQ",
-                    "project": project_name,
+                    "parent": project_name,
+                    "parent_wbs": parent_wbs,
                     "item_code": item["item_no"],
                     "description": item["description"],
                     "boq_quantity": item["qty"],
                     "uom": item["unit"],
                     "unit_rate": item["rate"],
                     "total_value": item["total"],
-                    "wbs_code": item["wbs_code"],
+                    "wbs_code": wbs_code,
                     "measurement_method": "Unit-Based",
                 })
                 doc.insert(ignore_permissions=True, ignore_links=True)
