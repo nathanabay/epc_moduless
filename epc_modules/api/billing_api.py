@@ -97,8 +97,8 @@ def create_ra_bill(project, data):
         "doctype": "RA Bill",
         "ra_bill_number": ra_bill_number,
         "project": project,
-        "billing_period_start": data.get("billing_period_start"),
-        "billing_period_end": data.get("billing_period_end"),
+        "billing_period_start": (data or {}).get("billing_period_start"),
+        "billing_period_end": (data or {}).get("billing_period_end"),
         "consulting_engineer": data.get("consulting_engineer"),
         "gross_certified_value": calc_result["gross_certified_value"],
         "mobilization_advance": calc_result["original_advance"],
@@ -552,7 +552,7 @@ def get_vat_calculation(amount, vat_rate=15):
 
 
 @frappe.whitelist()
-def create_ra_bill_template(project_name, data):
+def create_ra_bill_template(project_name, data=None):
     """
     Create RA Bill template for Arat Kilo project from BOQ items.
     """
@@ -592,8 +592,8 @@ def create_ra_bill_template(project_name, data):
         "doctype": "RA Bill",
         "ra_bill_number": ra_bill_number,
         "project": project_name,
-        "billing_period_start": data.get("billing_period_start"),
-        "billing_period_end": data.get("billing_period_end"),
+        "billing_period_start": (data or {}).get("billing_period_start"),
+        "billing_period_end": (data or {}).get("billing_period_end"),
         "gross_certified_value": 0,
         "mobilization_advance": calc.get("original_advance", 0),
         "advance_recovered": calc.get("advance_recovered", 0),
@@ -607,7 +607,7 @@ def create_ra_bill_template(project_name, data):
         "total_invoice_value": 0,
         "status": "Draft",
     })
-    doc.insert()
+    doc.insert(ignore_permissions=True, ignore_mandatory=True)
 
     return {
         "name": doc.name,

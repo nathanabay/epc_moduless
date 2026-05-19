@@ -245,7 +245,7 @@ class RABillingCalculator:
 
         # Calculate retention
         retention_calc = RABillingCalculator.calculate_retention(
-            net_certified=net_certified,
+            net_certified_value=net_certified,
             retention_percentage=retention_percentage,
             project_completion=flt(project_doc.percent_complete or 0)
         )

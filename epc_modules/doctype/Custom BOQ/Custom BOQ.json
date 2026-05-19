@@ -2,7 +2,7 @@
   "name": "Custom BOQ",
   "doctype": "DocType",
   "module": "EPC Modules",
-  "autoname": "field:parent_wbs",
+  "autoname": "hash",
   "is_submittable": 1,
   "editable_grid": 1,
   "track_changes": 1,

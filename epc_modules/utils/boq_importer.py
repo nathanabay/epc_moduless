@@ -111,9 +111,20 @@ class AratKiloBOQImporter:
 
             # Skip rows that look like description continuations (no item_no, starts with lowercase or "material")
             if not item_no and not sub_item_letter and parsed_item_no is None:
-                # Description-only rows without qty - these are sub-descriptions
-                if not qty or description.startswith(('material', 'Responsibility', 'Testing', 'a)', 'b)', 'c)')):
+                # Description-only rows without item number - these are sub-descriptions or section details
+                if description.startswith(('material', 'Responsibility', 'Testing')):
                     continue
+                # Also skip rows where item_no is empty AND description starts with uppercase letter
+                # but parsed_item_no is None (no numeric pattern found) - these are section-level descriptions
+                if re.match(r'^[A-Z]', description) and not re.search(r'\d', description[:20]):
+                    continue
+                # Skip rows with description but no identifiable item_no and no qty was set
+                if not description[0].isdigit() if description else True:
+                    continue
+
+            # Must have a valid item_no or sub_item_letter
+            if not parsed_item_no:
+                continue
 
             wbs_code = self._generate_wbs_code(current_section, parsed_item_no)
             wbs_name = description[:100] if description else ""
