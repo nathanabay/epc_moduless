@@ -210,9 +210,16 @@ class WBSStructureGenerator:
         Returns:
             Created WBS element
         """
-        # Get parent to determine architecture
-        parent = frappe.get_doc("WBS Item", {"wbs_code": parent_wbs})
-        architecture = parent.architecture or WBS_PHASE_BASED
+        # Lock the parent row and get architecture to determine WBS type
+        parent_rows = frappe.get_all(
+            "WBS Item",
+            filters={"wbs_code": parent_wbs},
+            fields=["name", "architecture"],
+            limit=1
+        )
+        if not parent_rows:
+            frappe.throw(_("Parent WBS Item with code {0} not found").format(parent_wbs))
+        architecture = parent_rows[0].architecture or WBS_PHASE_BASED
 
         # Lock the parent row to prevent race conditions on concurrent inserts
         frappe.db.sql(

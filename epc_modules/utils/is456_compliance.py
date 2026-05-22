@@ -193,6 +193,8 @@ class IS456ComplianceValidator:
         strength = cube_doc.compressive_strength_mpa
 
         if not strength and cube_doc.crushing_load_kn and cube_doc.size_mm:
+            if cube_doc.size_mm == 0:
+                frappe.throw(_("Cube size (size_mm) cannot be zero for cube test {0}").format(cube_doc.name))
             # Calculate: stress = load / area (area = size²)
             area_mm2 = cube_doc.size_mm ** 2
             strength = (cube_doc.crushing_load_kn * 1000) / area_mm2  # Convert kN to N
@@ -881,4 +883,5 @@ class MaterialRegisterManager:
         doc.elongation_percent = 14.5  # IS 1786 minimum
         doc.bend_rebend_test = 1
 
-        doc.is_approved = 1  # Auto-approve if certificate attached
+        # Auto-approve only if test certificate is actually attached
+        doc.is_approved = 1 if doc.get("test_certificate") else 0

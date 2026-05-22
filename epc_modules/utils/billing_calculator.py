@@ -230,6 +230,14 @@ class RABillingCalculator:
             WHERE project = %s AND docstatus = 1
         """, project)[0][0] or 0
 
+        # Sum of actual advance recoveries from all previous RA bills (current bill excluded)
+        prev_advance_recovered = frappe.db.sql("""
+            SELECT SUM(advance_recovered)
+            FROM `tabRA Bill`
+            WHERE project = %s AND docstatus = 1
+            AND creation < (SELECT MAX(creation) FROM `tabRA Bill` WHERE project = %s AND docstatus = 1)
+        """, (project, project))[0][0] or 0
+
         current_certified = gross_certified
         new_cumulative = cumulative_certified + current_certified
 
@@ -272,9 +280,9 @@ class RABillingCalculator:
             "cumulative_certified_value": flt(new_cumulative, 2),
             "project_completion_pct": flt(project_completion, 2),
 
-            # Advance recovery
+            # Advance recovery — sum of actual recoveries from previous RA bills plus current period
             "advance_recovered": advance_calc["advance_recovery"],
-            "cumulative_advance_recovered": flt(cumulative_certified + advance_calc["advance_recovery"], 2),
+            "cumulative_advance_recovered": flt(prev_advance_recovered + advance_calc["advance_recovery"], 2),
             "remaining_advance": advance_calc["remaining_advance"],
             "advance_status": advance_calc["status"],
 

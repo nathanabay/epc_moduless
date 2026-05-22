@@ -2,8 +2,3 @@
 # License: MIT
 
 import frappe
-from frappe.model.document import Document
-
-
-class ClaimRegister(Document):
-    pass

@@ -4,13 +4,14 @@ import os
 from pathlib import Path
 
 
-def install_doctypes():
-    # Set site path
-    os.chdir("/home/frappe/frappe-bench/sites")
-    frappe.init(site="erp.bespo.et")
+def install_doctypes(site=None):
+    # Set site path dynamically
+    site = site or frappe.local.site
+    os.chdir(frappe.get_site_path("sites"))
+    frappe.init(site=site)
     frappe.connect()
 
-    base_path = Path("/home/frappe/frappe-bench/apps/epc_bespo/epc_modules/epc_modules/doctype")
+    base_path = Path(frappe.get_app_path("epc_bespo")) / "epc_modules" / "doctype"
 
     # Child doctypes - stored in parent folders
     child_doctypes = {

@@ -2,7 +2,6 @@ import frappe
 import random
 from datetime import datetime, timedelta
 
-@frappe.whitelist()
 def run_demo_data_creation():
     """API endpoint to run demo data creation."""
     frappe.has_permission("Project", ptype="create", throw=True)

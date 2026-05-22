@@ -284,7 +284,7 @@ const epc_dashboard = {
         const ncrSelect = document.getElementById('ncr-project-filter');
 
         const projectOptions = options.map(p =>
-            `<option value="${p.name}">${p.project_name || p.name}</option>`
+            `<option value="${escape_html(p.name)}">${escape_html(p.project_name || p.name)}</option>`
         ).join('');
 
         select.innerHTML = '<option value="">All Projects</option>' + projectOptions;
@@ -505,10 +505,10 @@ const epc_dashboard = {
     renderProgressBar(project) {
         const color = this.getProgressColor(project.percent_complete);
         return `
-            <div class="progress-item" onclick="location.href='/app/project/${project.name}'">
+            <div class="progress-item" onclick="location.href='/app/project/${encodeURIComponent(project.name)}'">
                 <div class="progress-info">
-                    <span class="project-name">${project.project_name || project.name}</span>
-                    <span class="project-typology">${project.project_typology || 'Standard'}</span>
+                    <span class="project-name">${escape_html(project.project_name || project.name)}</span>
+                    <span class="project-typology">${escape_html(project.project_typology || 'Standard')}</span>
                 </div>
                 <div class="progress-bar-wrapper">
                     <div class="progress-bar" style="width: ${project.percent_complete}%; background: ${color};">

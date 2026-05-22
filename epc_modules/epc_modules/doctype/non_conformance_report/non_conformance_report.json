@@ -79,7 +79,7 @@
       "fieldtype": "Link",
       "label": "Identified By",
       "options": "User",
-      "default": " frappe.session.user"
+      "default": "frappe.session.user"
     },
     {
       "fieldname": "section_break_10",

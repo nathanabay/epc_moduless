@@ -1,88 +1,87 @@
 {
- "actions": [],
- "allow_rename": 1,
- "creation": "2026-05-21 20:37:42.151643",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "task_id",
-  "task_name",
-  "description",
-  "status",
-  "column_break_timing",
-  "assigned_to",
-  "due_date",
-  "completed_date",
-  "remarks"
- ],
- "fields": [
-  {
-   "fieldname": "task_id",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Task ID"
-  },
-  {
-   "fieldname": "task_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Task Name",
-   "reqd": 1
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Small Text",
-   "label": "Description"
-  },
-  {
-   "default": "Pending",
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Status",
-   "options": "Pending\nIn Progress\nCompleted\nBlocked"
-  },
-  {
-   "fieldname": "column_break_timing",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "assigned_to",
-   "fieldtype": "Link",
-   "label": "Assigned To",
-   "options": "User"
-  },
-  {
-   "fieldname": "due_date",
-   "fieldtype": "Date",
-   "label": "Due Date"
-  },
-  {
-   "fieldname": "completed_date",
-   "fieldtype": "Date",
-   "label": "Completed Date"
-  },
-  {
-   "fieldname": "remarks",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  }
- ],
- "grid_page_length": 50,
- "index_web_pages_for_search": 1,
- "istable": 1,
- "links": [],
- "modified": "2026-05-21 20:37:42.151643",
- "modified_by": "Administrator",
- "module": "EPC Modules",
- "name": "Work Package Task",
- "owner": "Administrator",
- "permissions": [],
- "row_format": "Dynamic",
- "rows_threshold_for_grid_search": 20,
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2026-05-21 20:37:42.151643",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "task_id",
+    "task_name",
+    "description",
+    "status",
+    "column_break_timing",
+    "assigned_to",
+    "due_date",
+    "completed_date",
+    "remarks"
+  ],
+  "fields": [
+    {
+      "fieldname": "task_id",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Task ID"
+    },
+    {
+      "fieldname": "task_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Task Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "label": "Description"
+    },
+    {
+      "default": "Pending",
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Pending\nIn Progress\nCompleted\nBlocked"
+    },
+    {
+      "fieldname": "column_break_timing",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "assigned_to",
+      "fieldtype": "Link",
+      "label": "Assigned To",
+      "options": "User"
+    },
+    {
+      "fieldname": "due_date",
+      "fieldtype": "Date",
+      "label": "Due Date"
+    },
+    {
+      "fieldname": "completed_date",
+      "fieldtype": "Date",
+      "label": "Completed Date"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "grid_page_length": 50,
+  "index_web_pages_for_search": 1,
+  "istable": 1,
+  "links": [],
+  "modified": "2026-05-21 20:37:42.151643",
+  "modified_by": "Administrator",
+  "module": "EPC Modules",
+  "name": "Work Package Task",
+  "owner": "Administrator",
+  "row_format": "Dynamic",
+  "rows_threshold_for_grid_search": 20,
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
 }

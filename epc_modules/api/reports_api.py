@@ -1330,7 +1330,7 @@ def get_rfi_age_analysis(project=None, from_date=None, to_date=None):
         if rfi.response_date:
             rfi.response_days = date_diff(rfi.response_date, rfi.raised_date) if rfi.raised_date else 0
         elif rfi.due_date:
-            days_until = date_diff(rfi.due_date, get_today()) if rfi.due_date else 0
+            days_until = date_diff(rfi.due_date, today()) if rfi.due_date else 0
             rfi.days_until_due = days_until
             if days_until < 0:
                 rfi.overdue_days = abs(days_until)
@@ -1971,7 +1971,7 @@ def get_work_package_status_report(project=None):
     from frappe.utils import today as get_today, date_diff
     for pkg in packages:
         if pkg.planned_end and not pkg.actual_end:
-            pkg.delay_days = date_diff(pkg.planned_end, get_today()) if pkg.planned_end and pkg.planned_end < get_today() else 0
+            pkg.delay_days = date_diff(pkg.planned_end, today()) if pkg.planned_end and pkg.planned_end < today() else 0
         else:
             pkg.delay_days = 0
 

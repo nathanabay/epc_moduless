@@ -27,13 +27,13 @@
       },
       {
         "state": "Completed",
-        "docstatus": 2,
+        "docstatus": 1,
         "allow_edit": "System Manager",
         "modified": "2024-01-15 10:00:00"
       },
       {
         "state": "Cancelled",
-        "docstatus": 2,
+        "docstatus": 1,
         "allow_edit": "System Manager",
         "modified": "2024-01-15 10:00:00"
       }
@@ -43,7 +43,7 @@
         "state": "Draft",
         "action": "Submit",
         "next_state": "Active",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -51,7 +51,7 @@
         "state": "Active",
         "action": "Hold",
         "next_state": "On Hold",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -59,7 +59,7 @@
         "state": "On Hold",
         "action": "Resume",
         "next_state": "Active",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -67,7 +67,7 @@
         "state": "Active",
         "action": "Complete",
         "next_state": "Completed",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -75,7 +75,7 @@
         "state": "Draft",
         "action": "Cancel",
         "next_state": "Cancelled",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       }
@@ -122,7 +122,7 @@
       },
       {
         "state": "Paid",
-        "docstatus": 2,
+        "docstatus": 1,
         "allow_edit": "System Manager",
         "modified": "2024-01-15 10:00:00"
       }
@@ -132,7 +132,7 @@
         "state": "Draft",
         "action": "Submit",
         "next_state": "Submitted",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Finance Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -140,7 +140,7 @@
         "state": "Submitted",
         "action": "Under Review",
         "next_state": "Under Review",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Finance Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -148,7 +148,7 @@
         "state": "Under Review",
         "action": "Certify",
         "next_state": "Certified",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Finance Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -156,7 +156,7 @@
         "state": "Certified",
         "action": "Invoice",
         "next_state": "Invoiced",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Finance Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -164,7 +164,7 @@
         "state": "Invoiced",
         "action": "Mark Paid",
         "next_state": "Paid",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Finance Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       }
@@ -209,7 +209,7 @@
         "state": "Open",
         "action": "Start Investigation",
         "next_state": "In Progress",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -217,7 +217,7 @@
         "state": "In Progress",
         "action": "Submit for Review",
         "next_state": "Under Review",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       },
@@ -225,7 +225,7 @@
         "state": "Under Review",
         "action": "Approve",
         "next_state": "Closed",
-        "allowed": "System Manager",
+        "allowed": "System Manager, Projects User, Project Manager",
         "allow_self_approval": 0,
         "modified": "2024-01-15 10:00:00"
       }
@@ -233,9 +233,8 @@
   },
   {
     "name": "epc_project_list_view",
-    "doctype": "List View Settings",
-    "name_field": "name",
     "doctype": "Project",
+    "name_field": "name",
     "is_default": 1,
     "label": "EPC Project List",
     "fields": [

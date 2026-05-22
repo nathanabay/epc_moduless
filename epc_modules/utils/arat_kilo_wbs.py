@@ -139,8 +139,13 @@ def create_arat_kilo_wbs_structure(project_name):
             frappe.log_error(f"WBS Creation Error: {e}", "Arat Kilo WBS")
             raise
     else:
-        root = frappe.get_doc("WBS Item", {"wbs_code": project_code})
-        project_code = root.wbs_code
+        # Get existing root WBS Item by wbs_code
+        root_rows = frappe.get_all("WBS Item", filters={"wbs_code": project_code}, fields=["name"], limit=1)
+        if root_rows:
+            root = frappe.get_doc("WBS Item", root_rows[0].name)
+            project_code = root.wbs_code
+        else:
+            root = None
 
     created = []
 
@@ -171,8 +176,13 @@ def create_arat_kilo_wbs_structure(project_name):
                 raise
             created.append({"wbs_code": phase_code, "wbs_name": phase["name"], "level": 2})
         else:
-            phase_doc = frappe.get_doc("WBS Item", {"wbs_code": phase_code})
-            phase_code = phase_doc.wbs_code
+            # Get existing phase WBS Item by wbs_code
+            phase_rows = frappe.get_all("WBS Item", filters={"wbs_code": phase_code}, fields=["name"], limit=1)
+            if phase_rows:
+                phase_doc = frappe.get_doc("WBS Item", phase_rows[0].name)
+                phase_code = phase_doc.wbs_code
+            else:
+                phase_doc = None
 
         for child_idx, child in enumerate(phase.get("children", [])):
             child_code = child["code_prefix"]

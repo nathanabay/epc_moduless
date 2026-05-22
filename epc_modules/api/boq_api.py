@@ -262,10 +262,7 @@ def import_boq_from_csv(project_name, csv_path=None):
     frappe.has_permission("Project", "write", project_name, throw=True)
 
     if csv_path is None:
-        csv_path = os.path.join(
-            os.path.dirname(frappe.get_app_path("epc_bespo")),
-            "Arat Kilo  BOQ for BID.csv"
-        )
+        csv_path = frappe.get_site_path("Arat Kilo  BOQ for BID.csv")
 
     if not os.path.exists(csv_path):
         frappe.throw(_("BOQ CSV file not found at {0}").format(csv_path))

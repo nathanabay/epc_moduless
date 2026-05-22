@@ -1,64 +1,63 @@
 {
- "actions": [],
- "allow_rename": 1,
- "autoname": "field:part_name",
- "creation": "2026-05-21 20:38:12.124323",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "part_name",
-  "part_number",
-  "quantity",
-  "unit_rate",
-  "amount"
- ],
- "fields": [
-  {
-   "fieldname": "part_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Part Name",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "part_number",
-   "fieldtype": "Data",
-   "label": "Part Number"
-  },
-  {
-   "fieldname": "quantity",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Quantity",
-   "reqd": 1
-  },
-  {
-   "fieldname": "unit_rate",
-   "fieldtype": "Currency",
-   "label": "Unit Rate"
-  },
-  {
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "label": "Amount",
-   "precision": "2"
-  }
- ],
- "grid_page_length": 50,
- "index_web_pages_for_search": 1,
- "istable": 1,
- "links": [],
- "modified": "2026-05-21 20:38:12.124323",
- "modified_by": "Administrator",
- "module": "EPC Modules",
- "name": "Machine Repair Part",
- "owner": "Administrator",
- "permissions": [],
- "row_format": "Dynamic",
- "rows_threshold_for_grid_search": 20,
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": []
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "field:part_name",
+  "creation": "2026-05-21 20:38:12.124323",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "part_name",
+    "part_number",
+    "quantity",
+    "unit_rate",
+    "amount"
+  ],
+  "fields": [
+    {
+      "fieldname": "part_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Part Name",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "part_number",
+      "fieldtype": "Data",
+      "label": "Part Number"
+    },
+    {
+      "fieldname": "quantity",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Quantity",
+      "reqd": 1
+    },
+    {
+      "fieldname": "unit_rate",
+      "fieldtype": "Currency",
+      "label": "Unit Rate"
+    },
+    {
+      "fieldname": "amount",
+      "fieldtype": "Currency",
+      "label": "Amount",
+      "precision": "2"
+    }
+  ],
+  "grid_page_length": 50,
+  "index_web_pages_for_search": 1,
+  "istable": 1,
+  "links": [],
+  "modified": "2026-05-21 20:38:12.124323",
+  "modified_by": "Administrator",
+  "module": "EPC Modules",
+  "name": "Machine Repair Part",
+  "owner": "Administrator",
+  "row_format": "Dynamic",
+  "rows_threshold_for_grid_search": 20,
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
 }

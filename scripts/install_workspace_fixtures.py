@@ -4,12 +4,13 @@ import os
 from pathlib import Path
 
 
-def install_workspace_fixtures():
-    os.chdir("/home/frappe/frappe-bench/sites")
-    frappe.init(site="erp.bespo.et")
+def install_workspace_fixtures(site=None):
+    site = site or frappe.local.site
+    os.chdir(frappe.get_site_path("sites"))
+    frappe.init(site=site)
     frappe.connect()
 
-    fixtures_path = Path("/home/frappe/frappe-bench/apps/epc_bespo/epc_modules/fixtures")
+    fixtures_path = Path(frappe.get_app_path("epc_bespo")) / "fixtures"
 
     # Install workspaces
     workspaces_file = fixtures_path / "workspaces.json"
