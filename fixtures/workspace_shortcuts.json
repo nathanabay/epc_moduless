@@ -178,5 +178,555 @@
     "type": "DocType",
     "link_to": "EPC Document Template",
     "label": "EPC Document Template"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 1,
+    "type": "DocType",
+    "link_to": "Estimation Item",
+    "label": "Estimation Item"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 2,
+    "type": "DocType",
+    "link_to": "Change Order",
+    "label": "Change Order"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 3,
+    "type": "DocType",
+    "link_to": "RA Bill",
+    "label": "RA Bill"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 4,
+    "type": "DocType",
+    "link_to": "RA Bill MB Reference",
+    "label": "RA Bill MB Reference"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 5,
+    "type": "DocType",
+    "link_to": "Measurement Book",
+    "label": "Measurement Book"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 6,
+    "type": "DocType",
+    "link_to": "MB Entry",
+    "label": "MB Entry"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 7,
+    "type": "DocType",
+    "link_to": "Claim Register",
+    "label": "Claim Register"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 8,
+    "type": "DocType",
+    "link_to": "Subcontractor Profile",
+    "label": "Subcontractor Profile"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Finance & Billing",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 9,
+    "type": "DocType",
+    "link_to": "Subcontractor Work Order",
+    "label": "Subcontractor Work Order"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 1,
+    "type": "DocType",
+    "link_to": "HSE Incident",
+    "label": "HSE Incident"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 2,
+    "type": "DocType",
+    "link_to": "Safety Inspection",
+    "label": "Safety Inspection"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 3,
+    "type": "DocType",
+    "link_to": "Toolbox Talk Record",
+    "label": "Toolbox Talk Record"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 4,
+    "type": "DocType",
+    "link_to": "Permit Type",
+    "label": "Permit Type"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 5,
+    "type": "DocType",
+    "link_to": "Work Permit",
+    "label": "Work Permit"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 6,
+    "type": "DocType",
+    "link_to": "PPE Type",
+    "label": "PPE Type"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 7,
+    "type": "DocType",
+    "link_to": "Safety Observation",
+    "label": "Safety Observation"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 8,
+    "type": "DocType",
+    "link_to": "Method Statement",
+    "label": "Method Statement"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 9,
+    "type": "DocType",
+    "link_to": "Site Attendance",
+    "label": "Site Attendance"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 10,
+    "type": "DocType",
+    "link_to": "Visitor Log",
+    "label": "Visitor Log"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 11,
+    "type": "DocType",
+    "link_to": "Toolbox Talk Attendee",
+    "label": "Toolbox Talk Attendee"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 12,
+    "type": "DocType",
+    "link_to": "Permit Recipient",
+    "label": "Permit Recipient"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 13,
+    "type": "DocType",
+    "link_to": "Attendance Entry",
+    "label": "Attendance Entry"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 14,
+    "type": "DocType",
+    "link_to": "Project Inspection Plan",
+    "label": "Project Inspection Plan"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 15,
+    "type": "DocType",
+    "link_to": "Inspection Record",
+    "label": "Inspection Record"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 16,
+    "type": "DocType",
+    "link_to": "Inspection Hold Point",
+    "label": "Inspection Hold Point"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 17,
+    "type": "DocType",
+    "link_to": "Non-Conformance Report",
+    "label": "Non-Conformance Report"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 18,
+    "type": "DocType",
+    "link_to": "Formwork Inspection",
+    "label": "Formwork Inspection"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 19,
+    "type": "DocType",
+    "link_to": "Concrete Mix Design",
+    "label": "Concrete Mix Design"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 20,
+    "type": "DocType",
+    "link_to": "Cube Test Result",
+    "label": "Cube Test Result"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 21,
+    "type": "DocType",
+    "link_to": "Curing Record",
+    "label": "Curing Record"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 22,
+    "type": "DocType",
+    "link_to": "Curing Check Entry",
+    "label": "Curing Check Entry"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 23,
+    "type": "DocType",
+    "link_to": "Steel Reinforcement Register",
+    "label": "Steel Reinforcement Register"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "HSE & Safety",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 24,
+    "type": "DocType",
+    "link_to": "Cement Register",
+    "label": "Cement Register"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 1,
+    "type": "DocType",
+    "link_to": "RFI",
+    "label": "RFI"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 2,
+    "type": "DocType",
+    "link_to": "RFI Type",
+    "label": "RFI Type"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 3,
+    "type": "DocType",
+    "link_to": "Transmittal Item",
+    "label": "Transmittal Item"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 4,
+    "type": "DocType",
+    "link_to": "Shop Drawing",
+    "label": "Shop Drawing"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 5,
+    "type": "DocType",
+    "link_to": "Gate Pass Item",
+    "label": "Gate Pass Item"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 6,
+    "type": "DocType",
+    "link_to": "Item Request Item",
+    "label": "Item Request Item"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 7,
+    "type": "DocType",
+    "link_to": "Work Package Task",
+    "label": "Work Package Task"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 8,
+    "type": "DocType",
+    "link_to": "Equipment Register",
+    "label": "Equipment Register"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 9,
+    "type": "DocType",
+    "link_to": "Equipment Maintenance Schedule",
+    "label": "Equipment Maintenance Schedule"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 10,
+    "type": "DocType",
+    "link_to": "Equipment Movement",
+    "label": "Equipment Movement"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 11,
+    "type": "DocType",
+    "link_to": "Equipment Utilization Log",
+    "label": "Equipment Utilization Log"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 12,
+    "type": "DocType",
+    "link_to": "Machine Repair Part",
+    "label": "Machine Repair Part"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 13,
+    "type": "DocType",
+    "link_to": "Risk Register",
+    "label": "Risk Register"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 14,
+    "type": "DocType",
+    "link_to": "Risk Response Action",
+    "label": "Risk Response Action"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 15,
+    "type": "DocType",
+    "link_to": "Approval Level",
+    "label": "Approval Level"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 16,
+    "type": "DocType",
+    "link_to": "Approval History",
+    "label": "Approval History"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 17,
+    "type": "DocType",
+    "link_to": "Interim Payment Certificate",
+    "label": "Interim Payment Certificate"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 18,
+    "type": "DocType",
+    "link_to": "IPC Line",
+    "label": "IPC Line"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 19,
+    "type": "DocType",
+    "link_to": "Job Type",
+    "label": "Job Type"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Operations & Contracts",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 20,
+    "type": "DocType",
+    "link_to": "Job Type Breakdown Rate",
+    "label": "Job Type Breakdown Rate"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Reports & Analytics",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 1,
+    "type": "DocType",
+    "link_to": "Financial Report Wizard",
+    "label": "Financial Report Wizard"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Reports & Analytics",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 2,
+    "type": "DocType",
+    "link_to": "Project Report Wizard",
+    "label": "Project Report Wizard"
   }
 ]

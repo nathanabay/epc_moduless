@@ -1,6 +1,19 @@
 [
   {
     "doctype": "Workspace",
+    "name": "EPC Management",
+    "label": "EPC Management",
+    "title": "EPC Management",
+    "module": "EPC Modules",
+    "icon": "icon-ePC",
+    "is_hidden": 0,
+    "public": 1,
+    "indicator_color": null,
+    "parent_page": null,
+    "sequence_id": 0
+  },
+  {
+    "doctype": "Workspace",
     "name": "Project & Planning",
     "label": "Project & Planning",
     "title": "Project & Planning",
@@ -12,5 +25,61 @@
     "parent_page": "EPC Management",
     "content": "[{\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Project Management</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Typology\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Milestone\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Site Zone\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>WBS & Costing</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"WBS Item\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Custom BOQ\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cost Line Breakdown\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Budget Line\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Progress Tracking</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Daily Progress Report\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"DPR Entry\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Design</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Design Phase\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Design Phase Team\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Design Deliverable\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Master Inspection Template\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Space Requirement\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Documentation</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shop Drawing\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Transmittal\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"EPC Document Template\", \"col\": 4}}]",
     "sequence_id": 15
+  },
+  {
+    "doctype": "Workspace",
+    "name": "Finance & Billing",
+    "label": "Finance & Billing",
+    "title": "Finance & Billing",
+    "module": "EPC Modules",
+    "icon": "icon-money",
+    "is_hidden": 0,
+    "public": 1,
+    "indicator_color": "green",
+    "parent_page": "EPC Management",
+    "content": "[{\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Contract & Billing</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Estimation Item\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Change Order\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"RA Bill\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"RA Bill MB Reference\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Measurement & Claims</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Measurement Book\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"MB Entry\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Claim Register\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Subcontractors</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Subcontractor Profile\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Subcontractor Work Order\", \"col\": 4}}]",
+    "sequence_id": 16
+  },
+  {
+    "doctype": "Workspace",
+    "name": "HSE & Safety",
+    "label": "HSE & Safety",
+    "title": "HSE & Safety",
+    "module": "EPC Modules",
+    "icon": "icon-shield",
+    "is_hidden": 0,
+    "public": 1,
+    "indicator_color": "red",
+    "parent_page": "EPC Management",
+    "content": "[{\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Incidents & Inspections</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"HSE Incident\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Safety Inspection\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Toolbox Talk Record\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Permits & Compliance</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Permit Type\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Work Permit\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"PPE Type\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Safety Observation\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Method Statement\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Attendance</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Site Attendance\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Visitor Log\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Toolbox Talk Attendee\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Permit Recipient\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance Entry\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Quality Control</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Inspection Plan\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Inspection Record\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Inspection Hold Point\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Non-Conformance Report\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Formwork Inspection\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Materials Testing</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Concrete Mix Design\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cube Test Result\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Curing Record\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Curing Check Entry\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Steel Reinforcement Register\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cement Register\", \"col\": 4}}]",
+    "sequence_id": 17
+  },
+  {
+    "doctype": "Workspace",
+    "name": "Operations & Contracts",
+    "label": "Operations & Contracts",
+    "title": "Operations & Contracts",
+    "module": "EPC Modules",
+    "icon": "icon-construction",
+    "is_hidden": 0,
+    "public": 1,
+    "indicator_color": "orange",
+    "parent_page": "EPC Management",
+    "content": "[{\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Document Control</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"RFI\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"RFI Type\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Transmittal Item\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shop Drawing\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Gate Pass Item\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Item Request Item\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Work Package Task\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Equipment Management</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Register\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Maintenance Schedule\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Movement\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Utilization Log\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Machine Repair Part\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Risk & Approvals</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Risk Register\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Risk Response Action\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Approval Level\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Approval History\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Payment Certificates</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Interim Payment Certificate\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"IPC Line\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Job Type\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Job Type Breakdown Rate\", \"col\": 4}}]",
+    "sequence_id": 18
+  },
+  {
+    "doctype": "Workspace",
+    "name": "Reports & Analytics",
+    "label": "Reports & Analytics",
+    "title": "Reports & Analytics",
+    "module": "EPC Modules",
+    "icon": "icon-chart",
+    "is_hidden": 0,
+    "public": 1,
+    "indicator_color": "purple",
+    "parent_page": "EPC Management",
+    "content": "[{\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Financial Report Wizard\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Report Wizard\", \"col\": 4}}]",
+    "sequence_id": 19
   }
 ]

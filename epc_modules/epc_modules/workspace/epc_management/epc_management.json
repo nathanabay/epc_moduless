@@ -1,176 +1,27 @@
 {
- "charts": [
-  {
-   "chart_name": "epc_project_progress"
-  }
- ],
- "content": "[{\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Key Metrics</b></span>\", \"col\": 12}}, {\"type\": \"number_card\", \"data\": {\"number_card_name\": \"epc_active_projects\", \"col\": 4}}, {\"type\": \"number_card\", \"data\": {\"number_card_name\": \"epc_pending_ra_bills\", \"col\": 4}}, {\"type\": \"number_card\", \"data\": {\"number_card_name\": \"epc_open_ncrs\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"chart\", \"data\": {\"chart_name\": \"epc_project_progress\", \"col\": 12}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Project</b></span>\", \"col\": 12}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Typology\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Site Zone\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"WBS Item\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Building Program\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Milestone\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>BOQ &amp; Cost</b></span>\", \"col\": 12}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Custom BOQ\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Material Plan\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Risk Register\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Progress</b></span>\", \"col\": 12}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"DPR Entry\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Daily Progress Report\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Billing</b></span>\", \"col\": 12}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"RA Bill\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Measurement Book\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Quality</b></span>\", \"col\": 12}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Concrete Mix Design\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cube Test Result\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Curing Record\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Formwork Inspection\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Non-Conformance Report\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Equipment</b></span>\", \"col\": 12}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Register\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Maintenance\", \"col\": 3}}]",
- "creation": "2026-05-19 21:36:32.523124",
+ "charts": [],
+ "content": "[]",
+ "creation": "2026-05-22 17:45:23.916284",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "hide_custom": 0,
- "icon": "octicon octicon-project",
+ "icon": "icon-ePC",
  "idx": 0,
+ "indicator_color": "green",
  "is_hidden": 0,
  "label": "EPC Management",
- "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Project Reports",
-   "link_count": 0,
-   "link_to": "Project",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  }
- ],
- "modified": "2026-05-19 23:11:17.838767",
+ "links": [],
+ "modified": "2026-05-22 17:45:23.916284",
  "modified_by": "Administrator",
  "module": "EPC Modules",
  "name": "EPC Management",
- "number_cards": [
-  {
-   "number_card_name": "epc_active_projects"
-  },
-  {
-   "number_card_name": "epc_pending_ra_bills"
-  },
-  {
-   "number_card_name": "epc_open_ncrs"
-  }
- ],
+ "number_cards": [],
  "owner": "Administrator",
  "public": 1,
  "quick_lists": [],
- "roles": [
-  {
-   "role": "All"
-  }
- ],
- "sequence_id": 15.0,
- "shortcuts": [
-  {
-   "doc_view": "",
-   "label": "Project",
-   "link_to": "Project",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Project Typology",
-   "link_to": "Project Typology",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Site Zone",
-   "link_to": "Site Zone",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Custom BOQ",
-   "link_to": "Custom BOQ",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "WBS Item",
-   "link_to": "WBS Item",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "DPR Entry",
-   "link_to": "DPR Entry",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Daily Progress Report",
-   "link_to": "Daily Progress Report",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "RA Bill",
-   "link_to": "RA Bill",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Measurement Book",
-   "link_to": "Measurement Book",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Non-Conformance Report",
-   "link_to": "Non-Conformance Report",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Concrete Mix Design",
-   "link_to": "Concrete Mix Design",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Cube Test Result",
-   "link_to": "Cube Test Result",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Curing Record",
-   "link_to": "Curing Record",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Formwork Inspection",
-   "link_to": "Formwork Inspection",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Equipment Register",
-   "link_to": "Equipment Register",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Equipment Maintenance",
-   "link_to": "Equipment Maintenance Schedule",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Risk Register",
-   "link_to": "Risk Register",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Material Plan",
-   "link_to": "Material Plan",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Building Program",
-   "link_to": "Building Program",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Project Milestone",
-   "link_to": "Project Milestone",
-   "type": "DocType"
-  }
- ],
+ "roles": [],
+ "sequence_id": 0.0,
+ "shortcuts": [],
  "title": "EPC Management"
 }
