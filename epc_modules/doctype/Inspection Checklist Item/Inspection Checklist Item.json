@@ -1,0 +1,14 @@
+{
+  "doctype": "DocType",
+  "name": "Inspection Checklist Item",
+  "module": "EPC Modules",
+  "istable": 1,
+  "editable_grid": 1,
+  "fields": [
+    {"fieldname": "item_number", "fieldtype": "Int", "label": "Item #", "in_list_view": 1},
+    {"fieldname": "checklist_item", "fieldtype": "Data", "label": "Checklist Item", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "reference", "fieldtype": "Data", "label": "Reference (Clause/Standard)"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Complied\nNot Complied\nN/A\nNot Observed", "in_list_view": 1},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+  ]
+}

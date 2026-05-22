@@ -1,0 +1,29 @@
+{
+  "doctype": "DocType",
+  "name": "Visitor Log",
+  "module": "EPC Modules",
+  "autoname": "field:visitor_id",
+  "fields": [
+    {"fieldname": "visitor_id", "fieldtype": "Data", "label": "Visitor ID", "read_only": 1, "reqd": 1},
+    {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "pre_registered", "fieldtype": "Check", "label": "Pre-Registered"},
+    {"fieldname": "visitor_name", "fieldtype": "Data", "label": "Visitor Name", "reqd": 1},
+    {"fieldname": "company", "fieldtype": "Data", "label": "Company"},
+    {"fieldname": "email", "fieldtype": "Data", "label": "Email"},
+    {"fieldname": "phone", "fieldtype": "Data", "label": "Phone"},
+    {"fieldname": "purpose", "fieldtype": "Select", "label": "Purpose", "options": "Site Inspection\nMeeting\nDelivery\nConsultation\nOthers"},
+    {"fieldname": "entry_date", "fieldtype": "Datetime", "label": "Entry Date & Time", "reqd": 1},
+    {"fieldname": "exit_date", "fieldtype": "Datetime", "label": "Exit Date & Time"},
+    {"fieldname": "area_visited", "fieldtype": "Data", "label": "Area Visited"},
+    {"fieldname": "badge_number", "fieldtype": "Data", "label": "Badge Number"},
+    {"fieldname": "security_induction", "fieldtype": "Check", "label": "Security Induction Completed"},
+    {"fieldname": "host_name", "fieldtype": "Link", "label": "Host", "options": "User"},
+    {"fieldname": "remarks", "fieldtype": "Text", "label": "Remarks"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "In Site\nExited", "default": "In Site", "in_list_view": 1}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+    {"role": "Security Officer", "read": 1, "write": 1, "create": 1},
+    {"role": "Site Engineer", "read": 1}
+  ]
+}

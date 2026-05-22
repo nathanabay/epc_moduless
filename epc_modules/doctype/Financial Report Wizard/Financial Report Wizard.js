@@ -19,8 +19,29 @@ frappe.ui.form.on('Financial Report Wizard', {
         // Show download if report exists
         if (frm.doc.generated_report) {
             frm.add_custom_button(__('View Report'), () => {
-                window.open(frm.doc.generated_report, '_blank');
+                frm.events.view_report(frm);
             });
+        }
+    },
+
+    validate_url(url) {
+        // Prevent javascript: URI XSS attacks
+        if (url && url.toLowerCase().startsWith('javascript:')) {
+            frappe.msgprint({
+                title: __('Security Warning'),
+                message: __('Invalid URL scheme'),
+                indicator: 'red'
+            });
+            return false;
+        }
+        return true;
+    },
+
+    view_report(frm) {
+        if (frm.doc.generated_report) {
+            if (frm.events.validate_url(frm.doc.generated_report)) {
+                window.open(frm.doc.generated_report, '_blank');
+            }
         }
     },
 
@@ -131,7 +152,9 @@ frappe.ui.form.on('Financial Report Wizard', {
 
     download_report(frm) {
         if (frm.doc.generated_report) {
-            window.open(frm.doc.generated_report, '_blank');
+            if (frm.events.validate_url(frm.doc.generated_report)) {
+                window.open(frm.doc.generated_report, '_blank');
+            }
         } else if (frm.doc.report_data) {
             // Download as JSON/Excel if no file attached
             let data = JSON.parse(frm.doc.report_data);
@@ -147,15 +170,22 @@ frappe.ui.form.on('Financial Report Wizard', {
                     },
                     callback: function(r) {
                         if (r.message && r.message.file_url) {
-                            window.open(r.message.file_url, '_blank');
+                            if (frm.events.validate_url(r.message.file_url)) {
+                                window.open(r.message.file_url, '_blank');
+                            }
                         }
                     }
                 });
             } else {
-                // For HTML/PDF, open in new window
+                // For HTML/PDF, open in new window using DOMParser to prevent XSS
                 let reportWindow = window.open('', '_blank');
-                reportWindow.document.write(data.html || '<pre>' + JSON.stringify(data, null, 2) + '</pre>');
-                reportWindow.document.close();
+                if (reportWindow) {
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(data.html || '<pre>' + JSON.stringify(data, null, 2) + '</pre>', 'text/html');
+                    let bodyContent = doc.body.innerHTML;
+                    reportWindow.document.write('<html><body>' + bodyContent + '</body></html>');
+                    reportWindow.document.close();
+                }
             }
         }
     }

@@ -1,0 +1,183 @@
+{
+  "name": "Site Instruction",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "autoname": "hash",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "instruction_number",
+      "fieldtype": "Data",
+      "label": "Instruction Number",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "subject",
+      "fieldtype": "Data",
+      "label": "Subject",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nIssued\nAcknowledged\nIn Progress\nCompleted\nCancelled",
+      "default": "Draft",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "instruction_type",
+      "fieldtype": "Select",
+      "label": "Instruction Type",
+      "options": "Technical\nSafety\nAdministrative\nVariation\nCorrection\nOther",
+      "default": "Technical"
+    },
+    {
+      "fieldname": "priority",
+      "fieldtype": "Select",
+      "label": "Priority",
+      "options": "Low\nMedium\nHigh\nUrgent",
+      "default": "Medium"
+    },
+    {
+      "fieldname": "section_details",
+      "fieldtype": "Section Break",
+      "label": "Instruction Details"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Text Editor",
+      "label": "Description / Instruction",
+      "reqd": 1
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "label": "WBS Item",
+      "options": "WBS Item"
+    },
+    {
+      "fieldname": "work_package",
+      "fieldtype": "Link",
+      "label": "Work Package",
+      "options": "Work Package"
+    },
+    {
+      "fieldname": "column_break_dates",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "issued_by",
+      "fieldtype": "Link",
+      "label": "Issued By",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "issue_date",
+      "fieldtype": "Date",
+      "label": "Issue Date",
+      "default": "Today",
+      "reqd": 1
+    },
+    {
+      "fieldname": "acknowledged_by",
+      "fieldtype": "Link",
+      "label": "Acknowledged By",
+      "options": "User"
+    },
+    {
+      "fieldname": "acknowledged_date",
+      "fieldtype": "Date",
+      "label": "Acknowledged Date"
+    },
+    {
+      "fieldname": "due_date",
+      "fieldtype": "Date",
+      "label": "Required By Date"
+    },
+    {
+      "fieldname": "column_break_cost",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "cost_impact",
+      "fieldtype": "Check",
+      "label": "Cost Impact"
+    },
+    {
+      "fieldname": "estimated_cost",
+      "fieldtype": "Currency",
+      "label": "Estimated Cost Impact"
+    },
+    {
+      "fieldname": "schedule_impact",
+      "fieldtype": "Check",
+      "label": "Schedule Impact"
+    },
+    {
+      "fieldname": "days_impact",
+      "fieldtype": "Int",
+      "label": "Days Impact"
+    },
+    {
+      "fieldname": "section_response",
+      "fieldtype": "Section Break",
+      "label": "Response / Completion"
+    },
+    {
+      "fieldname": "action_taken",
+      "fieldtype": "Text Editor",
+      "label": "Action Taken"
+    },
+    {
+      "fieldname": "completed_by",
+      "fieldtype": "Link",
+      "label": "Completed By",
+      "options": "User"
+    },
+    {
+      "fieldname": "completion_date",
+      "fieldtype": "Date",
+      "label": "Completion Date"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

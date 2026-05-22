@@ -1,0 +1,43 @@
+{
+  "doctype": "DocType",
+  "name": "HSE Incident",
+  "module": "EPC Modules",
+  "autoname": "field:incident_number",
+  "is_submittable": 1,
+  "editable_grid": 1,
+  "fields": [
+    {"fieldname": "incident_number", "fieldtype": "Data", "label": "Incident Number", "read_only": 1, "reqd": 1},
+    {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "incident_date", "fieldtype": "Date", "label": "Incident Date", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "incident_time", "fieldtype": "Time", "label": "Incident Time"},
+    {"fieldname": "location", "fieldtype": "Data", "label": "Location", "in_list_view": 1},
+    {"fieldname": "wbs_item", "fieldtype": "Link", "label": "WBS Item", "options": "WBS Item"},
+    {"fieldname": "incident_type", "fieldtype": "Select", "label": "Type", "options": "Lost Time Injury\nFirst Aid Case\nNear Miss\nProperty Damage\nEnvironmental Incident\nNear Miss", "in_list_view": 1},
+    {"fieldname": "severity", "fieldtype": "Select", "label": "Severity", "options": "Fatal\nMajor\nMinor\nNegligible", "in_list_view": 1},
+    {"fieldname": "description", "fieldtype": "Text Editor", "label": "Description"},
+    {"fieldname": "immediate_action", "fieldtype": "Text Editor", "label": "Immediate Action Taken"},
+    {"fieldname": "investigation_section", "fieldtype": "Section Break", "label": "Investigation"},
+    {"fieldname": "investigated_by", "fieldtype": "Link", "label": "Investigated By", "options": "User"},
+    {"fieldname": "investigation_date", "fieldtype": "Date", "label": "Investigation Date"},
+    {"fieldname": "root_cause", "fieldtype": "Text Editor", "label": "Root Cause"},
+    {"fieldname": "corrective_action", "fieldtype": "Text Editor", "label": "Corrective Action"},
+    {"fieldname": "preventive_action", "fieldtype": "Text Editor", "label": "Preventive Action"},
+    {"fieldname": "impact_section", "fieldtype": "Section Break", "label": "Impact Assessment"},
+    {"fieldname": "days_lost", "fieldtype": "Int", "label": "Days Lost"},
+    {"fieldname": "cost_impact", "fieldtype": "Currency", "label": "Cost Impact (ETB)"},
+    {"fieldname": "reported_by", "fieldtype": "Link", "label": "Reported By", "options": "User"},
+    {"fieldname": "reported_date", "fieldtype": "Date", "label": "Report Date"},
+    {"fieldname": "closure_section", "fieldtype": "Section Break", "label": "Closure"},
+    {"fieldname": "closure_date", "fieldtype": "Date", "label": "Closure Date"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Reported\nInvestigating\nAction Taken\nClosed", "default": "Reported", "in_list_view": 1},
+    {"fieldname": "is_confidential", "fieldtype": "Check", "label": "Confidential"},
+    {"fieldname": "media_involvement", "fieldtype": "Check", "label": "Media Involvement"},
+    {"fieldname": "regulatory_reporting_required", "fieldtype": "Check", "label": "Regulatory Reporting Required"},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1},
+    {"role": "Site Supervisor", "read": 1, "write": 1, "create": 1, "submit": 1},
+    {"role": "Projects User", "read": 1, "write": 1}
+  ]
+}

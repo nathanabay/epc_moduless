@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class ConcreteMixDesign(frappe.Document):
+class ConcreteMixDesign(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Concrete Mix Design", ["name"])

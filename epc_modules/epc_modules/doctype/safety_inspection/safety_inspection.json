@@ -1,0 +1,225 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:inspection_number",
+ "creation": "2026-05-21 20:37:41.443533",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "inspection_number",
+  "project",
+  "inspection_date",
+  "inspector",
+  "inspection_type",
+  "location_area",
+  "wbs_item",
+  "weather_conditions",
+  "temperature",
+  "total_workers_present",
+  "checklist_section",
+  "checklist_items",
+  "total_checklist_items",
+  "items_complied",
+  "compliance_percentage",
+  "overall_section",
+  "overall_status",
+  "non_conformances",
+  "corrective_actions_required",
+  "remarks",
+  "status",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "inspection_number",
+   "fieldtype": "Data",
+   "label": "Inspection Number",
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Project",
+   "options": "Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "inspection_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Inspection Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "inspector",
+   "fieldtype": "Link",
+   "label": "Inspector",
+   "options": "User"
+  },
+  {
+   "fieldname": "inspection_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Daily\nWeekly\nMonthly\nQuarterly\nAnnual\nSpecial"
+  },
+  {
+   "fieldname": "location_area",
+   "fieldtype": "Data",
+   "label": "Location/Area"
+  },
+  {
+   "fieldname": "wbs_item",
+   "fieldtype": "Link",
+   "label": "WBS Item",
+   "options": "WBS Item"
+  },
+  {
+   "fieldname": "weather_conditions",
+   "fieldtype": "Data",
+   "label": "Weather Conditions"
+  },
+  {
+   "fieldname": "temperature",
+   "fieldtype": "Float",
+   "label": "Temperature (C)"
+  },
+  {
+   "fieldname": "total_workers_present",
+   "fieldtype": "Int",
+   "label": "Workers Present"
+  },
+  {
+   "fieldname": "checklist_section",
+   "fieldtype": "Section Break",
+   "label": "Safety Checklist"
+  },
+  {
+   "fieldname": "checklist_items",
+   "fieldtype": "Table",
+   "label": "Checklist Items",
+   "options": "Inspection Checklist Item"
+  },
+  {
+   "fieldname": "total_checklist_items",
+   "fieldtype": "Int",
+   "label": "Total Items",
+   "read_only": 1
+  },
+  {
+   "fieldname": "items_complied",
+   "fieldtype": "Int",
+   "label": "Complied",
+   "read_only": 1
+  },
+  {
+   "fieldname": "compliance_percentage",
+   "fieldtype": "Float",
+   "label": "Compliance %",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overall_section",
+   "fieldtype": "Section Break",
+   "label": "Overall Assessment"
+  },
+  {
+   "fieldname": "overall_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Satisfactory\nNeeds Improvement\nUnsatisfactory"
+  },
+  {
+   "fieldname": "non_conformances",
+   "fieldtype": "Int",
+   "label": "Non-Conformances"
+  },
+  {
+   "fieldname": "corrective_actions_required",
+   "fieldtype": "Text",
+   "label": "Corrective Actions"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Document Status",
+   "options": "Draft\nSubmitted\nApproved"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Safety Inspection",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-21 20:37:41.443533",
+ "modified_by": "Administrator",
+ "module": "EPC Modules",
+ "name": "Safety Inspection",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Site Supervisor",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

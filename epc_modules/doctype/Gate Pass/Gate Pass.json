@@ -1,0 +1,193 @@
+{
+  "name": "Gate Pass",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "autoname": "hash",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "gate_pass_number",
+      "fieldtype": "Data",
+      "label": "Gate Pass Number",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "gate_pass_type",
+      "fieldtype": "Select",
+      "label": "Gate Pass Type",
+      "options": "Inward\nOutward\nTransfer",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nOpen\nApproved\nIn Transit\nReceived\nClosed\nRejected",
+      "default": "Draft",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "section_party",
+      "fieldtype": "Section Break",
+      "label": "Party Details"
+    },
+    {
+      "fieldname": "party_type",
+      "fieldtype": "Select",
+      "label": "Party Type",
+      "options": "Supplier\nContractor\nTransporter\nEmployee\nVisitor\nOther",
+      "default": "Supplier"
+    },
+    {
+      "fieldname": "party_name",
+      "fieldtype": "Data",
+      "label": "Party Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "contact_person",
+      "fieldtype": "Data",
+      "label": "Contact Person"
+    },
+    {
+      "fieldname": "phone",
+      "fieldtype": "Data",
+      "label": "Phone"
+    },
+    {
+      "fieldname": "vehicle_details",
+      "fieldtype": "Section Break",
+      "label": "Vehicle Details"
+    },
+    {
+      "fieldname": "vehicle_number",
+      "fieldtype": "Data",
+      "label": "Vehicle Number"
+    },
+    {
+      "fieldname": "driver_name",
+      "fieldtype": "Data",
+      "label": "Driver Name"
+    },
+    {
+      "fieldname": "driver_license",
+      "fieldtype": "Data",
+      "label": "Driver License"
+    },
+    {
+      "fieldname": "column_break_items",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "purpose",
+      "fieldtype": "Select",
+      "label": "Purpose",
+      "options": "Material Delivery\nEquipment Return\nScrap Removal\nTool Borrow\nSite Visit\nMaterial Transfer\nOther",
+      "default": "Material Delivery"
+    },
+    {
+      "fieldname": "material_description",
+      "fieldtype": "Small Text",
+      "label": "Material Description"
+    },
+    {
+      "fieldname": "section_items",
+      "fieldtype": "Section Break",
+      "label": "Items"
+    },
+    {
+      "fieldname": "items",
+      "fieldtype": "Table",
+      "options": "Gate Pass Item",
+      "label": "Items"
+    },
+    {
+      "fieldname": "section_dates",
+      "fieldtype": "Section Break",
+      "label": "Timing"
+    },
+    {
+      "fieldname": "gate_out_date",
+      "fieldtype": "Datetime",
+      "label": "Gate Out Date/Time"
+    },
+    {
+      "fieldname": "gate_in_date",
+      "fieldtype": "Datetime",
+      "label": "Gate In Date/Time"
+    },
+    {
+      "fieldname": "expected_return_date",
+      "fieldtype": "Date",
+      "label": "Expected Return Date"
+    },
+    {
+      "fieldname": "column_break_security",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "issued_by",
+      "fieldtype": "Link",
+      "label": "Issued By",
+      "options": "User"
+    },
+    {
+      "fieldname": "approved_by",
+      "fieldtype": "Link",
+      "label": "Approved By",
+      "options": "User"
+    },
+    {
+      "fieldname": "security_guard",
+      "fieldtype": "Data",
+      "label": "Security Guard"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    },
+    {
+      "fieldname": "column_break_attachments",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "attachments",
+      "fieldtype": "Attach",
+      "label": "Attachments"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1
+    }
+  ]
+}

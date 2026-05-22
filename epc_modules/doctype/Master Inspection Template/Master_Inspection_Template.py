@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class MasterInspectionTemplate(frappe.Document):
+class MasterInspectionTemplate(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Master Inspection Template", ["name"])

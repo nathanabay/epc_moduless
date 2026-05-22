@@ -1,7 +1,8 @@
-# tests/test_boq_import.py
-import frappe, unittest, os
+import frappe
+from frappe.test_utils import FrappeTestCase
 
-class TestBOQImport(unittest.TestCase):
+
+class TestBOQImport(FrappeTestCase):
     def setUp(self):
         frappe.set_user("Administrator")
         if not frappe.db.exists("Project", "ARAT-KILO"):
@@ -20,7 +21,7 @@ class TestBOQImport(unittest.TestCase):
         """Parse Arat Kilo BOQ CSV and extract line items."""
         from epc_modules.utils.boq_importer import AratKiloBOQImporter
 
-        csv_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..", "Arat Kilo  BOQ for BID.csv")
+        csv_path = "/home/frappe/frappe-bench/apps/epc_bespo/Arat Kilo  BOQ for BID.csv"
         importer = AratKiloBOQImporter()
         items = importer.parse_csv(csv_path)
 
@@ -34,7 +35,7 @@ class TestBOQImport(unittest.TestCase):
         """Import parsed BOQ items into Custom BOQ doctype."""
         from epc_modules.utils.boq_importer import AratKiloBOQImporter
 
-        csv_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..", "Arat Kilo  BOQ for BID.csv")
+        csv_path = "/home/frappe/frappe-bench/apps/epc_bespo/Arat Kilo  BOQ for BID.csv"
         importer = AratKiloBOQImporter()
         items = importer.parse_csv(csv_path)
 
@@ -44,5 +45,4 @@ class TestBOQImport(unittest.TestCase):
 
     def tearDown(self):
         frappe.set_user("Administrator")
-        frappe.db.sql("DELETE FROM `tabCustom BOQ` WHERE project = 'ARAT-KILO'")
-        frappe.db.commit()
+        frappe.db.delete("Custom BOQ", {"project": "ARAT-KILO"})

@@ -135,12 +135,22 @@ class QualityTemplateCloner:
                 "status": "Pending"
             })
 
-        itp.insert(ignore_permissions=True)
+        frappe.has_permission("Project Inspection Plan", "create", throw=True)
+        try:
+            itp.insert()
+        except Exception:
+            frappe.log_error(title="Quality Gate Error - ITP Insert", message=frappe.get_traceback())
+            raise
 
         # Update summary fields
         itp.total_hold_points = len(itp.inspection_records)
         itp.pending_hold_points = len(itp.inspection_records)
-        itp.save(ignore_permissions=True)
+        frappe.has_permission("Project Inspection Plan", "write", itp.name, throw=True)
+        try:
+            itp.save()
+        except Exception:
+            frappe.log_error(title="Quality Gate Error - ITP Save", message=frappe.get_traceback())
+            raise
 
         return itp
 
@@ -175,8 +185,7 @@ class NCRManager:
             Created NCR document
         """
         # Generate NCR number
-        ncr_count = frappe.db.count("Non-Conformance Report", {"project": project}) or 0
-        ncr_number = f"NCR-{project[:4].upper()}-{ncr_count + 1:04d}"
+        ncr_number = f"NCR-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
         if not target_close_date:
             # Default to 7 days for minor, 3 for major, 1 for critical
@@ -197,7 +206,12 @@ class NCRManager:
             "status": "Open"
         })
 
-        doc.insert(ignore_permissions=True)
+        frappe.has_permission("Non-Conformance Report", "create", throw=True)
+        try:
+            doc.insert()
+        except Exception:
+            frappe.log_error(title="Quality Gate Error - NCR Insert", message=frappe.get_traceback())
+            raise
 
         # Update inspection record with NCR link
         frappe.db.set_value("Inspection Record", inspection_record, {
@@ -290,13 +304,19 @@ class NCRManager:
         if doc.status == "Closed":
             return doc
 
+        frappe.has_permission("Non-Conformance Report", "write", ncr_name, throw=True)
+
         doc.status = "Closed"
         doc.actual_close_date = today()
         doc.closed_by = frappe.session.user
         if closure_remarks:
             doc.closure_remarks = closure_remarks
 
-        doc.save(ignore_permissions=True)
+        try:
+            doc.save()
+        except Exception:
+            frappe.log_error(title="Quality Gate Error - NCR Close Save", message=frappe.get_traceback())
+            raise
 
         # Notify project manager
         frappe.publish_realtime(
@@ -400,6 +420,8 @@ class ITPManager:
         if remarks:
             record.remarks = remarks
 
+        frappe.has_permission("Inspection Record", "write", record_name, throw=True)
+
         # Check tolerance if pass status
         if status == "Pass" and actual_reading is not None:
             # Get hold point for tolerance check
@@ -414,7 +436,11 @@ class ITPManager:
             if not record.is_within_tolerance:
                 ITPManager._create_ncr_from_inspection_fail(record)
 
-        record.save(ignore_permissions=True)
+        try:
+            record.save()
+        except Exception:
+            frappe.log_error(title="Quality Gate Error - Inspection Record Save", message=frappe.get_traceback())
+            raise
 
         # Update parent ITP summary
         ITPManager._update_itp_summary(record.parent)
@@ -435,7 +461,8 @@ class ITPManager:
             inspection_record=record.name,
             description=f"Inspection hold point '{hold_point.hold_point_name}' failed tolerance check. "
                         f"Reading: {record.actual_reading}",
-            severity="Major" if record.is_within_tolerance else "Critical",
+            # Always Critical — this function is only called when is_within_tolerance is False
+            severity="Critical",
             target_close_date=add_days(today(), 7)
         )
 
@@ -462,14 +489,15 @@ class ITPManager:
         })
 
         # Update status if all mandatory hold points passed
-        mandatory_records = [r for r in itp.inspection_records if r.status == "Pass"]
+        # Get all hold points from inspection records
         hold_points_with_mandatory = [
             frappe.get_doc("Inspection Hold Point", r.hold_point)
-            for r in itp.inspection_records if r.status == "Pass"
+            for r in itp.inspection_records
         ]
 
+        # All mandatory hold points (is_mandatory == 1) must have status "Pass"
         all_mandatory_passed = all(
-            hp.is_mandatory == 0 or hp.is_mandatory is None
+            hp.is_mandatory != 1 or hp.status == "Pass"
             for hp in hold_points_with_mandatory
         )
 

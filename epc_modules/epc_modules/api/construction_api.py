@@ -34,8 +34,8 @@ def create_risk(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("Risk Register", {"project": project}) or 0
-    risk_id = f"RSK-{project[:4].upper()}-{count + 1:04d}"
+    project_code = project[:4].upper().replace(" ", "")
+    risk_id = f"RSK-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     # Calculate risk score
     probability_scores = {"Very Low": 1, "Low": 2, "Medium": 3, "High": 4, "Very High": 5}
@@ -188,8 +188,7 @@ def create_equipment(data):
     """
     frappe.has_permission("Equipment Register", "create", throw=True)
 
-    count = frappe.db.count("Equipment Register") or 0
-    equipment_id = f"EQ-{count + 1:05d}"
+    equipment_id = f"EQ-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Equipment Register",
@@ -295,8 +294,7 @@ def log_equipment_utilization(data):
     """
     frappe.has_permission("Equipment Utilization Log", "create", throw=True)
 
-    count = frappe.db.count("Equipment Utilization Log") or 0
-    log_id = f"UTIL-{count + 1:06d}"
+    log_id = f"UTIL-{frappe.generate_hash(length=8).upper()}"
 
     # Calculate costs
     operator_rate = data.get("operator_rate", 0)
@@ -346,8 +344,7 @@ def create_maintenance_schedule(equipment_name, data):
     """
     frappe.has_permission("Equipment Maintenance Schedule", "create", throw=True)
 
-    count = frappe.db.count("Equipment Maintenance Schedule") or 0
-    schedule_id = f"MNT-{count + 1:05d}"
+    schedule_id = f"MNT-{frappe.generate_hash(length=8).upper()}"
 
     # Calculate next service date
     interval = data.get("interval_days", 30)
@@ -416,8 +413,7 @@ def move_equipment(equipment_name, data):
     """
     frappe.has_permission("Equipment Movement", "create", throw=True)
 
-    count = frappe.db.count("Equipment Movement") or 0
-    movement_id = f"MOV-{count + 1:05d}"
+    movement_id = f"MOV-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Equipment Movement",
@@ -563,8 +559,7 @@ def create_subcontractor_profile(data):
     """
     frappe.has_permission("Subcontractor Profile", "create", throw=True)
 
-    count = frappe.db.count("Subcontractor Profile") or 0
-    subcontractor_id = f"SC-{count + 1:04d}"
+    subcontractor_id = f"SC-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Subcontractor Profile",
@@ -661,8 +656,7 @@ def create_subcontractor_work_order(project, subcontractor, data):
     """
     frappe.has_permission("Subcontractor Work Order", "create", throw=True)
 
-    count = frappe.db.count("Subcontractor Work Order", {"project": project}) or 0
-    work_order_id = f"WO-{project[:4].upper()}-{count + 1:04d}"
+    work_order_id = f"WO-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Subcontractor Work Order",

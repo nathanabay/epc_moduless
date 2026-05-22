@@ -28,10 +28,12 @@ def calculate_polymorphic_boq(project_name, items=None):
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
 
+    frappe.has_permission("Project", "read", project_name, throw=True)
+
     project = frappe.get_doc("Project", project_name)
 
     if not project.is_epc_project:
-        return {"error": "Not an EPC project"}
+        frappe.throw(_("Not an EPC project"))
 
     calculator = BOQCalculator(project_name, project.project_typology)
     return calculator.calculate_boq(items)
@@ -50,6 +52,8 @@ def get_boq_summary(project_name):
     """
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
+
+    frappe.has_permission("Project", "read", project_name, throw=True)
 
     project = frappe.get_doc("Project", project_name)
 
@@ -70,6 +74,8 @@ def get_wbs_structure(project_name):
     """
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
+
+    frappe.has_permission("Project", "read", project_name, throw=True)
 
     from epc_modules.utils.wbs_generator import WBSStructureGenerator
 
@@ -107,6 +113,8 @@ def add_boq_item(project_name, item_code, quantity, rate=None, wbs_code=None):
 
     project = frappe.get_doc("Project", project_name)
 
+    frappe.has_permission("Custom BOQ", "create", throw=True)
+
     doc = frappe.get_doc({
         "doctype": "Custom BOQ",
         "project": project_name,
@@ -115,7 +123,12 @@ def add_boq_item(project_name, item_code, quantity, rate=None, wbs_code=None):
         "rate": rate or frappe.db.get_value("Item", item_code, "valuation_rate") or 0,
         "wbs_code": wbs_code
     })
-    doc.insert(ignore_permissions=True)
+
+    try:
+        doc.insert()
+    except Exception as e:
+        frappe.log_error(f"Failed to insert BOQ item: {str(e)}", "BOQ API Error")
+        frappe.throw(_("Failed to insert BOQ item: {0}").format(str(e)))
 
     logger.info(f"Added BOQ item {item_code} to project {project_name}")
 
@@ -143,6 +156,8 @@ def update_boq_item(item_name, quantity=None, rate=None):
     if not frappe.db.exists("Custom BOQ", item_name):
         frappe.throw(_("Custom BOQ {0} does not exist").format(item_name))
 
+    frappe.has_permission("Custom BOQ", "write", item_name, throw=True)
+
     doc = frappe.get_doc("Custom BOQ", item_name)
 
     if quantity is not None:
@@ -150,7 +165,11 @@ def update_boq_item(item_name, quantity=None, rate=None):
     if rate is not None:
         doc.rate = rate
 
-    doc.save(ignore_permissions=True)
+    try:
+        doc.save()
+    except Exception as e:
+        frappe.log_error(f"Failed to update BOQ item: {str(e)}", "BOQ API Error")
+        frappe.throw(_("Failed to update BOQ item: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -171,6 +190,8 @@ def delete_boq_item(item_name):
     if not frappe.db.exists("Custom BOQ", item_name):
         frappe.throw(_("Custom BOQ {0} does not exist").format(item_name))
 
+    frappe.has_permission("Custom BOQ", "delete", item_name, throw=True)
+
     frappe.delete_doc("Custom BOQ", item_name)
     logger.info(f"Deleted BOQ item {item_name}")
 
@@ -187,6 +208,8 @@ def get_boq_items(project_name, wbs_code=None):
     Returns:
         list: BOQ items
     """
+    frappe.has_permission("Project", "read", project_name, throw=True)
+
     filters = {"project": project_name}
     if wbs_code:
         filters["wbs_code"] = wbs_code
@@ -194,7 +217,9 @@ def get_boq_items(project_name, wbs_code=None):
     items = frappe.get_all(
         "Custom BOQ",
         filters=filters,
-        fields=["*"],
+        fields=["name", "item_code", "description", "boq_quantity", "unit_rate",
+                "total_value", "measurement_method", "wbs_item", "wbs_code",
+                "is_electromechanical", "is_civil", "parent", "idx"],
         order_by="idx"
     )
 
@@ -212,6 +237,8 @@ def calculate_project_value(project_name):
     Returns:
         dict: Project value breakdown
     """
+    frappe.has_permission("Project", "read", project_name, throw=True)
+
     project = frappe.get_doc("Project", project_name)
 
     calculator = BOQCalculator(project_name, project.project_typology)
@@ -231,6 +258,8 @@ def import_boq_from_csv(project_name, csv_path=None):
     """Import BOQ from CSV file for Arat Kilo project."""
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
+
+    frappe.has_permission("Project", "write", project_name, throw=True)
 
     if csv_path is None:
         csv_path = os.path.join(
@@ -254,7 +283,10 @@ def import_boq_from_csv(project_name, csv_path=None):
 @frappe.whitelist()
 def get_boq_section_summary(project_name):
     """Get BOQ summary grouped by sections."""
+    frappe.has_permission("Project", "read", project_name, throw=True)
+
     from frappe.utils import flt
+    from epc_modules.utils.boq_importer import AratKiloBOQImporter
 
     items = frappe.get_all(
         "Custom BOQ",

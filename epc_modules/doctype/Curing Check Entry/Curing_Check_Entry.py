@@ -2,7 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class CuringCheckEntry(frappe.Document):
+class CuringCheckEntry(Document):
     pass

@@ -11,8 +11,38 @@ from epc_modules.utils import get_epc_logger
 
 logger = get_epc_logger(__name__)
 
-# Default labor rate (USD/hour) — should be configurable per project/settings
-DEFAULT_LABOR_RATE = 12
+# Default labor rate (USD/hour) - fetched from project or system settings at runtime
+# Use get_default_labor_rate() function instead of hardcoded constant
+
+
+def get_default_labor_rate(project=None):
+    """
+    Get labor rate for project, falling back to system default.
+
+    Args:
+        project (str, optional): Project name to get rate from
+
+    Returns:
+        float: Labor rate in USD/hour
+    """
+    if project:
+        try:
+            rate = frappe.db.get_value("Project", project, "labor_rate")
+            if rate:
+                return flt(rate)
+        except Exception:
+            pass
+
+    # Fallback to system setting
+    try:
+        default_rate = frappe.db.get_single_value("EPC Settings", "default_labor_rate")
+        if default_rate:
+            return flt(default_rate)
+    except Exception:
+        pass
+
+    # Last resort fallback
+    return 12
 
 
 @frappe.whitelist()
@@ -148,6 +178,7 @@ def _get_resource_wip(projects):
     result = []
     for p in projects:
         # Sum labor from DPR entries
+        labor_rate = get_default_labor_rate(p.name)
         labor_data = frappe.db.sql("""
             SELECT
                 SUM(labor_count * work_shifts) as total_hours,
@@ -157,7 +188,7 @@ def _get_resource_wip(projects):
                 SELECT name FROM `tabDaily Progress Report`
                 WHERE project = %s AND docstatus = 1
             )
-        """, (DEFAULT_LABOR_RATE, p.name), as_dict=1)
+        """, (labor_rate, p.name), as_dict=1)
 
         total_hours = labor_data[0].total_hours if labor_data else 0
         labor_cost = labor_data[0].labor_cost if labor_data else 0

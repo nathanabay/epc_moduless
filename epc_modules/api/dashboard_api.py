@@ -55,13 +55,13 @@ def get_management_dashboard():
         SELECT SUM(total_invoice_value)
         FROM `tabRA Bill`
         WHERE docstatus = 1
-    """, as_dict=0)[0][0] or 0
+    """, as_dict=0)[0][0] if frappe.db.sql("SELECT 1 FROM `tabRA Bill` WHERE docstatus = 1 LIMIT 1") else 0
 
     total_pending = frappe.db.sql("""
         SELECT SUM(gross_certified_value)
         FROM `tabRA Bill`
         WHERE docstatus = 0
-    """, as_dict=0)[0][0] or 0
+    """, as_dict=0)[0][0] if frappe.db.sql("SELECT 1 FROM `tabRA Bill` WHERE docstatus = 0 LIMIT 1") else 0
 
     # NCR metrics
     open_ncrs = frappe.db.count("Non-Conformance Report", {
@@ -200,11 +200,12 @@ def get_project_dashboard_kpis(project):
     })
 
     # Labor metrics (from DPR)
-    labor_today = frappe.db.sql("""
+    labor_rows = frappe.db.sql("""
         SELECT SUM(labor_count)
         FROM `tabDaily Progress Report`
         WHERE project = %s AND report_date = %s
-    """, (project, today()))[0][0] or 0
+    """, (project, today()))
+    labor_today = labor_rows[0][0] if labor_rows and labor_rows[0][0] is not None else 0
 
     return {
         "project": project,
@@ -253,8 +254,13 @@ def get_project_progress_trend(project, months=6):
     Returns:
         list: Progress data points
     """
+    if not project:
+        frappe.throw(_("Project is required"))
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
+
+    frappe.has_permission("Project", "read", project, throw=True)
 
     from frappe.utils import get_datetime, date_diff
 
@@ -298,6 +304,10 @@ def get_billing_trend(months=12):
     Returns:
         list: Monthly billing data
     """
+    # Finance Manager role OR RA Bill read permission
+    if not frappe.has_permission("RA Bill", "read", throw=False):
+        frappe.only_for("Finance Manager")
+
     # Get monthly RA bill totals
     monthly_data = frappe.db.sql("""
         SELECT
@@ -331,6 +341,15 @@ def get_quality_metrics(project=None):
     Returns:
         dict: Quality metrics
     """
+    # Project-level permission check if project specified
+    if project:
+        if not frappe.db.exists("Project", project):
+            frappe.throw(_("Project {0} does not exist").format(project))
+        frappe.has_permission("Project", "read", project, throw=True)
+    else:
+        # System-level access requires at least Project read permission
+        frappe.has_permission("Project", "read", throw=True)
+
     filters = {}
     if project:
         filters["project"] = project
@@ -465,6 +484,15 @@ def get_resource_utilization(project=None):
     Returns:
         dict: Resource utilization
     """
+    # Project-level permission check if project specified
+    if project:
+        if not frappe.db.exists("Project", project):
+            frappe.throw(_("Project {0} does not exist").format(project))
+        frappe.has_permission("Project", "read", project, throw=True)
+    else:
+        # System-level access requires at least Project read permission
+        frappe.has_permission("Project", "read", throw=True)
+
     filters = {}
     if project:
         filters["project"] = project
@@ -629,8 +657,13 @@ def get_project_health_score(project):
     Returns:
         dict: Health score breakdown
     """
+    if not project:
+        frappe.throw(_("Project is required"))
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
+
+    frappe.has_permission("Project", "read", project, throw=True)
 
     project_doc = frappe.get_doc("Project", project)
     score = 100
@@ -687,11 +720,12 @@ def get_project_health_score(project):
         issues.append("Billing behind schedule")
 
     # Scope health (BOQ coverage)
-    boq_value = frappe.db.sql("""
+    boq_rows = frappe.db.sql("""
         SELECT SUM(total_value)
         FROM `tabCustom BOQ`
         WHERE parent = %s
-    """, project)[0][0] or 0
+    """, project)
+    boq_value = boq_rows[0][0] if boq_rows and boq_rows[0][0] is not None else 0
 
     if boq_value == 0:
         score -= 15

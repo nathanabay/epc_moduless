@@ -38,6 +38,15 @@ class AratKiloBOQImporter:
 
     def parse_csv(self, csv_path):
         """Parse the BOQ CSV file and return a list of BOQ items."""
+        # Path traversal protection: validate path stays within site directory
+        if not csv_path:
+            frappe.throw(_("File path is required"))
+        csv_path = os.path.realpath(csv_path)
+        site_path = os.path.realpath(frappe.get_site_path())
+        if not csv_path.startswith(site_path):
+            frappe.throw(_("Invalid file path: path escapes site directory"))
+        if not csv_path.endswith('.csv'):
+            frappe.throw(_("Only CSV files are allowed"))
         logger.info(f"Parsing BOQ CSV: {csv_path}")
         items = []
         current_section = None
@@ -210,6 +219,9 @@ class AratKiloBOQImporter:
         if items is None:
             items = self.items
 
+        # Check create permission once before the loop
+        frappe.has_permission("Custom BOQ", "create", throw=True)
+
         imported = []
         errors = []
         total_value = 0
@@ -222,6 +234,12 @@ class AratKiloBOQImporter:
                     parent_wbs = wbs_code.rsplit("-", 1)[0]
                 else:
                     parent_wbs = None
+
+                # Validate required fields before insert
+                if not item.get("item_no"):
+                    raise ValueError("Missing item_no in BOQ item")
+                if item.get("qty") is None:
+                    raise ValueError("Missing quantity (qty) in BOQ item")
 
                 doc = frappe.get_doc({
                     "doctype": "Custom BOQ",
@@ -236,10 +254,16 @@ class AratKiloBOQImporter:
                     "wbs_code": wbs_code,
                     "measurement_method": "Unit-Based",
                 })
-                doc.insert(ignore_permissions=True, ignore_links=True)
-                frappe.db.commit()
+                try:
+                    doc.insert()
+                except frappe.PermissionError:
+                    logger.error(f"Permission denied importing BOQ item {item.get('item_no')} for project {project_name}")
+                    raise
                 total_value += item["total"]
                 imported.append(item["item_no"])
+            except frappe.PermissionError:
+                errors.append({"item": item.get("item_no"), "error": "Permission denied"})
+                logger.warning(f"Permission denied importing BOQ item {item.get('item_no')}")
             except Exception as e:
                 errors.append({"item": item.get("item_no"), "error": str(e)})
                 logger.warning(f"Failed to import BOQ item {item.get('item_no')}: {e}")

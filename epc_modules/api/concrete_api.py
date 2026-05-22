@@ -59,6 +59,14 @@ def get_project_mix_designs(project, approved_only=0):
     Returns:
         list: Mix designs
     """
+    if not project:
+        frappe.throw(_("Project is required"))
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
+    frappe.has_permission("Project", "read", project, throw=True)
+
     return ConcreteMixDesignManager.get_project_mix_designs(project, bool(approved_only))
 
 
@@ -73,8 +81,13 @@ def get_mix_design_details(mix_name):
     Returns:
         dict: Mix design details
     """
+    if not mix_name:
+        frappe.throw(_("Mix design name is required"))
+
     if not frappe.db.exists("Concrete Mix Design", mix_name):
         frappe.throw(_("Mix Design {0} does not exist").format(mix_name))
+
+    frappe.has_permission("Concrete Mix Design", "read", mix_name, throw=True)
 
     doc = frappe.get_doc("Concrete Mix Design", mix_name)
 
@@ -116,8 +129,13 @@ def validate_mix_design(mix_name):
     Returns:
         dict: Validation result
     """
+    if not mix_name:
+        frappe.throw(_("Mix design name is required"))
+
     if not frappe.db.exists("Concrete Mix Design", mix_name):
         frappe.throw(_("Mix Design {0} does not exist").format(mix_name))
+
+    frappe.has_permission("Concrete Mix Design", "read", mix_name, throw=True)
 
     doc = frappe.get_doc("Concrete Mix Design", mix_name)
     errors = IS456ComplianceValidator.validate_mix_design(doc)
@@ -142,8 +160,13 @@ def approve_mix_design(mix_name):
     Returns:
         dict: Approval result
     """
+    if not mix_name:
+        frappe.throw(_("Mix design name is required"))
+
     if not frappe.db.exists("Concrete Mix Design", mix_name):
         frappe.throw(_("Mix Design {0} does not exist").format(mix_name))
+
+    frappe.has_permission("Concrete Mix Design", "write", mix_name, throw=True)
 
     doc = ConcreteMixDesignManager.approve_mix_design(mix_name)
 
@@ -195,6 +218,14 @@ def get_project_cube_tests(project, mix_design=None, failing_only=0):
     Returns:
         list: Cube tests
     """
+    if not project:
+        frappe.throw(_("Project is required"))
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
+    frappe.has_permission("Project", "read", project, throw=True)
+
     return CubeTestManager.get_project_cube_tests(project, mix_design, bool(failing_only))
 
 
@@ -209,8 +240,13 @@ def get_cube_test_details(test_name):
     Returns:
         dict: Test details
     """
+    if not test_name:
+        frappe.throw(_("Test name is required"))
+
     if not frappe.db.exists("Cube Test Result", test_name):
         frappe.throw(_("Cube Test {0} does not exist").format(test_name))
+
+    frappe.has_permission("Cube Test Result", "read", test_name, throw=True)
 
     doc = frappe.get_doc("Cube Test Result", test_name)
 
@@ -254,6 +290,7 @@ def validate_cube_test(test_name):
     if not frappe.db.exists("Cube Test Result", test_name):
         frappe.throw(_("Cube Test {0} does not exist").format(test_name))
 
+    frappe.has_permission("Cube Test Result", "read", test_name, throw=True)
     doc = frappe.get_doc("Cube Test Result", test_name)
 
     mix_doc = None
@@ -277,6 +314,7 @@ def get_batch_average_strength(project, casting_date):
     Returns:
         dict: Batch average results
     """
+    frappe.has_permission("Cube Test Result", "read", throw=True)
     return CubeTestManager.calculate_batch_average(project, casting_date)
 
 
@@ -346,6 +384,7 @@ def get_project_material_registers(project, material_type=None):
     Returns:
         list: Material entries
     """
+    frappe.has_permission("Project", "read", project, throw=True)
     if material_type == "cement":
         doctype = "Cement Register"
     elif material_type == "steel":
@@ -353,7 +392,7 @@ def get_project_material_registers(project, material_type=None):
     else:
         return {"cement": get_cement_register(project), "steel": get_steel_register(project)}
 
-    entries = frappe.get_all(
+    entries = frappe.get_list(
         doctype,
         filters={"project": project},
         fields=["name", "entry_id", "batch_number", "quantity_tonnes", "date_received", "is_approved", "is_used"]
@@ -365,7 +404,8 @@ def get_project_material_registers(project, material_type=None):
 @frappe.whitelist()
 def get_cement_register(project):
     """Get cement register entries."""
-    return frappe.get_all(
+    frappe.has_permission("Cement Register", "read", throw=True)
+    return frappe.get_list(
         "Cement Register",
         filters={"project": project},
         fields=["name", "entry_id", "cement_brand", "cement_type", "quantity_tonnes", "date_received", "is_approved", "is_used"],
@@ -376,7 +416,8 @@ def get_cement_register(project):
 @frappe.whitelist()
 def get_steel_register(project):
     """Get steel reinforcement register entries."""
-    return frappe.get_all(
+    frappe.has_permission("Steel Reinforcement Register", "read", throw=True)
+    return frappe.get_list(
         "Steel Reinforcement Register",
         filters={"project": project},
         fields=["name", "entry_id", "heat_number", "bar_mark", "diameter_mm", "steel_grade", "quantity_tonnes", "date_received", "is_approved", "is_used"],
@@ -395,6 +436,7 @@ def get_minimum_curing_days(grade):
     Returns:
         dict: Minimum curing days
     """
+    frappe.has_permission("Project", "read", throw=True)
     days = IS456ComplianceValidator.get_minimum_curing_days(grade)
     return {"grade": grade, "minimum_curing_days": days}
 
@@ -410,6 +452,7 @@ def get_exposure_requirements(exposure):
     Returns:
         dict: Requirements
     """
+    frappe.has_permission("Project", "read", throw=True)
     requirements = IS456ComplianceValidator.EXPOSURE_REQUIREMENTS.get(exposure, {})
     return {
         "exposure": exposure,
@@ -433,8 +476,11 @@ def create_formwork_inspection(project, data):
     """
     frappe.has_permission("Formwork Inspection", "create", throw=True)
 
-    count = frappe.get_all("Formwork Inspection", filters={"project": project}, count=True) or 0
-    inspection_id = f"FW-{project[:4].upper()}-{count + 1:04d}"
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
+    # Use naming series to avoid race conditions
+    inspection_id = frappe.get_value("Namingseries", "FW-.#####", "current") or f"FW-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Formwork Inspection",
@@ -464,7 +510,14 @@ def create_formwork_inspection(project, data):
         # Assuming simple rectangular area
         doc.formwork_area_sqm = doc.dimensions_length_m * doc.dimensions_breadth_m
 
-    doc.insert()
+    try:
+        doc.insert()
+    except Exception as e:
+        frappe.log_error(
+            title=_("Formwork Inspection Insert Failed"),
+            message=f"Failed to insert Formwork Inspection for project {project}: {str(e)}"
+        )
+        frappe.throw(_("Failed to create Formwork Inspection. Please contact administrator."))
 
     return {
         "name": doc.name,
@@ -487,8 +540,11 @@ def create_curing_record(project, data):
     """
     frappe.has_permission("Curing Record", "create", throw=True)
 
-    count = frappe.get_all("Curing Record", filters={"project": project}, count=True) or 0
-    record_id = f"CR-{project[:4].upper()}-{count + 1:04d}"
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
+    # Use naming series to avoid race conditions
+    record_id = frappe.get_value("Namingseries", "CR-.#####", "current") or f"CR-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Curing Record",
@@ -511,7 +567,14 @@ def create_curing_record(project, data):
     # Calculate curing end date
     doc.curing_end_date = add_days(doc.curing_start_date, doc.minimum_curing_days)
 
-    doc.insert()
+    try:
+        doc.insert()
+    except Exception as e:
+        frappe.log_error(
+            title=_("Curing Record Insert Failed"),
+            message=f"Failed to insert Curing Record for project {project}: {str(e)}"
+        )
+        frappe.throw(_("Failed to create Curing Record. Please contact administrator."))
 
     return {
         "name": doc.name,
@@ -533,7 +596,7 @@ def add_curing_check(record_name, check_data):
     Returns:
         dict: Updated record info
     """
-    frappe.has_permission("Curing Record", "write", throw=True)
+    frappe.has_permission("Curing Record", "write", record_name, throw=True)
 
     if not frappe.db.exists("Curing Record", record_name):
         frappe.throw(_("Curing Record {0} does not exist").format(record_name))
@@ -554,12 +617,19 @@ def add_curing_check(record_name, check_data):
         "remarks": check_data.get("remarks")
     })
 
-    doc.save()
-
-    # Check if minimum curing days met
+    # Check if minimum curing days met (before saving so it persists)
     passed_checks = [c for c in doc.curing_checks if c.is_satisfactory]
     if len(passed_checks) >= doc.minimum_curing_days:
         doc.is_minimum_met = 1
+
+    try:
+        doc.save()
+    except Exception as e:
+        frappe.log_error(
+            title=_("Curing Check Save Failed"),
+            message=f"Failed to save curing check for record {record_name}: {str(e)}"
+        )
+        frappe.throw(_("Failed to save curing check. Please contact administrator."))
 
     return {
         "name": doc.name,
@@ -579,8 +649,16 @@ def get_concrete_compliance_summary(project):
     Returns:
         dict: Summary
     """
+    if not project:
+        frappe.throw(_("Project is required"))
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
+    frappe.has_permission("Project", "read", project, throw=True)
+
     # Get mix designs
-    mix_designs = frappe.get_all(
+    mix_designs = frappe.get_list(
         "Concrete Mix Design",
         filters={"project": project},
         fields=["name", "concrete_grade", "approval_status"]
@@ -590,7 +668,7 @@ def get_concrete_compliance_summary(project):
     pending_mixes = [m for m in mix_designs if m.approval_status == "Draft"]
 
     # Get cube tests
-    cube_tests = frappe.get_all(
+    cube_tests = frappe.get_list(
         "Cube Test Result",
         filters={"project": project},
         fields=["name", "is_pass", "compressive_strength_mpa", "age_days"]
@@ -610,7 +688,7 @@ def get_concrete_compliance_summary(project):
     )
 
     # Get curing records
-    curing_records = frappe.get_all(
+    curing_records = frappe.get_list(
         "Curing Record",
         filters={"project": project},
         fields=["name", "is_minimum_met"]
@@ -656,8 +734,13 @@ def complete_curing(record_name):
     Returns:
         dict: Completion result
     """
+    if not record_name:
+        frappe.throw(_("Record name is required"))
+
     if not frappe.db.exists("Curing Record", record_name):
         frappe.throw(_("Curing Record {0} does not exist").format(record_name))
+
+    frappe.has_permission("Curing Record", "write", record_name, throw=True)
 
     doc = CuringManager.complete_curing(record_name)
 
@@ -681,8 +764,13 @@ def clear_formwork_for_pour(inspection_name, cleared_by=None):
     Returns:
         dict: Clearance result
     """
+    if not inspection_name:
+        frappe.throw(_("Inspection name is required"))
+
     if not frappe.db.exists("Formwork Inspection", inspection_name):
         frappe.throw(_("Formwork Inspection {0} does not exist").format(inspection_name))
+
+    frappe.has_permission("Formwork Inspection", "write", inspection_name, throw=True)
 
     doc = FormworkManager.clear_for_pour(inspection_name, cleared_by)
 
@@ -720,8 +808,13 @@ def get_mix_design_compliance(mix_name):
     Returns:
         dict: Compliance summary
     """
+    if not mix_name:
+        frappe.throw(_("Mix design name is required"))
+
     if not frappe.db.exists("Concrete Mix Design", mix_name):
         frappe.throw(_("Mix Design {0} does not exist").format(mix_name))
+
+    frappe.has_permission("Concrete Mix Design", "read", mix_name, throw=True)
 
     doc = frappe.get_doc("Concrete Mix Design", mix_name)
     return IS456ComplianceValidator.get_compliance_summary(doc)
@@ -739,7 +832,8 @@ def get_mix_designs_for_grade(project, concrete_grade):
     Returns:
         list: Approved mix designs
     """
-    return frappe.get_all(
+    frappe.has_permission("Concrete Mix Design", "read", throw=True)
+    return frappe.get_list(
         "Concrete Mix Design",
         filters={
             "project": project,
@@ -751,29 +845,36 @@ def get_mix_designs_for_grade(project, concrete_grade):
 
 
 @frappe.whitelist()
-def get_concrete_strength_trend(project, days=90):
+def get_concrete_strength_trend(project, days=90, limit=500):
     """
     Get concrete strength trend over time.
 
     Args:
         project (str): Project name
         days (int): Number of days to look back
+        limit (int): Maximum records to return
 
     Returns:
         dict: Strength trend data
     """
+    frappe.has_permission("Cube Test Result", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     from frappe.utils import add_days as add_days_util
 
     cutoff_date = add_days_util(today(), -days)
 
-    tests = frappe.get_all(
+    tests = frappe.get_list(
         "Cube Test Result",
         filters={
             "project": project,
             "test_date": [">=", cutoff_date]
         },
         fields=["name", "test_date", "compressive_strength_mpa", "is_pass", "grade_of_concrete", "mix_design"],
-        order_by="test_date asc"
+        order_by="test_date asc",
+        limit_page_length=min(int(limit or 500), 500)
     )
 
     # Calculate moving averages
@@ -814,6 +915,11 @@ def get_formwork_inspections(project, status=None):
     Returns:
         list: Formwork inspections
     """
+    frappe.has_permission("Formwork Inspection", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     filters = {"project": project}
 
     if status == "cleared":
@@ -821,7 +927,7 @@ def get_formwork_inspections(project, status=None):
     elif status == "pending":
         filters["is_cleared"] = 0
 
-    return frappe.get_all(
+    return frappe.get_list(
         "Formwork Inspection",
         filters=filters,
         fields=["name", "inspection_id", "location", "formwork_type",
@@ -842,7 +948,12 @@ def get_curing_records(project, include_checks=True):
     Returns:
         list: Curing records
     """
-    records = frappe.get_all(
+    frappe.has_permission("Curing Record", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
+    records = frappe.get_list(
         "Curing Record",
         filters={"project": project},
         fields=["name", "record_id", "element_location", "concrete_grade",
@@ -851,14 +962,20 @@ def get_curing_records(project, include_checks=True):
         order_by="pour_date desc"
     )
 
-    if include_checks:
+    if include_checks and records:
+        # Batch query all checks for all records to avoid N+1
+        record_names = [r["name"] for r in records]
+        all_checks = frappe.get_list(
+            "Curing Check Entry",
+            filters={"parent": ["in", record_names]},
+            fields=["name", "parent", "check_date", "day_number", "is_satisfactory", "checked_by"],
+            order_by="day_number asc"
+        )
+        # Map checks to records
+        checks_map = {}
+        for check in all_checks:
+            checks_map.setdefault(check["parent"], []).append(check)
         for record in records:
-            checks = frappe.get_all(
-                "Curing Check Entry",
-                filters={"parent": record["name"]},
-                fields=["name", "check_date", "day_number", "is_satisfactory", "checked_by"],
-                order_by="day_number asc"
-            )
-            record["checks"] = checks
+            record["checks"] = checks_map.get(record["name"], [])
 
     return records

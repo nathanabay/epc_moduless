@@ -1,0 +1,122 @@
+{
+  "name": "Project Report Wizard",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "autoname": "field:wizard_id",
+  "is_submittable": 0,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "wizard_id",
+      "fieldtype": "Data",
+      "label": "Wizard ID",
+      "read_only": 1
+    },
+    {
+      "fieldname": "report_name",
+      "fieldtype": "Data",
+      "label": "Report Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "report_type",
+      "fieldtype": "Select",
+      "label": "Report Type",
+      "options": "Project Status\nWIP Report\nNCR Summary\nDPR Summary\nRFI Log\nInspection Status\nEquipment Utilization\nTeam Performance",
+      "reqd": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Project",
+      "options": "Project"
+    },
+    {
+      "fieldname": "typology_filter",
+      "fieldtype": "Link",
+      "label": "Typology Filter",
+      "options": "Project Typology"
+    },
+    {
+      "fieldname": "section_break_dates",
+      "fieldtype": "Section Break",
+      "label": "Date Range"
+    },
+    {
+      "fieldname": "from_date",
+      "fieldtype": "Date",
+      "label": "From Date"
+    },
+    {
+      "fieldname": "to_date",
+      "fieldtype": "Date",
+      "label": "To Date"
+    },
+    {
+      "fieldname": "column_break_include",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "include_wbs",
+      "fieldtype": "Check",
+      "label": "Include WBS Details"
+    },
+    {
+      "fieldname": "include_ncrs",
+      "fieldtype": "Check",
+      "label": "Include NCR Details"
+    },
+    {
+      "fieldname": "section_break_output",
+      "fieldtype": "Section Break",
+      "label": "Output"
+    },
+    {
+      "fieldname": "output_format",
+      "fieldtype": "Select",
+      "label": "Output Format",
+      "options": "HTML\nPDF\nExcel",
+      "default": "HTML"
+    },
+    {
+      "fieldname": "generated_report",
+      "fieldtype": "Attach",
+      "label": "Generated Report"
+    },
+    {
+      "fieldname": "generated_on",
+      "fieldtype": "Datetime",
+      "label": "Generated On",
+      "read_only": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nGenerating\nGenerated\nFailed",
+      "default": "Draft",
+      "read_only": 1
+    },
+    {
+      "fieldname": "report_data",
+      "fieldtype": "Long Text",
+      "label": "Report Data",
+      "hidden": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

@@ -6,7 +6,7 @@ API endpoints for project-related operations.
 
 import frappe
 from frappe import _
-from frappe.utils import today, now_datetime, get_datetime
+from frappe.utils import today
 from epc_modules.utils import validate_project_typology, get_epc_logger
 
 logger = get_epc_logger(__name__)
@@ -27,6 +27,8 @@ def get_polymorphic_boq(project, measurement_method=None):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
+    frappe.has_permission("Project", "read", project, throw=True)
+
     filters = {"parent": project}
     if measurement_method:
         filters["measurement_method"] = measurement_method
@@ -34,7 +36,8 @@ def get_polymorphic_boq(project, measurement_method=None):
     boq_items = frappe.get_all(
         "Custom BOQ",
         filters=filters,
-        fields=["*"]
+        fields=["name", "item_code", "description", "qty", "uom", "rate", "total_value",
+                "measurement_method", "wbs_level", "parent"]
     )
 
     return boq_items
@@ -53,6 +56,9 @@ def submit_dpr(data):
     """
     frappe.has_permission("Daily Progress Report", "create", throw=True)
 
+    if not data.get('project'):
+        frappe.throw(_('Project required'), exc=frappe.ValidationError)
+
     doc = frappe.get_doc({
         "doctype": "Daily Progress Report",
         "project": data.get("project"),
@@ -66,14 +72,14 @@ def submit_dpr(data):
     })
 
     doc.insert()
+    doc.submit()
 
     # Trigger progress recalculation
-    if hasattr(frappe, 'get_doc'):
-        try:
-            from epc_modules.utils.boq_calculator import BOQCalculator
-            BOQCalculator.aggregate_project_progress(data.get("project"))
-        except Exception as e:
-            logger.warning(f"Progress recalc failed: {str(e)}")
+    try:
+        from epc_modules.utils.boq_calculator import BOQCalculator
+        BOQCalculator.aggregate_project_progress(data.get("project"))
+    except (frappe.ValidationError, frappe.PermissionError, AttributeError) as e:
+        logger.warning(f"Progress recalc failed: {str(e)}")
 
     return {"name": doc.name, "status": "success"}
 
@@ -92,31 +98,32 @@ def get_project_dashboard(project):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
+    frappe.has_permission("Project", "read", project, throw=True)
+
     doc = frappe.get_doc("Project", project)
 
     # Get typology
     typology = None
     if doc.project_typology:
-        typology = frappe.get_doc("Project Typology", doc.project_typology)
+        try:
+            typology = frappe.get_doc("Project Typology", doc.project_typology)
+        except frappe.DoesNotExistError:
+            typology = None
 
     # Calculate metrics
-    total_boq_value = frappe.db.sql("""
-        SELECT SUM(total_value)
-        FROM `tabCustom BOQ`
-        WHERE parent = %s
+    boq_value = frappe.db.sql("""
+        SELECT COALESCE(SUM(total_value), 0) FROM `tabCustom BOQ` WHERE parent = %s
     """, project)[0][0] or 0
 
-    certified_value = frappe.db.sql("""
-        SELECT SUM(net_payable)
-        FROM `tabRA Bill`
-        WHERE project = %s AND docstatus = 1
-    """, project)[0][0] or 0
+    ra_bills = frappe.db.sql("""
+        SELECT COALESCE(SUM(CASE WHEN docstatus = 1 THEN net_payable ELSE 0 END), 0) AS certified_value,
+            COALESCE(SUM(CASE WHEN docstatus = 0 THEN certified_value ELSE 0 END), 0) AS pending_billing
+        FROM `tabRA Bill` WHERE project = %s
+    """, project, as_dict=True)[0]
 
-    pending_billing = frappe.db.sql("""
-        SELECT SUM(certified_value)
-        FROM `tabRA Bill`
-        WHERE project = %s AND docstatus = 0
-    """, project)[0][0] or 0
+    total_boq_value = boq_value
+    certified_value = ra_bills.certified_value or 0
+    pending_billing = ra_bills.pending_billing or 0
 
     open_ncrs = frappe.db.count("Non-Conformance Report", {
         "project": project,
@@ -154,19 +161,23 @@ def calculate_project_progress(project):
     if not validate_project_typology(project):
         return None
 
+    frappe.has_permission("Project", "read", project, throw=True)
+
     try:
         from epc_modules.utils.boq_calculator import BOQCalculator
         progress = BOQCalculator.aggregate_project_progress(project)
 
-        # Update project document
-        frappe.db.set_value("Project", project, "percent_complete", progress)
+        # Update project document using doc.save() to trigger validation and hooks
+        project_doc = frappe.get_doc("Project", project)
+        project_doc.percent_complete = progress
+        project_doc.save()
 
         return {
             "project": project,
             "progress_percentage": progress,
             "status": "success"
         }
-    except Exception as e:
+    except (frappe.ValidationError, frappe.PermissionError, frappe.DoesNotExistError) as e:
         logger.error(f"Progress calculation failed for {project}: {str(e)}")
         return {
             "project": project,

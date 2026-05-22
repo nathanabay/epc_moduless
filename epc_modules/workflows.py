@@ -17,6 +17,7 @@ def setup_epc_workflows():
     Set up all EPC module workflows.
     Called during app installation.
     """
+    frappe.only_for("System Manager")
     logger.info("Setting up EPC workflows")
 
     setup_project_approval_workflow()
@@ -137,7 +138,7 @@ def setup_project_approval_workflow():
     for transition in transitions:
         doc.append("transitions", transition)
 
-    doc.insert(ignore_permissions=True)
+    doc.insert()
     logger.info(f"Created workflow: {workflow_name}")
 
 
@@ -220,7 +221,7 @@ def setup_measurement_book_workflow():
     for transition in transitions:
         doc.append("transitions", transition)
 
-    doc.insert(ignore_permissions=True)
+    doc.insert()
     logger.info(f"Created workflow: {workflow_name}")
 
 
@@ -312,7 +313,7 @@ def setup_ra_bill_workflow():
     for transition in transitions:
         doc.append("transitions", transition)
 
-    doc.insert(ignore_permissions=True)
+    doc.insert()
     logger.info(f"Created workflow: {workflow_name}")
 
 
@@ -386,7 +387,7 @@ def setup_ncr_workflow():
     for transition in transitions:
         doc.append("transitions", transition)
 
-    doc.insert(ignore_permissions=True)
+    doc.insert()
     logger.info(f"Created workflow: {workflow_name}")
 
 
@@ -401,6 +402,9 @@ def get_workflow_states(doctype):
     Returns:
         list: List of workflow states
     """
+    if not frappe.has_permission("Workflow", "read"):
+        frappe.throw(frappe._("No permission to read Workflow"))
+
     workflow_name = frappe.db.get_value(
         "Workflow",
         {"document_type": doctype, "is_active": 1},
@@ -411,7 +415,11 @@ def get_workflow_states(doctype):
         return []
 
     workflow = frappe.get_doc("Workflow", workflow_name)
-    return [state.state for state in workflow.states]
+    frappe.flags.in_import = True
+    try:
+        return [state.state for state in workflow.states]
+    finally:
+        frappe.flags.in_import = False
 
 
 @frappe.whitelist()
@@ -426,6 +434,9 @@ def get_available_transitions(doctype, current_state):
     Returns:
         list: Available transitions
     """
+    if not frappe.has_permission("Workflow", "read"):
+        frappe.throw(frappe._("No permission to read Workflow"))
+
     workflow_name = frappe.db.get_value(
         "Workflow",
         {"document_type": doctype, "is_active": 1},

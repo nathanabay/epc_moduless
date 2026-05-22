@@ -9,7 +9,7 @@ import frappe
 from frappe import _
 from frappe.utils import flt, today, add_days, get_datetime
 from typing import Dict, List, Optional, Any
-from epc_modules.utils import get_epc_logger
+from epc_modules.utils import get_epc_logger, get_vat_account_head, get_default_cost_center
 
 logger = get_epc_logger(__name__)
 
@@ -78,6 +78,7 @@ class RABillingCalculator:
         if cumulative_certified_value >= original_advance:
             result["status"] = "fully_recovered"
             result["advance_recovery"] = 0
+            result["remaining_advance"] = 0
             return result
 
         if cumulative_certified_value < lt_value:
@@ -380,10 +381,12 @@ class MilestoneBillingCalculator:
         Returns:
             Invoice creation result
         """
-        if not frappe.db.exists("Project Milestone", milestone_name):
-            frappe.throw(_("Milestone {0} does not exist").format(milestone_name))
+        frappe.has_permission("Sales Invoice", "create", throw=True)
+        if not frappe.db.exists("Project", project):
+            frappe.throw(_("Project {0} does not exist").format(project))
 
         milestone = frappe.get_doc("Project Milestone", milestone_name)
+        frappe.has_permission("Project Milestone", "write", milestone_name, throw=True)
 
         if milestone.is_invoiced:
             frappe.throw(_("Milestone {0} already invoiced").format(milestone_name))
@@ -408,15 +411,19 @@ class MilestoneBillingCalculator:
             "taxes": [{
                 "doctype": "Sales Taxes and Charges",
                 "charge_type": "On Net Total",
-                "account_head": frappe.db.get_value("Account", {"account_name": ["like", "%VAT%"]}, "name") or "VAT - E",
+                "account_head": get_vat_account_head() or "",
                 "description": "VAT 15% (Proclamation 1341/2024)",
                 "rate": 15,
-                "cost_center": "Main - E"
+                "cost_center": get_default_cost_center() or ""
             }]
         })
 
-        si.insert(ignore_permissions=True)
-        si.submit()
+        try:
+            si.insert()
+            si.submit()
+        except Exception as e:
+            frappe.log_error(f"Failed to create milestone invoice: {str(e)}", "Milestone Invoice Error")
+            frappe.throw(_("Failed to create invoice: {0}").format(str(e)))
 
         # Update milestone
         frappe.db.set_value("Project Milestone", milestone_name, {
@@ -521,11 +528,12 @@ class BillingEngine:
 
             if typology.billing_track == "RA-Billing":
                 # Get RA bill totals
-                ra_total = frappe.db.sql("""
+                ra_result = frappe.db.sql("""
                     SELECT SUM(total_invoice_value) as total, SUM(net_payable) as payable
                     FROM `tabRA Bill`
                     WHERE project = %s AND docstatus = 1
-                """, project)[0]
+                """, project)
+                ra_total = ra_result[0] if (ra_result and len(ra_result) > 0 and ra_result[0][0] is not None) else None
 
                 summary["total_billed"] = flt(ra_total.total) if ra_total else 0
                 summary["pending_billing"] = flt(project_doc.contract_value) - summary["total_billed"]

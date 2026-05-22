@@ -243,7 +243,7 @@ class WBSStructureGenerator:
             "planned_value": planned_value,
             "architecture": architecture
         })
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("WBS Item", "write") or frappe.flags.ignore_permissions)
 
         return {"wbs_code": wbs_code, "wbs_name": name}
 

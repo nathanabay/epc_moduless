@@ -23,6 +23,8 @@ def get_typology_config(typology_name):
     Returns:
         dict: Complete UI configuration
     """
+    frappe.has_permission("Project Typology", "read", throw=True)
+
     if not frappe.db.exists("Project Typology", typology_name):
         frappe.throw(_("Typology {0} does not exist").format(typology_name))
 
@@ -41,6 +43,11 @@ def get_field_visibility(typology_name):
     Returns:
         dict: Field visibility settings
     """
+    frappe.has_permission("Project Typology", "read", throw=True)
+
+    if not frappe.db.exists("Project Typology", typology_name):
+        frappe.throw(_("Typology {0} does not exist").format(typology_name))
+
     return TypologyEngine.get_field_visibility(typology_name)
 
 
@@ -55,6 +62,11 @@ def get_tab_visibility(typology_name):
     Returns:
         dict: Tab visibility settings
     """
+    frappe.has_permission("Project Typology", "read", throw=True)
+
+    if not frappe.db.exists("Project Typology", typology_name):
+        frappe.throw(_("Typology {0} does not exist").format(typology_name))
+
     return TypologyEngine.get_tab_visibility(typology_name)
 
 
@@ -69,6 +81,8 @@ def get_all_typologies(include_inactive=0):
     Returns:
         list: List of typology configurations
     """
+    frappe.has_permission("Project Typology", "read", throw=True)
+
     return TypologyEngine.get_all_typologies(bool(include_inactive))
 
 
@@ -83,6 +97,11 @@ def get_measurement_methods(typology_name):
     Returns:
         list: Allowed measurement methods
     """
+    frappe.has_permission("Project Typology", "read", throw=True)
+
+    if not frappe.db.exists("Project Typology", typology_name):
+        frappe.throw(_("Typology {0} does not exist").format(typology_name))
+
     return TypologyEngine.get_measurement_methods(typology_name)
 
 
@@ -97,6 +116,11 @@ def get_required_fields(typology_name):
     Returns:
         list: Required field names
     """
+    frappe.has_permission("Project Typology", "read", throw=True)
+
+    if not frappe.db.exists("Project Typology", typology_name):
+        frappe.throw(_("Typology {0} does not exist").format(typology_name))
+
     return TypologyEngine.get_required_fields(typology_name)
 
 
@@ -111,8 +135,7 @@ def get_project_typology(project_name):
     Returns:
         dict: Typology configuration
     """
-    if not frappe.db.exists("Project", project_name):
-        frappe.throw(_("Project {0} does not exist").format(project_name))
+    frappe.has_permission("Project", "read", project_name, throw=True)
 
     project = frappe.get_doc("Project", project_name)
 
@@ -137,6 +160,8 @@ def check_typology_requirements(project_name, check_type):
     Returns:
         dict: Check result
     """
+    frappe.has_permission("Project", "read", project_name, throw=True)
+
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
 
@@ -145,7 +170,7 @@ def check_typology_requirements(project_name, check_type):
     if not project.project_typology:
         return {"required": False, "message": "No typology assigned"}
 
-    typology = frappe.get_doc("Project Typology", project.project_typology)
+    typology = frappe.get_cached_doc("Project Typology", project.project_typology)
 
     checks = {
         "tbe": lambda: typology.requires_tbe,
@@ -177,6 +202,8 @@ def get_inventory_strategy_for_project(project_name):
     Returns:
         dict: Inventory strategy configuration
     """
+    frappe.has_permission("Project", "read", project_name, throw=True)
+
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
 
@@ -185,7 +212,7 @@ def get_inventory_strategy_for_project(project_name):
     if not project.project_typology:
         return {"strategy": "standard", "message": "No typology assigned"}
 
-    typology = frappe.get_doc("Project Typology", project.project_typology)
+    typology = frappe.get_cached_doc("Project Typology", project.project_typology)
 
     strategy_map = {
         "Spatial-Zone": {

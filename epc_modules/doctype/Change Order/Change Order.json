@@ -1,0 +1,128 @@
+{
+  "name": "Change Order",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "autoname": "field:change_order_number",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "change_order_number",
+      "fieldtype": "Data",
+      "label": "CO Number",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "label": "WBS Item",
+      "options": "WBS Item"
+    },
+    {
+      "fieldname": "change_title",
+      "fieldtype": "Data",
+      "label": "Title",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "change_category",
+      "fieldtype": "Select",
+      "label": "Category",
+      "options": "Scope Addition\nScope Deletion\nDesign Change\nSite Condition\nOwner Request\nForce Majeure\nOthers"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Text Editor",
+      "label": "Description"
+    },
+    {
+      "fieldname": "reason",
+      "fieldtype": "Small Text",
+      "label": "Reason for Change"
+    },
+    {
+      "fieldname": "section_break_impact",
+      "fieldtype": "Section Break",
+      "label": "Impact Assessment"
+    },
+    {
+      "fieldname": "cost_impact",
+      "fieldtype": "Currency",
+      "label": "Cost Impact",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "schedule_impact_days",
+      "fieldtype": "Int",
+      "label": "Schedule Impact (Days)",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "section_break_approval",
+      "fieldtype": "Section Break",
+      "label": "Approval"
+    },
+    {
+      "fieldname": "is_approved",
+      "fieldtype": "Check",
+      "label": "Approved"
+    },
+    {
+      "fieldname": "approved_by",
+      "fieldtype": "Link",
+      "label": "Approved By",
+      "options": "User"
+    },
+    {
+      "fieldname": "approval_date",
+      "fieldtype": "Date",
+      "label": "Approval Date"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nSubmitted\nApproved\nRejected\nIncorporated",
+      "default": "Draft",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1
+    },
+    {
+      "role": "Finance Manager",
+      "read": 1,
+      "write": 1,
+      "approve": 1
+    }
+  ]
+}

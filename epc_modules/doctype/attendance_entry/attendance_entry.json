@@ -1,0 +1,16 @@
+{
+  "doctype": "DocType",
+  "name": "Attendance Entry",
+  "module": "EPC Modules",
+  "istable": 1,
+  "fields": [
+    {"fieldname": "employee_name", "fieldtype": "Link", "label": "Employee", "options": "Employee"},
+    {"fieldname": "employee_id", "fieldtype": "Data", "label": "Employee ID"},
+    {"fieldname": "department", "fieldtype": "Data", "label": "Department"},
+    {"fieldname": "designation", "fieldtype": "Data", "label": "Designation"},
+    {"fieldname": "present", "fieldtype": "Check", "label": "Present"},
+    {"fieldname": "regular_hours", "fieldtype": "Float", "label": "Regular Hours", "default": 8},
+    {"fieldname": "overtime_hours", "fieldtype": "Float", "label": "Overtime Hours", "default": 0},
+    {"fieldname": "night_shift", "fieldtype": "Check", "label": "Night Shift"}
+  ]
+}

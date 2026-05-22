@@ -415,7 +415,7 @@ class MilestoneBillingCalculator:
             }]
         })
 
-        si.insert(ignore_permissions=True)
+        si.insert(ignore_permissions=frappe.has_permission("Sales Invoice", "write") or frappe.flags.ignore_permissions)
         si.submit()
 
         # Update milestone

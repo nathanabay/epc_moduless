@@ -160,6 +160,9 @@ def update_wbs_progress(project_name, wbs_code, progress_percent, earned_value=N
         frappe.throw(_("WBS Item {0} does not exist").format(wbs_code))
 
     doc = frappe.get_doc("WBS Item", wbs_code)
+
+    frappe.has_permission("WBS Item", "write", wbs_code, throw=True)
+
     doc.physical_progress = progress_percent
 
     if earned_value is not None:
@@ -168,7 +171,7 @@ def update_wbs_progress(project_name, wbs_code, progress_percent, earned_value=N
         # Calculate from planned value and progress
         doc.earned_value = (doc.planned_value or 0) * (progress_percent / 100)
 
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     logger.info(f"Updated WBS {wbs_code} progress to {progress_percent}%")
     return {

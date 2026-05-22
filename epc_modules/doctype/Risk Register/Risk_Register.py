@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class RiskRegister(frappe.Document):
+class RiskRegister(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Risk Register", ["name"])

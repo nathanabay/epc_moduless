@@ -93,7 +93,9 @@ def get_dpr_entries(project, from_date=None, to_date=None):
     entries = frappe.get_all(
         "Daily Progress Report",
         filters=filters,
-        fields=["*"],
+        fields=["name", "project", "report_date", "supervisor", "site_zone",
+                "weather_conditions", "labor_count", "work_shifts",
+                "overall_progress", "status", "creation"],
         order_by="report_date desc"
     )
 
@@ -170,7 +172,9 @@ def update_dpr_progress(dpr_name, progress_entries):
     for entry in progress_entries:
         doc.append("progress_entries", entry)
 
-    doc.save(ignore_permissions=True)
+    frappe.has_permission("Daily Progress Report", "write", dpr_name, throw=True)
+
+    doc.save()
 
     return {
         "name": doc.name,
@@ -197,8 +201,10 @@ def approve_dpr(dpr_name):
     if doc.status == "Approved":
         return {"status": "already_approved", "name": doc.name}
 
+    frappe.has_permission("Daily Progress Report", "write", dpr_name, throw=True)
+
     doc.status = "Approved"
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     # Trigger progress aggregation
     BOQCalculator.aggregate_project_progress(doc.project)

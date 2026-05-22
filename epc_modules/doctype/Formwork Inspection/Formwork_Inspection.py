@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class FormworkInspection(frappe.Document):
+class FormworkInspection(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Formwork Inspection", ["name"])

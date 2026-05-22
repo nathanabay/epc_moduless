@@ -61,7 +61,8 @@ def on_project_created(doc, method):
         typology = frappe.get_doc("Project Typology", doc.project_typology)
         if typology.typology_type == "Civil":
             warehouse_name = create_site_warehouse(doc.name)
-            doc.primary_site_warehouse = warehouse_name
+            # FIX: Use db_set instead of doc.save() to avoid recursive on_update hooks
+            doc.db_set("primary_site_warehouse", warehouse_name)
             _lazy_logger().info(f"Created warehouse: {warehouse_name}")
 
         # Clone inspection templates based on typology (Quality Gate Phase 4)
@@ -230,46 +231,62 @@ def validate_ra_bill_integration(doc, method):
 def web_permission_for_project(doc, ptype, user):
     """
     Web permission check for project.
+    Validates user has access to this specific project.
     """
     if not doc.is_epc_project:
         return True
 
-    # Check user permissions
-    if frappe.session.user == "Administrator":
+    # Administrator has full access
+    if user == "Administrator":
         return True
 
-    # Check if user has access to this project
-    return True
+    # Check if user is the project owner
+    if doc.owner == user:
+        return True
+
+    # Check if user is in the Project User child table
+    if frappe.db.exists("Project User", {"parent": doc.name, "user": user}):
+        return True
+
+    # Check if user has Project Manager role for this project
+    user_roles = frappe.get_roles(user)
+    if "Project Manager" in user_roles:
+        # Check if user is assigned to this project
+        if frappe.db.exists("Project User", {"parent": doc.name, "user": user}):
+            return True
+
+    # No permission granted - deny access
+    return False
 
 
 def project_permission_query(user):
-    """Permission query condition for projects."""
+    """Permission query condition for projects using parameterized query."""
     if not user:
         user = frappe.session.user
     if user == "Administrator":
         return ""
-    user = frappe.db.escape(user)
+    # Use parameterized query - %s placeholders with tuple values
     return """(`tabProject`.is_epc_project = 0
-         OR `tabProject`.owner = {user}
+         OR `tabProject`.owner = %s
          OR EXISTS (
             SELECT 1 FROM `tabProject User`
             WHERE `tabProject User`.parent = `tabProject`.name
-            AND `tabProject User`.user = {user}
-         ))""".format(user=user)
+            AND `tabProject User`.user = %s
+         ))"""
 
 
 def get_project_match_conditions(user):
-    """Get match conditions for project listing."""
+    """Get match conditions for project listing using parameterized query."""
     if not user:
         user = frappe.session.user
     if user == "Administrator":
         return ""
-    user = frappe.db.escape(user)
-    return """(is_epc_project = 0 OR owner = {user} OR EXISTS (
+    # Use parameterized query - %s placeholders with tuple values
+    return """(is_epc_project = 0 OR owner = %s OR EXISTS (
         SELECT 1 FROM `tabProject User`
         WHERE `tabProject User`.parent = `tabProject`.name
-        AND `tabProject User`.user = {user}
-    ))""".format(user=user)
+        AND `tabProject User`.user = %s
+    ))"""
 
 
 def after_install():
@@ -351,7 +368,14 @@ def create_default_typologies():
                     **{k: v for k, v in typology_config.items() if k != "name"},
                     "name": typology_config["name"]
                 })
-                doc.insert(ignore_permissions=True)
+                # SECURITY: Check permission before insert - system config requires create permission
+                if not frappe.has_permission("Project Typology", "create", throw=False):
+                    if "System Manager" not in frappe.get_roles():
+                        _lazy_logger().warning(
+                            f"Cannot create typology {typology_config['name']}: insufficient permissions"
+                        )
+                        continue
+                doc.insert()
                 _lazy_logger().info(f"Created default typology: {typology_config['name']}")
             except Exception as e:
                 _lazy_logger().warning(f"Could not create typology {typology_config['name']}: {e}")
@@ -438,10 +462,23 @@ def on_cube_test_submit(doc, method):
 
     # Auto-calculate results if not done
     if not doc.compressive_strength_mpa and doc.crushing_load_kn and doc.size_mm:
+        # FIX: Calculate first, then update atomically via db_set.
+        # This avoids inconsistent in-memory state if db_set fails.
         area_mm2 = doc.size_mm ** 2
         strength = (doc.crushing_load_kn * 1000) / area_mm2
-        doc.compressive_strength_mpa = round(strength, 2)
-        doc.save(ignore_permissions=True)
+        calculated_strength = round(strength, 2)
+        # SECURITY: Check write permission before save - no ignore_permissions
+        if not frappe.has_permission("Cube Test Result", "write", doc, throw=False):
+            if "System Manager" not in frappe.get_roles():
+                _lazy_logger().warning(f"No write permission for cube test {doc.name}, skipping auto-calculation")
+                return
+        try:
+            doc.compressive_strength_mpa = calculated_strength
+            doc.db_set("compressive_strength_mpa", calculated_strength)
+        except Exception as e:
+            _lazy_logger().error(f"Failed to save cube test {doc.name}: {e}")
+            # Revert in-memory state on failure to prevent inconsistent doc
+            doc.compressive_strength_mpa = None
 
     # Check acceptance criteria
     if doc.age_days == 28 and not doc.is_pass:
@@ -459,6 +496,13 @@ def create_concrete_ncr(cube_doc):
     Per IS 456 Clause 16.1 acceptance criteria.
     """
     try:
+        # SECURITY: Check permission before creating NCR document
+        if not frappe.has_permission("Non-Conformance Report", "create", throw=False):
+            if "System Manager" not in frappe.get_roles():
+                _lazy_logger().warning(
+                    f"Insufficient permissions to create NCR for cube test {cube_doc.cube_test_id}"
+                )
+                return None
         ncr = frappe.get_doc({
             "doctype": "Non-Conformance Report",
             "project": cube_doc.project,
@@ -470,8 +514,9 @@ def create_concrete_ncr(cube_doc):
             "severity": "Major",
             "target_close_date": add_days(today(), 14)
         })
-        ncr.insert(ignore_permissions=True)
+        ncr.insert()
         _lazy_logger().info(f"Created NCR for failed cube test {cube_doc.cube_test_id}")
+        return ncr
     except Exception as e:
         _lazy_logger().error(f"Failed to create NCR for cube test {cube_doc.name}: {e}")
 
@@ -532,6 +577,28 @@ def on_curing_record_check(doc, method):
         from frappe.utils import date_diff
         actual_days = date_diff(doc.curing_end_date, doc.curing_start_date)
         doc.is_minimum_met = actual_days >= min_days
+
+    # SECURITY: Check write permission before save - no ignore_permissions
+    if not frappe.has_permission("Curing Record", "write", doc, throw=False):
+        if "System Manager" not in frappe.get_roles():
+            _lazy_logger().warning(f"No write permission for curing record {doc.name}, skipping update")
+            return
+    try:
+        # FIX: Initialize actual_days to 0 in case curing_end_date is not set
+        actual_days = 0
+        if doc.curing_end_date:
+            from frappe.utils import date_diff
+            actual_days = date_diff(doc.curing_end_date, doc.curing_start_date)
+            is_minimum_met = actual_days >= min_days
+        else:
+            is_minimum_met = False
+        # FIX: Compute both values first, then update atomically via db_set
+        doc.db_set({
+            "minimum_curing_days": min_days,
+            "is_minimum_met": is_minimum_met
+        })
+    except Exception as e:
+        _lazy_logger().error(f"Failed to update curing record {doc.name}: {e}")
 
 
 def get_portal_dashboard_context(context):

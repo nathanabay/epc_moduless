@@ -1,0 +1,1 @@
+# Empty __init__.py for safety_observation doctype module

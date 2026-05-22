@@ -1,0 +1,20 @@
+{
+  "doctype": "DocType",
+  "name": "PPE Type",
+  "module": "EPC Modules",
+  "autoname": "field:ppe_type_name",
+  "fields": [
+    {"fieldname": "ppe_type_name", "fieldtype": "Data", "label": "PPE Type Name", "reqd": 1},
+    {"fieldname": "category", "fieldtype": "Select", "label": "Category", "options": "Head Protection\nEye Protection\nHearing Protection\nRespiratory Protection\nHand Protection\nFoot Protection\nBody Protection\nFall Protection", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "description", "fieldtype": "Small Text", "label": "Description"},
+    {"fieldname": "standard", "fieldtype": "Data", "label": "Compliance Standard (e.g., IS/ANSI)"},
+    {"fieldname": "inspection_frequency_days", "fieldtype": "Int", "label": "Inspection Frequency (Days)", "default": 30},
+    {"fieldname": "replacement_interval_days", "fieldtype": "Int", "label": "Replacement Interval (Days)"},
+    {"fieldname": "storage_requirements", "fieldtype": "Small Text", "label": "Storage Requirements"},
+    {"fieldname": "is_active", "fieldtype": "Check", "label": "Is Active", "default": 1}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+    {"role": "HSE Manager", "read": 1, "write": 1, "create": 1}
+  ]
+}

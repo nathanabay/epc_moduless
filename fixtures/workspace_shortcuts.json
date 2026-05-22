@@ -1,7 +1,7 @@
 [
   {
     "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
+    "parent": "Project & Planning",
     "parentfield": "shortcuts",
     "parenttype": "Workspace",
     "idx": 1,
@@ -11,7 +11,7 @@
   },
   {
     "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
+    "parent": "Project & Planning",
     "parentfield": "shortcuts",
     "parenttype": "Workspace",
     "idx": 2,
@@ -21,72 +21,162 @@
   },
   {
     "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
+    "parent": "Project & Planning",
     "parentfield": "shortcuts",
     "parenttype": "Workspace",
     "idx": 3,
+    "type": "DocType",
+    "link_to": "Project Milestone",
+    "label": "Project Milestone"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 4,
     "type": "DocType",
     "link_to": "Site Zone",
     "label": "Site Zone"
   },
   {
     "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
-    "parentfield": "shortcuts",
-    "parenttype": "Workspace",
-    "idx": 4,
-    "type": "DocType",
-    "link_to": "Custom BOQ",
-    "label": "Custom BOQ"
-  },
-  {
-    "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
+    "parent": "Project & Planning",
     "parentfield": "shortcuts",
     "parenttype": "Workspace",
     "idx": 5,
-    "type": "DocType",
-    "link_to": "RA Bill",
-    "label": "RA Bill"
-  },
-  {
-    "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
-    "parentfield": "shortcuts",
-    "parenttype": "Workspace",
-    "idx": 6,
-    "type": "DocType",
-    "link_to": "Measurement Book",
-    "label": "Measurement Book"
-  },
-  {
-    "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
-    "parentfield": "shortcuts",
-    "parenttype": "Workspace",
-    "idx": 7,
     "type": "DocType",
     "link_to": "WBS Item",
     "label": "WBS Item"
   },
   {
     "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 6,
+    "type": "DocType",
+    "link_to": "Custom BOQ",
+    "label": "Custom BOQ"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 7,
+    "type": "DocType",
+    "link_to": "Cost Line Breakdown",
+    "label": "Cost Line Breakdown"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
     "parentfield": "shortcuts",
     "parenttype": "Workspace",
     "idx": 8,
+    "type": "DocType",
+    "link_to": "Budget Line",
+    "label": "Budget Line"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 9,
     "type": "DocType",
     "link_to": "Daily Progress Report",
     "label": "Daily Progress Report"
   },
   {
     "doctype": "Workspace Shortcut",
-    "parent": "EPC Management",
+    "parent": "Project & Planning",
     "parentfield": "shortcuts",
     "parenttype": "Workspace",
-    "idx": 9,
+    "idx": 10,
     "type": "DocType",
-    "link_to": "Non-Conformance Report",
-    "label": "Non-Conformance Report"
+    "link_to": "DPR Entry",
+    "label": "DPR Entry"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 11,
+    "type": "DocType",
+    "link_to": "Design Phase",
+    "label": "Design Phase"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 12,
+    "type": "DocType",
+    "link_to": "Design Phase Team",
+    "label": "Design Phase Team"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 13,
+    "type": "DocType",
+    "link_to": "Design Deliverable",
+    "label": "Design Deliverable"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 14,
+    "type": "DocType",
+    "link_to": "Master Inspection Template",
+    "label": "Master Inspection Template"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 15,
+    "type": "DocType",
+    "link_to": "Space Requirement",
+    "label": "Space Requirement"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 16,
+    "type": "DocType",
+    "link_to": "Shop Drawing",
+    "label": "Shop Drawing"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 17,
+    "type": "DocType",
+    "link_to": "Transmittal",
+    "label": "Transmittal"
+  },
+  {
+    "doctype": "Workspace Shortcut",
+    "parent": "Project & Planning",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "idx": 18,
+    "type": "DocType",
+    "link_to": "EPC Document Template",
+    "label": "EPC Document Template"
   }
 ]

@@ -1,0 +1,200 @@
+{
+  "name": "Waste Record",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "autoname": "hash",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "record_number",
+      "fieldtype": "Data",
+      "label": "Record Number",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "record_date",
+      "fieldtype": "Date",
+      "label": "Record Date",
+      "default": "Today",
+      "reqd": 1
+    },
+    {
+      "fieldname": "waste_type",
+      "fieldtype": "Select",
+      "label": "Waste Type",
+      "options": "Hazardous\nNon-Hazardous\nInert\nRecyclable\nOrganic\nElectronic\nConstruction Debris\nOther",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nGenerated\nSegregated\nDisposed\nRecycled\nTransported",
+      "default": "Draft",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "section_generation",
+      "fieldtype": "Section Break",
+      "label": "Waste Generation"
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "label": "WBS Item",
+      "options": "WBS Item"
+    },
+    {
+      "fieldname": "work_package",
+      "fieldtype": "Link",
+      "label": "Work Package",
+      "options": "Work Package"
+    },
+    {
+      "fieldname": "generation_source",
+      "fieldtype": "Data",
+      "label": "Generation Source/Area"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "label": "Waste Description",
+      "reqd": 1
+    },
+    {
+      "fieldname": "estimated_volume",
+      "fieldtype": "Float",
+      "label": "Estimated Volume (m3)"
+    },
+    {
+      "fieldname": "column_break_quantity",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "quantity",
+      "fieldtype": "Float",
+      "label": "Quantity (kg)",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "uom",
+      "fieldtype": "Link",
+      "label": "UOM",
+      "options": "UOM",
+      "default": "kg"
+    },
+    {
+      "fieldname": "reported_by",
+      "fieldtype": "Link",
+      "label": "Reported By",
+      "options": "User"
+    },
+    {
+      "fieldname": "section_disposal",
+      "fieldtype": "Section Break",
+      "label": "Disposal Details"
+    },
+    {
+      "fieldname": "disposal_method",
+      "fieldtype": "Select",
+      "label": "Disposal Method",
+      "options": "Landfill\nIncineration\nRecycling\nComposting\nReuse\nCollection\nTreatment\nOn-site Storage"
+    },
+    {
+      "fieldname": "vendor",
+      "fieldtype": "Link",
+      "label": "Disposal Contractor",
+      "options": "Supplier"
+    },
+    {
+      "fieldname": "vehicle_number",
+      "fieldtype": "Data",
+      "label": "Vehicle Number"
+    },
+    {
+      "fieldname": "column_break_transport",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "transporter_name",
+      "fieldtype": "Data",
+      "label": "Transporter Name"
+    },
+    {
+      "fieldname": "transport_date",
+      "fieldtype": "Date",
+      "label": "Transport Date"
+    },
+    {
+      "fieldname": "manifest_number",
+      "fieldtype": "Data",
+      "label": "Manifest/Waste Slip No."
+    },
+    {
+      "fieldname": "section_regulatory",
+      "fieldtype": "Section Break",
+      "label": "Regulatory"
+    },
+    {
+      "fieldname": "is_hazardous",
+      "fieldtype": "Check",
+      "label": "Hazardous Waste"
+    },
+    {
+      "fieldname": "manifest_attachment",
+      "fieldtype": "Attach",
+      "label": "Waste Manifest"
+    },
+    {
+      "fieldname": "column_break_hazardous",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "hazmat_class",
+      "fieldtype": "Data",
+      "label": "Hazmat Class"
+    },
+    {
+      "fieldname": "un_number",
+      "fieldtype": "Data",
+      "label": "UN Number"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1
+    }
+  ]
+}

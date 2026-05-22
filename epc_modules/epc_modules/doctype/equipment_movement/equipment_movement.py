@@ -7,7 +7,3 @@ import frappe
 
 class EquipmentMovement(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Equipment Movement", ["name"])

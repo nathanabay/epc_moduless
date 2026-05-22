@@ -1,0 +1,36 @@
+{
+  "doctype": "DocType",
+  "name": "Method Statement",
+  "module": "EPC Modules",
+  "autoname": "field:ms_number",
+  "is_submittable": 1,
+  "fields": [
+    {"fieldname": "ms_number", "fieldtype": "Data", "label": "MS Number", "read_only": 1, "reqd": 1},
+    {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "ms_title", "fieldtype": "Data", "label": "Title", "reqd": 1},
+    {"fieldname": "wbs_item", "fieldtype": "Link", "label": "WBS Item", "options": "WBS Item"},
+    {"fieldname": "activity_description", "fieldtype": "Text Editor", "label": "Activity Description"},
+    {"fieldname": "sequence_of_work", "fieldtype": "Text Editor", "label": "Sequence of Work"},
+    {"fieldname": "materials_equipment", "fieldtype": "Text Editor", "label": "Materials & Equipment"},
+    {"fieldname": "manpower_requirements", "fieldtype": "Text Editor", "label": "Manpower Requirements"},
+    {"fieldname": "section_break_risk", "fieldtype": "Section Break", "label": "Risk Assessment"},
+    {"fieldname": "hazards_identified", "fieldtype": "Text Editor", "label": "Hazards Identified"},
+    {"fieldname": "risk_controls", "fieldtype": "Text Editor", "label": "Risk Controls"},
+    {"fieldname": "ppe_required", "fieldtype": "Text", "label": "PPE Required"},
+    {"fieldname": "emergency_procedures", "fieldtype": "Text Editor", "label": "Emergency Procedures"},
+    {"fieldname": "section_break_approval", "fieldtype": "Section Break", "label": "Approval"},
+    {"fieldname": "prepared_by", "fieldtype": "Link", "label": "Prepared By", "options": "User"},
+    {"fieldname": "prepared_date", "fieldtype": "Date", "label": "Prepared Date"},
+    {"fieldname": "reviewed_by", "fieldtype": "Link", "label": "Reviewed By", "options": "User"},
+    {"fieldname": "review_date", "fieldtype": "Date", "label": "Review Date"},
+    {"fieldname": "approved_by", "fieldtype": "Link", "label": "Approved By", "options": "User"},
+    {"fieldname": "approval_date", "fieldtype": "Date", "label": "Approval Date"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Draft\nUnder Review\nApproved\nRevoked", "default": "Draft", "in_list_view": 1},
+    {"fieldname": "remarks", "fieldtype": "Text", "label": "Remarks"}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1},
+    {"role": "HSE Manager", "read": 1, "write": 1, "create": 1, "submit": 1},
+    {"role": "Project Manager", "read": 1, "write": 1, "create": 1}
+  ]
+}

@@ -1,0 +1,29 @@
+{
+ "doctype": "DocType",
+ "istable": 1,
+ "editable_grid": 1,
+ "module": "EPC Modules",
+ "name": "Document Template Placeholder",
+ "fields": [
+  {
+   "fieldname": "placeholder",
+   "fieldtype": "Data",
+   "label": "Placeholder",
+   "reqd": 1
+  },
+  {
+   "fieldname": "field_type",
+   "fieldtype": "Select",
+   "label": "Field Type",
+   "options": "Data\nDate\nCurrency\nLink"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "modified": "2026-05-21 17:00:00.000000",
+ "modified_by": "nathanamare@bespo.et",
+ "owner": "Administrator"
+}

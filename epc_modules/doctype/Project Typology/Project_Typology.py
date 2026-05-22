@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class ProjectTypology(frappe.Document):
+class ProjectTypology(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Project Typology", ["name"])

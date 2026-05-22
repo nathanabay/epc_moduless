@@ -1,0 +1,28 @@
+{
+ "doctype": "DocType",
+ "name": "Interim Payment Certificate",
+ "module": "EPC Modules",
+ "autoname": "field:certificate_number",
+ "is_submittable": 1,
+ "fields": [
+  {"fieldname": "certificate_number", "fieldtype": "Data", "label": "Certificate Number", "read_only": 1, "reqd": 1},
+  {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "milestone_name", "fieldtype": "Data", "label": "Milestone / Phase", "reqd": 1},
+  {"fieldname": "certification_date", "fieldtype": "Date", "label": "Certification Date", "reqd": 1},
+  {"fieldname": "lines", "fieldtype": "Table", "options": "IPC Line", "label": "IPC Lines"},
+  {"fieldname": "gross_certified_value", "fieldtype": "Currency", "label": "Gross Certified Value", "read_only": 1},
+  {"fieldname": "retention_percentage", "fieldtype": "Float", "label": "Retention %", "default": 10},
+  {"fieldname": "retention_amount", "fieldtype": "Currency", "label": "Retention Amount", "read_only": 1},
+  {"fieldname": "net_certified_value", "fieldtype": "Currency", "label": "Net Certified Value", "read_only": 1},
+  {"fieldname": "vat_rate", "fieldtype": "Float", "label": "VAT %", "default": 15},
+  {"fieldname": "vat_amount", "fieldtype": "Currency", "label": "VAT Amount", "read_only": 1},
+  {"fieldname": "total_invoice_value", "fieldtype": "Currency", "label": "Total Invoice Value", "read_only": 1},
+  {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Draft\nSubmitted\nCertified\nInvoiced\nPaid", "default": "Draft", "in_list_view": 1},
+  {"fieldname": "remarks", "fieldtype": "Text", "label": "Remarks"}
+ ],
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1},
+  {"role": "Finance Manager", "read": 1, "write": 1, "create": 1, "submit": 1},
+  {"role": "Project Manager", "read": 1, "write": 1, "create": 1}
+ ]
+}

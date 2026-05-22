@@ -16,96 +16,96 @@ app_version = "1.0.0"
 required_apps = ["erpnext"]
 
 # App hooks
-after_install = "epc_modules.event_handlers.after_install"
+after_install = "epc_modules.epc_modules.event_handlers.after_install"
 
 # doctype event hooks
 doc_events = {
     "Project": {
-        "after_insert": "epc_modules.event_handlers.on_project_created",
-        "on_update": "epc_modules.event_handlers.on_project_updated",
+        "after_insert": "epc_modules.epc_modules.event_handlers.on_project_created",
+        "on_update": "epc_modules.epc_modules.event_handlers.on_project_updated",
         "validate": [
-            "epc_modules.event_handlers.validate_project_typology",
-            "epc_modules.event_handlers.validate_project",
+            "epc_modules.epc_modules.event_handlers.validate_project_typology",
+            "epc_modules.epc_modules.event_handlers.validate_project",
         ]
     },
     "Purchase Order": {
-        "validate": "epc_modules.event_handlers.on_po_validate"
+        "validate": "epc_modules.epc_modules.event_handlers.on_po_validate"
     },
     "Purchase Receipt": {
-        "validate": "epc_modules.event_handlers.validate_site_zone_allocation"
+        "validate": "epc_modules.epc_modules.event_handlers.validate_site_zone_allocation"
     },
     "Stock Entry": {
-        "validate": "epc_modules.event_handlers.validate_stock_entry_project"
+        "validate": "epc_modules.epc_modules.event_handlers.validate_stock_entry_project"
     },
     "Sales Invoice": {
-        "validate": "epc_modules.event_handlers.validate_ra_bill_integration"
+        "validate": "epc_modules.epc_modules.event_handlers.validate_ra_bill_integration"
     },
     # WBS Item
     "WBS Item": {
-        "validate": "epc_modules.event_handlers.validate_wbs_completion"
+        "validate": "epc_modules.epc_modules.event_handlers.validate_wbs_completion"
     },
     # Non-Conformance Report
     "Non-Conformance Report": {
-        "on_update": "epc_modules.event_handlers.on_ncr_status_change"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_ncr_status_change"
     },
     # Daily Progress Report / Concrete Pour Record
     "Daily Progress Report": {
-        "validate": "epc_modules.event_handlers.validate_concrete_pour"
+        "validate": "epc_modules.epc_modules.event_handlers.validate_concrete_pour"
     },
     "Concrete Pour Record": {
-        "validate": "epc_modules.event_handlers.validate_concrete_pour"
+        "validate": "epc_modules.epc_modules.event_handlers.validate_concrete_pour"
     },
     # Cube Test Result
     "Cube Test Result": {
-        "on_update": "epc_modules.event_handlers.on_cube_test_submit"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_cube_test_submit"
     },
     # Concrete Mix Design
     "Concrete Mix Design": {
-        "on_update": "epc_modules.event_handlers.on_mix_design_approval"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_mix_design_approval"
     },
     # Formwork Inspection
     "Formwork Inspection": {
-        "on_update": "epc_modules.event_handlers.on_formwork_inspection_cleared"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_formwork_inspection_cleared"
     },
     # Curing Record
     "Curing Record": {
-        "validate": "epc_modules.event_handlers.on_curing_record_check"
+        "validate": "epc_modules.epc_modules.event_handlers.on_curing_record_check"
     },
     # ITP Inspection Record
     "ITP Inspection Record": {
-        "on_update": "epc_modules.event_handlers.on_itp_inspection_record_update"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_itp_inspection_record_update"
     },
     # Risk Register
     "Risk Register": {
-        "on_update": "epc_modules.event_handlers.on_risk_materialized"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_risk_materialized"
     },
     # Equipment Register
     "Equipment Register": {
-        "on_update": "epc_modules.event_handlers.on_equipment_status_change"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_equipment_status_change"
     },
     # Equipment Maintenance Schedule
     "Equipment Maintenance Schedule": {
-        "on_update": "epc_modules.event_handlers.on_maintenance_due"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_maintenance_due"
     },
     # HSE Incident
     "HSE Incident": {
-        "on_update": "epc_modules.event_handlers.on_hse_incident_reported"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_hse_incident_reported"
     },
     # Safety Inspection
     "Safety Inspection": {
-        "on_update": "epc_modules.event_handlers.on_safety_inspection_completed"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_safety_inspection_completed"
     },
     # Project Document
     "Project Document": {
-        "on_update": "epc_modules.event_handlers.on_document_review_required"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_document_review_required"
     },
     # RFI
     "RFI": {
-        "on_update": "epc_modules.event_handlers.on_rfi_overdue"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_rfi_overdue"
     },
     # Subcontractor Profile
     "Subcontractor Profile": {
-        "on_update": "epc_modules.event_handlers.on_subcontractor_insurance_expiry"
+        "on_update": "epc_modules.epc_modules.event_handlers.on_subcontractor_insurance_expiry"
     }
 }
 
@@ -115,9 +115,11 @@ scheduler_events = {
         "epc_modules.tasks.schedulers.process_pending_ra_bills",
         "epc_modules.tasks.schedulers.update_project_progress",
         "epc_modules.tasks.schedulers.check_overdue_milestones",
+        "epc_modules.tasks.schedulers.check_permit_expiry",
     ],
     "weekly": [
         "epc_modules.tasks.schedulers.generate_project_reports",
+        "epc_modules.tasks.schedulers.generate_hse_monthly_report",
     ],
     "monthly": [
         "epc_modules.tasks.schedulers.archive_completed_projects",
@@ -127,21 +129,21 @@ scheduler_events = {
 
 # Permissions
 has_web_permission = {
-    "Project": "epc_modules.event_handlers.web_permission_for_project"
+    "Project": "epc_modules.epc_modules.event_handlers.web_permission_for_project"
 }
 
 permission_query_conditions = {
-    "Project": "epc_modules.event_handlers.project_permission_query"
+    "Project": "epc_modules.epc_modules.event_handlers.project_permission_query"
 }
 
 get_match_filters = {
-    "Project": "epc_modules.event_handlers.get_project_match_conditions"
+    "Project": "epc_modules.epc_modules.event_handlers.get_project_match_conditions"
 }
 
 # Fixtures to load (data records only; DocType schemas are in doctype/ directory)
 fixtures = [
     # Custom fields on standard DocTypes (Project, Item, NCR, Equipment Register)
-    {"dt": "Custom Field", "filters": [["dt", "in", ["Project", "Item", "Non-Conformance Report", "Equipment Register"]]]},
+    {"dt": "Custom Field", "filters": [["dt", "in", ("Project", "Item", "Non-Conformance Report", "Equipment Register")]]},
     # Property setters for Project form customization
     {"dt": "Property Setter", "filters": [["doc_type", "=", "Project"]]},
     # Default typology data records
@@ -159,9 +161,9 @@ fixtures = [
 
 # Website route rules
 website_route_rules = [
-    {"from_route": "/kanban-project-overview", "to_route": "kanban-project-overview"},
-    {"from_route": "/wip-report", "to_route": "wip-report"},
-    {"from_route": "/cost-line-breakdown", "to_route": "cost-line-breakdown"},
-    {"from_route": "/material-plan", "to_route": "material-plan"},
-    {"from_route": "/job-type-config", "to_route": "job-type-config"},
+    {"from_route": "/kanban-project-overview", "to_route": "kanban-project-overview", "website_authentication": True},
+    {"from_route": "/wip-report", "to_route": "wip-report", "website_authentication": True},
+    {"from_route": "/cost-line-breakdown", "to_route": "cost-line-breakdown", "website_authentication": True},
+    {"from_route": "/material-plan", "to_route": "material-plan", "website_authentication": True},
+    {"from_route": "/job-type-config", "to_route": "job-type-config", "website_authentication": True},
 ]

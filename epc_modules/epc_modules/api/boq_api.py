@@ -106,6 +106,8 @@ def add_boq_item(project_name, item_code, quantity, rate=None, wbs_code=None):
 
     project = frappe.get_doc("Project", project_name)
 
+    frappe.has_permission("Custom BOQ", "create", throw=True)
+
     doc = frappe.get_doc({
         "doctype": "Custom BOQ",
         "project": project_name,
@@ -114,7 +116,7 @@ def add_boq_item(project_name, item_code, quantity, rate=None, wbs_code=None):
         "rate": rate or frappe.db.get_value("Item", item_code, "valuation_rate") or 0,
         "wbs_code": wbs_code
     })
-    doc.insert(ignore_permissions=True)
+    doc.insert()
 
     logger.info(f"Added BOQ item {item_code} to project {project_name}")
 
@@ -149,7 +151,9 @@ def update_boq_item(item_name, quantity=None, rate=None):
     if rate is not None:
         doc.rate = rate
 
-    doc.save(ignore_permissions=True)
+    frappe.has_permission("Custom BOQ", "write", item_name, throw=True)
+
+    doc.save()
 
     return {
         "name": doc.name,
@@ -193,7 +197,9 @@ def get_boq_items(project_name, wbs_code=None):
     items = frappe.get_all(
         "Custom BOQ",
         filters=filters,
-        fields=["*"],
+        fields=["name", "item_code", "description", "boq_quantity", "unit_rate",
+                "total_value", "measurement_method", "wbs_item", "wbs_code",
+                "is_electromechanical", "is_civil", "parent", "idx"],
         order_by="idx"
     )
 

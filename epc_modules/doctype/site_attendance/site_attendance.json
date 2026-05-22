@@ -1,0 +1,25 @@
+{
+  "doctype": "DocType",
+  "name": "Site Attendance",
+  "module": "EPC Modules",
+  "autoname": "field:attendance_id",
+  "is_submittable": 1,
+  "fields": [
+    {"fieldname": "attendance_id", "fieldtype": "Data", "label": "Attendance ID", "read_only": 1, "reqd": 1},
+    {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "attendance_date", "fieldtype": "Date", "label": "Date", "reqd": 1},
+    {"fieldname": "entries_section", "fieldtype": "Section Break", "label": "Attendance Entries"},
+    {"fieldname": "entries", "fieldtype": "Table", "options": "Attendance Entry", "label": "Entries"},
+    {"fieldname": "total_labor_count", "fieldtype": "Int", "label": "Total Labor Count", "read_only": 1},
+    {"fieldname": "regular_hours_total", "fieldtype": "Float", "label": "Regular Hours (Total)", "read_only": 1},
+    {"fieldname": "overtime_hours_total", "fieldtype": "Float", "label": "Overtime Hours (Total)", "read_only": 1},
+    {"fieldname": "recorded_by", "fieldtype": "Link", "label": "Recorded By", "options": "User"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Draft\nSubmitted\nApproved", "default": "Draft", "in_list_view": 1},
+    {"fieldname": "remarks", "fieldtype": "Text", "label": "Remarks"}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1},
+    {"role": "HSE Manager", "read": 1, "write": 1, "create": 1, "submit": 1},
+    {"role": "Site Engineer", "read": 1, "write": 1, "create": 1}
+  ]
+}

@@ -30,6 +30,8 @@ def get_inspection_templates(typology=None, category=None, is_active=1):
     Returns:
         list: Inspection templates
     """
+    frappe.has_permission("Master Inspection Template", "read", throw=True)
+
     filters = {"is_active": is_active}
 
     if typology:
@@ -38,11 +40,13 @@ def get_inspection_templates(typology=None, category=None, is_active=1):
     if category:
         filters["inspection_category"] = category
 
-    templates = frappe.get_all(
+    templates = frappe.get_list(
         "Master Inspection Template",
         filters=filters,
         fields=["name", "template_name", "applicable_typologies", "inspection_category", "description"],
-        order_by="template_name"
+        order_by="template_name",
+        limit_page_length=20,
+        limit_start=0
     )
 
     return templates
@@ -59,6 +63,8 @@ def get_template_details(template_name):
     Returns:
         dict: Template details with hold points
     """
+    frappe.has_permission("Master Inspection Template", "read", template_name, throw=True)
+
     if not frappe.db.exists("Master Inspection Template", template_name):
         frappe.throw(_("Template {0} does not exist").format(template_name))
 
@@ -100,6 +106,9 @@ def clone_templates_to_project(project):
     Returns:
         dict: Cloning result
     """
+    frappe.has_permission("Project Inspection Plan", "create", throw=True)
+    frappe.has_permission("Project", "write", project, throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -123,6 +132,8 @@ def get_project_itps(project, status=None):
     Returns:
         list: ITPs
     """
+    frappe.has_permission("Project Inspection Plan", "read", throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -130,11 +141,13 @@ def get_project_itps(project, status=None):
     if status:
         filters["status"] = status
 
-    itps = frappe.get_all(
+    itps = frappe.get_list(
         "Project Inspection Plan",
         filters=filters,
         fields=["name", "itp_code", "source_template", "status", "total_hold_points", "progress_percentage"],
-        order_by="creation desc"
+        order_by="creation desc",
+        limit_page_length=20,
+        limit_start=0
     )
 
     return itps
@@ -151,6 +164,8 @@ def get_itp_details(itp_name):
     Returns:
         dict: ITP details
     """
+    frappe.has_permission("Project Inspection Plan", "read", itp_name, throw=True)
+
     if not frappe.db.exists("Project Inspection Plan", itp_name):
         frappe.throw(_("ITP {0} does not exist").format(itp_name))
 
@@ -207,6 +222,8 @@ def record_inspection(itp_name, record_name, status, actual_reading=None, remark
     Returns:
         dict: Recording result
     """
+    frappe.has_permission("Inspection Record", "create", throw=True)
+
     if not frappe.db.exists("Project Inspection Plan", itp_name):
         frappe.throw(_("ITP {0} does not exist").format(itp_name))
 
@@ -277,6 +294,8 @@ def get_project_ncrs(project, status=None):
     Returns:
         list: NCRs
     """
+    frappe.has_permission("Non-Conformance Report", "read", throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -284,11 +303,13 @@ def get_project_ncrs(project, status=None):
     if status:
         filters["status"] = status
 
-    ncrs = frappe.get_all(
+    ncrs = frappe.get_list(
         "Non-Conformance Report",
         filters=filters,
         fields=["name", "ncr_number", "description", "severity", "status", "target_close_date", "actual_close_date"],
-        order_by="creation desc"
+        order_by="creation desc",
+        limit_page_length=20,
+        limit_start=0
     )
 
     return ncrs
@@ -305,6 +326,8 @@ def get_ncr_details(ncr_name):
     Returns:
         dict: NCR details
     """
+    frappe.has_permission("Non-Conformance Report", "read", ncr_name, throw=True)
+
     if not frappe.db.exists("Non-Conformance Report", ncr_name):
         frappe.throw(_("NCR {0} does not exist").format(ncr_name))
 
@@ -347,8 +370,15 @@ def update_ncr_status(ncr_name, status, remarks=None):
     Returns:
         dict: Update result
     """
+    frappe.has_permission("Non-Conformance Report", "write", ncr_name, throw=True)
+
     if not frappe.db.exists("Non-Conformance Report", ncr_name):
         frappe.throw(_("NCR {0} does not exist").format(ncr_name))
+
+    # Validate status against allowed enum values
+    allowed_statuses = ["Open", "Under Investigation", "Closed", "Verified", "Rejected"]
+    if status not in allowed_statuses:
+        frappe.throw(_("Invalid status '{0}'. Allowed values: {1}").format(status, ", ".join(allowed_statuses)))
 
     doc = frappe.get_doc("Non-Conformance Report", ncr_name)
     doc.status = status
@@ -359,7 +389,11 @@ def update_ncr_status(ncr_name, status, remarks=None):
         if remarks:
             doc.closure_remarks = remarks
 
-    doc.save(ignore_permissions=True)
+    try:
+        doc.save()
+    except Exception as e:
+        frappe.log_error(title=_("NCR Status Update Failed"), message=f"NCR: {ncr_name}\nError: {e}")
+        frappe.throw(_("Failed to update NCR status: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -379,6 +413,11 @@ def close_ncr(ncr_name, closure_remarks=None):
     Returns:
         dict: Closure result
     """
+    frappe.has_permission("Non-Conformance Report", "write", ncr_name, throw=True)
+
+    if not frappe.db.exists("Non-Conformance Report", ncr_name):
+        frappe.throw(_("NCR {0} does not exist").format(ncr_name))
+
     ncr = NCRManager.close_ncr(ncr_name, closure_remarks)
 
     return {
@@ -401,6 +440,8 @@ def verify_ncr(ncr_name, verification_remarks=None):
     Returns:
         dict: Verification result
     """
+    frappe.has_permission("Non-Conformance Report", "write", ncr_name, throw=True)
+
     if not frappe.db.exists("Non-Conformance Report", ncr_name):
         frappe.throw(_("NCR {0} does not exist").format(ncr_name))
 
@@ -415,7 +456,11 @@ def verify_ncr(ncr_name, verification_remarks=None):
     if verification_remarks:
         doc.verification_remarks = verification_remarks
 
-    doc.save(ignore_permissions=True)
+    try:
+        doc.save()
+    except Exception as e:
+        frappe.log_error(title=_("NCR Verification Failed"), message=f"NCR: {ncr_name}\nError: {e}")
+        frappe.throw(_("Failed to verify NCR: {0}").format(str(e)))
 
     logger.info(f"NCR {doc.ncr_number} verified")
 
@@ -437,6 +482,11 @@ def get_quality_summary(project):
     Returns:
         dict: Quality summary with ITP and NCR stats
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     itp_summary = ITPManager.get_project_itp_summary(project)
     ncr_summary = NCRManager.get_project_ncr_summary(project)
     blocking_status = NCRManager.check_project_ncr_blocking(project)
@@ -460,6 +510,11 @@ def check_billing_eligibility(project):
     Returns:
         dict: Billing eligibility
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     blocking = NCRManager.check_project_ncr_blocking(project)
 
     return {

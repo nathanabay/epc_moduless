@@ -351,6 +351,8 @@ def update_ncr_status(ncr_name, status, remarks=None):
         frappe.throw(_("NCR {0} does not exist").format(ncr_name))
 
     doc = frappe.get_doc("Non-Conformance Report", ncr_name)
+    frappe.has_permission("Non-Conformance Report", "write", doc.name, throw=True)
+
     doc.status = status
 
     if status == "Closed":
@@ -359,7 +361,7 @@ def update_ncr_status(ncr_name, status, remarks=None):
         if remarks:
             doc.closure_remarks = remarks
 
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     return {
         "name": doc.name,
@@ -409,13 +411,15 @@ def verify_ncr(ncr_name, verification_remarks=None):
     if doc.status != "Closed":
         frappe.throw(_("NCR must be Closed before verification"))
 
+    frappe.has_permission("Non-Conformance Report", "write", doc.name, throw=True)
+
     doc.status = "Verified"
     doc.verification_date = today()
     doc.verified_by = frappe.session.user
     if verification_remarks:
         doc.verification_remarks = verification_remarks
 
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     logger.info(f"NCR {doc.ncr_number} verified")
 

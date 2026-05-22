@@ -371,13 +371,17 @@ class IS456ComplianceValidator:
 class CuringManager:
     """
     Manages curing records and compliance tracking.
+
+    Note: These are internal library functions called by doc events.
+    Permission checks use frappe.has_permission() or frappe.flags.ignore_permissions
+    to allow both authorized writes and system-level automation.
     """
 
     @staticmethod
     def create_curing_record(project: str, data: Dict) -> "frappe.doc":
         """Create a new curing record."""
-        count = frappe.db.count("Curing Record", {"project": project}) or 0
-        record_id = f"CR-{project[:4].upper()}-{count + 1:04d}"
+        project_code = project[:4].upper().replace(" ", "")
+        record_id = f"CR-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
         doc = frappe.get_doc({
             "doctype": "Curing Record",
@@ -396,7 +400,7 @@ class CuringManager:
         # Set minimum curing days
         doc.minimum_curing_days = IS456ComplianceValidator.get_minimum_curing_days(doc.concrete_grade)
 
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("Curing Record", "write") or frappe.flags.ignore_permissions)
         return doc
 
     @staticmethod
@@ -418,7 +422,7 @@ class CuringManager:
             "remarks": check_data.get("remarks")
         })
 
-        doc.save(ignore_permissions=True)
+        doc.save(ignore_permissions=frappe.has_permission("Curing Record", "write") or frappe.flags.ignore_permissions)
         return doc
 
     @staticmethod
@@ -435,7 +439,7 @@ class CuringManager:
         doc.is_completed = 1
         doc.completed_by = frappe.session.user
 
-        doc.save(ignore_permissions=True)
+        doc.save(ignore_permissions=frappe.has_permission("Curing Record", "write") or frappe.flags.ignore_permissions)
 
         logger.info(f"Curing record {doc.record_id} completed: {curing_days} days (min: {min_required})")
 
@@ -445,13 +449,17 @@ class CuringManager:
 class FormworkManager:
     """
     Manages formwork inspection records.
+
+    Note: These are internal library functions called by doc events.
+    Permission checks use frappe.has_permission() or frappe.flags.ignore_permissions
+    to allow both authorized writes and system-level automation.
     """
 
     @staticmethod
     def create_inspection(project: str, data: Dict) -> "frappe.doc":
         """Create a formwork inspection record."""
-        count = frappe.db.count("Formwork Inspection", {"project": project}) or 0
-        inspection_id = f"FW-{project[:4].upper()}-{count + 1:04d}"
+        project_code = project[:4].upper().replace(" ", "")
+        inspection_id = f"FW-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
         doc = frappe.get_doc({
             "doctype": "Formwork Inspection",
@@ -472,7 +480,7 @@ class FormworkManager:
         if doc.dimensions_length_m and doc.dimensions_breadth_m:
             doc.formwork_area_sqm = doc.dimensions_length_m * doc.dimensions_breadth_m
 
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("Formwork Inspection", "write") or frappe.flags.ignore_permissions)
         return doc
 
     @staticmethod
@@ -495,7 +503,7 @@ class FormworkManager:
         doc.cleared_by = cleared_by or frappe.session.user
         doc.clearance_date = today()
 
-        doc.save(ignore_permissions=True)
+        doc.save(ignore_permissions=frappe.has_permission("Formwork Inspection", "write") or frappe.flags.ignore_permissions)
 
         logger.info(f"Formwork {doc.inspection_id} cleared for pour at {doc.location}")
 
@@ -505,6 +513,10 @@ class FormworkManager:
 class ConcreteMixDesignManager:
     """
     Manages concrete mix design documents and compliance.
+
+    Note: These are internal library functions called by doc events.
+    Permission checks use frappe.has_permission() or frappe.flags.ignore_permissions
+    to allow both authorized writes and system-level automation.
     """
 
     @staticmethod
@@ -520,8 +532,8 @@ class ConcreteMixDesignManager:
             Created document
         """
         # Generate mix design code
-        count = frappe.db.count("Concrete Mix Design", {"project": project}) or 0
-        mix_code = f"MD-{project[:4].upper()}-{count + 1:04d}"
+        project_code = project[:4].upper().replace(" ", "")
+        mix_code = f"MD-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
         doc = frappe.get_doc({
             "doctype": "Concrete Mix Design",
@@ -545,7 +557,7 @@ class ConcreteMixDesignManager:
 
         # Auto-calculate derived fields
         IS456ComplianceValidator._populate_compliance_fields(doc)
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("Concrete Mix Design", "write") or frappe.flags.ignore_permissions)
 
         return doc
 
@@ -573,7 +585,7 @@ class ConcreteMixDesignManager:
             doc.approved_by = frappe.session.user
             doc.approval_date = today()
 
-        doc.save(ignore_permissions=True)
+        doc.save(ignore_permissions=frappe.has_permission("Concrete Mix Design", "write") or frappe.flags.ignore_permissions)
 
         logger.info(f"Mix design {doc.mix_design_code} status: {doc.approval_status}")
         return doc
@@ -608,6 +620,10 @@ class ConcreteMixDesignManager:
 class CubeTestManager:
     """
     Manages cube test records and compliance.
+
+    Note: These are internal library functions called by doc events.
+    Permission checks use frappe.has_permission() or frappe.flags.ignore_permissions
+    to allow both authorized writes and system-level automation.
     """
 
     @staticmethod
@@ -648,7 +664,7 @@ class CubeTestManager:
         # Auto-calculate fields
         CubeTestManager._calculate_test_results(doc)
 
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("Cube Test Result", "write") or frappe.flags.ignore_permissions)
 
         return doc
 
@@ -750,13 +766,17 @@ class CubeTestManager:
 class MaterialRegisterManager:
     """
     Manages cement and steel reinforcement registers.
+
+    Note: These are internal library functions called by doc events.
+    Permission checks use frappe.has_permission() or frappe.flags.ignore_permissions
+    to allow both authorized writes and system-level automation.
     """
 
     @staticmethod
     def create_cement_entry(project: str, data: Dict) -> "frappe.doc":
         """Create cement register entry."""
-        count = frappe.db.count("Cement Register", {"project": project}) or 0
-        entry_id = f"CE-{project[:4].upper()}-{count + 1:04d}"
+        project_code = project[:4].upper().replace(" ", "")
+        entry_id = f"CE-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
         doc = frappe.get_doc({
             "doctype": "Cement Register",
@@ -778,14 +798,14 @@ class MaterialRegisterManager:
         from frappe.utils import add_months
         doc.date_of_expiry = add_months(doc.date_of_manufacture, 3)
 
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("Cement Register", "write") or frappe.flags.ignore_permissions)
         return doc
 
     @staticmethod
     def create_steel_entry(project: str, data: Dict) -> "frappe.doc":
         """Create steel reinforcement register entry."""
-        count = frappe.db.count("Steel Reinforcement Register", {"project": project}) or 0
-        entry_id = f"SR-{project[:4].upper()}-{count + 1:04d}"
+        project_code = project[:4].upper().replace(" ", "")
+        entry_id = f"SR-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
         doc = frappe.get_doc({
             "doctype": "Steel Reinforcement Register",
@@ -806,7 +826,7 @@ class MaterialRegisterManager:
         # Auto-validate against IS 1786
         IS456ComplianceValidator._validate_steel_grade(doc)
 
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("Steel Reinforcement Register", "write") or frappe.flags.ignore_permissions)
         return doc
 
     @staticmethod

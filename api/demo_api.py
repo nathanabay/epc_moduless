@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 @frappe.whitelist()
 def run_demo_data_creation():
     """API endpoint to run demo data creation."""
+    frappe.only_for("System Manager")
     results = {
         "typologies": create_typologies(),
         "project": create_demo_project(),
@@ -18,7 +19,6 @@ def run_demo_data_creation():
         "equipment": create_equipment_register(),
     }
 
-    frappe.db.commit()
     return {"status": "success", "results": results}
 
 def create_typologies():
@@ -83,7 +83,6 @@ def create_demo_project():
             "priority": "High"
         })
         project.insert()
-        frappe.db.commit()
         return {"created": 1, "name": "EPC-DEMO-001"}
     except Exception as e:
         return {"created": 0, "error": str(e)}

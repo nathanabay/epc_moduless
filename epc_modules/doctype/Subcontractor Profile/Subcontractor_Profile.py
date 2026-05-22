@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class SubcontractorProfile(frappe.Document):
+class SubcontractorProfile(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Subcontractor Profile", ["name"])

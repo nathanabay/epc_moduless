@@ -1,0 +1,39 @@
+{
+  "name": "Shop Drawing Item",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "istable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "drawing_number",
+      "fieldtype": "Data",
+      "label": "Drawing Number",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "label": "Description",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "revision",
+      "fieldtype": "Data",
+      "label": "Revision"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Pending\nSubmitted\nUnder Review\nApproved\nRejected",
+      "default": "Pending",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ]
+}

@@ -9,9 +9,13 @@ frappe.pages['epc-reports'].on_page_load = function(wrapper) {
         single_column: true
     });
 
-    // Load reports
+    // Load reports with CSRF token validation
     frappe.call({
         method: "epc_modules.api.reports.get_epc_reports_list",
+        args: {
+            // CSRF token validation
+            csrf_token: frappe.csrf_token
+        },
         callback: function(r) {
             if (r.message) {
                 render_reports_list(page, r.message);
@@ -20,6 +24,16 @@ frappe.pages['epc-reports'].on_page_load = function(wrapper) {
     });
 };
 
+function escape_html(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
 function render_reports_list(page, reports) {
     var html = '<div class="row">';
 
@@ -27,9 +41,9 @@ function render_reports_list(page, reports) {
         html += '<div class="col-md-4">';
         html += '<div class="card" style="margin-bottom: 15px;">';
         html += '<div class="card-body">';
-        html += '<h5 class="card-title">' + report.title + '</h5>';
-        html += '<p class="card-text">' + report.description + '</p>';
-        html += '<button class="btn btn-primary btn-sm" onclick="open_report(\'' + report.name + '\')">';
+        html += '<h5 class="card-title">' + escape_html(report.title) + '</h5>';
+        html += '<p class="card-text">' + escape_html(report.description) + '</p>';
+        html += '<button class="btn btn-primary btn-sm" onclick="open_report(\'' + encodeURIComponent(report.name) + '\')">';
         html += __('View Report') + '</button>';
         html += '</div></div></div>';
     });

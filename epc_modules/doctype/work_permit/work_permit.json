@@ -1,0 +1,33 @@
+{
+  "doctype": "DocType",
+  "name": "Work Permit",
+  "module": "EPC Modules",
+  "autoname": "field:permit_number",
+  "is_submittable": 1,
+  "fields": [
+    {"fieldname": "permit_number", "fieldtype": "Data", "label": "Permit Number", "read_only": 1, "reqd": 1},
+    {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "permit_type", "fieldtype": "Link", "label": "Permit Type", "options": "Permit Type", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "work_description", "fieldtype": "Text Editor", "label": "Work Description", "reqd": 1},
+    {"fieldname": "location", "fieldtype": "Data", "label": "Location", "reqd": 1},
+    {"fieldname": "wbs_item", "fieldtype": "Link", "label": "WBS Item", "options": "WBS Item"},
+    {"fieldname": "start_date", "fieldtype": "Datetime", "label": "Start Date & Time", "reqd": 1},
+    {"fieldname": "end_date", "fieldtype": "Datetime", "label": "End Date & Time", "reqd": 1},
+    {"fieldname": "issued_by", "fieldtype": "Link", "label": "Issued By", "options": "User"},
+    {"fieldname": "approved_by", "fieldtype": "Link", "label": "Approved By", "options": "User"},
+    {"fieldname": "permit_recipients", "fieldtype": "Table", "options": "Permit Recipient", "label": "Recipients"},
+    {"fieldname": "jha_conducted", "fieldtype": "Check", "label": "JHA Conducted"},
+    {"fieldname": "jha_attachment", "fieldtype": "Attach", "label": "JHA Document"},
+    {"fieldname": "ppe_check_completed", "fieldtype": "Check", "label": "PPE Check Completed"},
+    {"fieldname": "area_isolated", "fieldtype": "Check", "label": "Area Isolated"},
+    {"fieldname": "barriers_erected", "fieldtype": "Check", "label": "Barriers Erected"},
+    {"fieldname": "fire_extinguisher_available", "fieldtype": "Check", "label": "Fire Extinguisher Available"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Draft\nApproved\nIn Progress\nCompleted\nCancelled\nExpired", "default": "Draft", "in_list_view": 1},
+    {"fieldname": "remarks", "fieldtype": "Text", "label": "Remarks"}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1},
+    {"role": "HSE Manager", "read": 1, "write": 1, "create": 1, "submit": 1},
+    {"role": "Site Engineer", "read": 1, "write": 1, "create": 1}
+  ]
+}

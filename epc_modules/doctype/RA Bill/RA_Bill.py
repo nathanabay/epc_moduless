@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class RABill(frappe.Document):
+class RABill(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("RA Bill", ["name"])

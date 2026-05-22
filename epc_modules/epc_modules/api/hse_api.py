@@ -30,8 +30,7 @@ def create_hse_incident(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("HSE Incident", {"project": project}) or 0
-    incident_number = f"INC-{project[:4].upper()}-{count + 1:04d}"
+    incident_number = f"INC-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "HSE Incident",
@@ -142,8 +141,7 @@ def create_safety_inspection(project, data):
     """
     frappe.has_permission("Safety Inspection", "create", throw=True)
 
-    count = frappe.db.count("Safety Inspection", {"project": project}) or 0
-    inspection_number = f"SFT-{project[:4].upper()}-{count + 1:04d}"
+    inspection_number = f"SFT-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Safety Inspection",
@@ -216,8 +214,7 @@ def create_toolbox_talk(project, data):
     """
     frappe.has_permission("Toolbox Talk Record", "create", throw=True)
 
-    count = frappe.db.count("Toolbox Talk Record", {"project": project}) or 0
-    talk_id = f"TT-{project[:4].upper()}-{count + 1:04d}"
+    talk_id = f"TT-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Toolbox Talk Record",

@@ -207,6 +207,14 @@ permalink: epc-dashboard.html
 // EPC Dashboard JavaScript Controller
 frappe.provide('epc_dashboard');
 
+// HTML escape utility to prevent XSS
+function escape_html(str) {
+    if (str == null) return '';
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+}
+
 const epc_dashboard = {
     initialized: false,
 
@@ -297,12 +305,12 @@ const epc_dashboard = {
                 count.textContent = data.message.count;
 
                 list.innerHTML = alerts.slice(0, 5).map(alert => `
-                    <div class="alert-item alert-${alert.severity}" data-type="${alert.type}">
+                    <div class="alert-item alert-${escape_html(alert.severity)}" data-type="${escape_html(alert.type)}">
                         <div class="alert-indicator"></div>
                         <div class="alert-content">
-                            <div class="alert-title">${alert.title}</div>
-                            <div class="alert-description">${alert.description}</div>
-                            ${alert.project ? `<a href="/app/project/${alert.project}">View Project</a>` : ''}
+                            <div class="alert-title">${escape_html(alert.title)}</div>
+                            <div class="alert-description">${escape_html(alert.description)}</div>
+                            ${alert.project ? `<a href="/app/project/${escape_html(alert.project)}">View Project</a>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -350,20 +358,20 @@ const epc_dashboard = {
             progressBars.innerHTML = `
                 <div class="project-progress-detail">
                     <div class="progress-header">
-                        <h4>${p.project_name}</h4>
-                        <span class="progress-badge">${p.status}</span>
+                        <h4>${escape_html(p.project_name)}</h4>
+                        <span class="progress-badge">${escape_html(p.status)}</span>
                     </div>
                     <div class="progress-stats">
                         <div class="stat">
-                            <span class="stat-value">${p.progress.percent_complete}%</span>
+                            <span class="stat-value">${escape_html(p.progress.percent_complete)}%</span>
                             <span class="stat-label">Completion</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-value">${p.progress.completed_wbs}/${p.progress.wbs_items}</span>
+                            <span class="stat-value">${escape_html(p.progress.completed_wbs)}/${escape_html(p.progress.wbs_items)}</span>
                             <span class="stat-label">WBS Completed</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-value">${p.billing.total_billed || 0}</span>
+                            <span class="stat-value">${escape_html(p.billing.total_billed || 0)}</span>
                             <span class="stat-label">Billed</span>
                         </div>
                     </div>
@@ -451,13 +459,13 @@ const epc_dashboard = {
         const healthScores = await Promise.all(healthPromises);
 
         healthContainer.innerHTML = healthScores.map(h => `
-            <div class="health-card health-${h.status.toLowerCase()}">
-                <div class="health-score-circle" style="--score: ${h.health_score}">
-                    <span class="score-value">${h.health_score}</span>
+            <div class="health-card health-${escape_html(h.status.toLowerCase())}">
+                <div class="health-score-circle" style="--score: ${escape_html(h.health_score)}">
+                    <span class="score-value">${escape_html(h.health_score)}</span>
                 </div>
                 <div class="health-info">
-                    <div class="health-name">${h.name}</div>
-                    <div class="health-status">${h.status}</div>
+                    <div class="health-name">${escape_html(h.name)}</div>
+                    <div class="health-status">${escape_html(h.status)}</div>
                 </div>
             </div>
         `).join('');
@@ -479,13 +487,13 @@ const epc_dashboard = {
         const tbody = document.getElementById('ra-bills-body');
         if (bills.message && bills.message.length > 0) {
             tbody.innerHTML = bills.message.map(b => `
-                <tr onclick="location.href='/app/ra-bill/${b.name}'" style="cursor: pointer;">
-                    <td>${b.ra_bill_number}</td>
-                    <td>${b.project}</td>
+                <tr onclick="location.href='/app/ra-bill/${escape_html(b.name)}'" style="cursor: pointer;">
+                    <td>${escape_html(b.ra_bill_number)}</td>
+                    <td>${escape_html(b.project)}</td>
                     <td>${frappe.datetime.format_date(b.billing_period_start)} - ${frappe.datetime.format_date(b.billing_period_end)}</td>
                     <td>${this.format_currency(b.gross_certified_value)}</td>
                     <td>${this.format_currency(b.net_payable)}</td>
-                    <td><span class="badge badge-${this.getStatusBadge(b.status)}">${b.status}</span></td>
+                    <td><span class="badge badge-${this.getStatusBadge(b.status)}">${escape_html(b.status)}</span></td>
                 </tr>
             `).join('');
         } else {

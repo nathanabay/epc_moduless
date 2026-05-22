@@ -1,0 +1,217 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:permit_number",
+ "creation": "2026-05-21 20:38:11.113061",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "permit_number",
+  "project",
+  "permit_type",
+  "work_description",
+  "location",
+  "wbs_item",
+  "start_date",
+  "end_date",
+  "issued_by",
+  "approved_by",
+  "permit_recipients",
+  "jha_conducted",
+  "jha_attachment",
+  "ppe_check_completed",
+  "area_isolated",
+  "barriers_erected",
+  "fire_extinguisher_available",
+  "status",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "permit_number",
+   "fieldtype": "Data",
+   "label": "Permit Number",
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Project",
+   "options": "Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "permit_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Permit Type",
+   "options": "Permit Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "work_description",
+   "fieldtype": "Text Editor",
+   "label": "Work Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "wbs_item",
+   "fieldtype": "Link",
+   "label": "WBS Item",
+   "options": "WBS Item"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Datetime",
+   "label": "Start Date & Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Datetime",
+   "label": "End Date & Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "issued_by",
+   "fieldtype": "Link",
+   "label": "Issued By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "permit_recipients",
+   "fieldtype": "Table",
+   "label": "Recipients",
+   "options": "Permit Recipient"
+  },
+  {
+   "default": "0",
+   "fieldname": "jha_conducted",
+   "fieldtype": "Check",
+   "label": "JHA Conducted"
+  },
+  {
+   "fieldname": "jha_attachment",
+   "fieldtype": "Attach",
+   "label": "JHA Document"
+  },
+  {
+   "default": "0",
+   "fieldname": "ppe_check_completed",
+   "fieldtype": "Check",
+   "label": "PPE Check Completed"
+  },
+  {
+   "default": "0",
+   "fieldname": "area_isolated",
+   "fieldtype": "Check",
+   "label": "Area Isolated"
+  },
+  {
+   "default": "0",
+   "fieldname": "barriers_erected",
+   "fieldtype": "Check",
+   "label": "Barriers Erected"
+  },
+  {
+   "default": "0",
+   "fieldname": "fire_extinguisher_available",
+   "fieldtype": "Check",
+   "label": "Fire Extinguisher Available"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nApproved\nIn Progress\nCompleted\nCancelled\nExpired"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Work Permit",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-21 20:38:11.113061",
+ "modified_by": "Administrator",
+ "module": "EPC Modules",
+ "name": "Work Permit",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HSE Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Site Engineer",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

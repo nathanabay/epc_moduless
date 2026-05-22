@@ -1,0 +1,226 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:talk_id",
+ "creation": "2026-05-21 20:36:51.085331",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "talk_id",
+  "project",
+  "talk_date",
+  "talk_topic",
+  "talk_presenter",
+  "location",
+  "wbs_item",
+  "duration_minutes",
+  "discussion_section",
+  "key_points",
+  "questions_raised",
+  "attendees_section",
+  "attendees",
+  "total_attendees",
+  "feedback_section",
+  "attendee_feedback",
+  "action_items",
+  "photo_attachment",
+  "status",
+  "remarks",
+  "amended_from",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "talk_id",
+   "fieldtype": "Data",
+   "label": "Talk ID",
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Project",
+   "options": "Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "talk_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Talk Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "talk_topic",
+   "fieldtype": "Data",
+   "label": "Topic",
+   "reqd": 1
+  },
+  {
+   "fieldname": "talk_presenter",
+   "fieldtype": "Link",
+   "label": "Presenter",
+   "options": "User"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "wbs_item",
+   "fieldtype": "Link",
+   "label": "WBS Item",
+   "options": "WBS Item"
+  },
+  {
+   "fieldname": "duration_minutes",
+   "fieldtype": "Int",
+   "label": "Duration (Minutes)"
+  },
+  {
+   "fieldname": "discussion_section",
+   "fieldtype": "Section Break",
+   "label": "Discussion"
+  },
+  {
+   "fieldname": "key_points",
+   "fieldtype": "Text Editor",
+   "label": "Key Points Discussed"
+  },
+  {
+   "fieldname": "questions_raised",
+   "fieldtype": "Text",
+   "label": "Questions Raised"
+  },
+  {
+   "fieldname": "attendees_section",
+   "fieldtype": "Section Break",
+   "label": "Attendees"
+  },
+  {
+   "fieldname": "attendees",
+   "fieldtype": "Table",
+   "label": "Attendees",
+   "options": "Toolbox Talk Attendee"
+  },
+  {
+   "fieldname": "total_attendees",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Attendees",
+   "read_only": 1
+  },
+  {
+   "fieldname": "feedback_section",
+   "fieldtype": "Section Break",
+   "label": "Feedback"
+  },
+  {
+   "fieldname": "attendee_feedback",
+   "fieldtype": "Small Text",
+   "label": "Overall Feedback"
+  },
+  {
+   "fieldname": "action_items",
+   "fieldtype": "Text",
+   "label": "Action Items"
+  },
+  {
+   "fieldname": "photo_attachment",
+   "fieldtype": "Attach",
+   "label": "Photo Attachment"
+  },
+  {
+   "default": "Planned",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Planned\nConducted\nCancelled"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Toolbox Talk Record",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Toolbox Talk Record",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-21 20:36:51.085331",
+ "modified_by": "Administrator",
+ "module": "EPC Modules",
+ "name": "Toolbox Talk Record",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Site Supervisor",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

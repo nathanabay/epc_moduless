@@ -95,8 +95,8 @@ epc_modules.kanban.Board = class KanbanBoard {
     }
 
     formatCurrency(value) {
-        if (!value) return "$ 0.00";
-        return "$ " + Number(value).toLocaleString("en-US", {
+        if (!value) return "ETB 0.00";
+        return "ETB " + Number(value).toLocaleString("en-US", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });

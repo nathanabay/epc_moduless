@@ -1,0 +1,42 @@
+{
+ "doctype": "DocType",
+ "istable": 1,
+ "editable_grid": 1,
+ "module": "EPC Modules",
+ "name": "Machine Repair Part",
+ "autoname": "field:part_name",
+ "fields": [
+  {
+   "fieldname": "part_name",
+   "fieldtype": "Data",
+   "label": "Part Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "part_number",
+   "fieldtype": "Data",
+   "label": "Part Number"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity",
+   "reqd": 1
+  },
+  {
+   "fieldname": "unit_rate",
+   "fieldtype": "Currency",
+   "label": "Unit Rate"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount",
+   "formula": "quantity * unit_rate",
+   "precision": 2
+  }
+ ],
+ "modified": "2026-05-21 17:00:00.000000",
+ "modified_by": "nathanamare@bespo.et",
+ "owner": "Administrator"
+}

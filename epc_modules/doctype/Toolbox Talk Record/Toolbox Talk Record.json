@@ -1,0 +1,35 @@
+{
+  "doctype": "DocType",
+  "name": "Toolbox Talk Record",
+  "module": "EPC Modules",
+  "autoname": "field:talk_id",
+  "is_submittable": 1,
+  "editable_grid": 1,
+  "fields": [
+    {"fieldname": "talk_id", "fieldtype": "Data", "label": "Talk ID", "read_only": 1, "reqd": 1},
+    {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "talk_date", "fieldtype": "Date", "label": "Talk Date", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "talk_topic", "fieldtype": "Data", "label": "Topic", "reqd": 1},
+    {"fieldname": "talk_presenter", "fieldtype": "Link", "label": "Presenter", "options": "User"},
+    {"fieldname": "location", "fieldtype": "Data", "label": "Location"},
+    {"fieldname": "wbs_item", "fieldtype": "Link", "label": "WBS Item", "options": "WBS Item"},
+    {"fieldname": "duration_minutes", "fieldtype": "Int", "label": "Duration (Minutes)"},
+    {"fieldname": "discussion_section", "fieldtype": "Section Break", "label": "Discussion"},
+    {"fieldname": "key_points", "fieldtype": "Text Editor", "label": "Key Points Discussed"},
+    {"fieldname": "questions_raised", "fieldtype": "Text", "label": "Questions Raised"},
+    {"fieldname": "attendees_section", "fieldtype": "Section Break", "label": "Attendees"},
+    {"fieldname": "attendees", "fieldtype": "Table", "options": "Toolbox Talk Attendee", "label": "Attendees"},
+    {"fieldname": "total_attendees", "fieldtype": "Int", "label": "Total Attendees", "read_only": 1, "in_list_view": 1},
+    {"fieldname": "feedback_section", "fieldtype": "Section Break", "label": "Feedback"},
+    {"fieldname": "attendee_feedback", "fieldtype": "Small Text", "label": "Overall Feedback"},
+    {"fieldname": "action_items", "fieldtype": "Text", "label": "Action Items"},
+    {"fieldname": "photo_attachment", "fieldtype": "Attach", "label": "Photo Attachment"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Planned\nConducted\nCancelled", "default": "Planned", "in_list_view": 1},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1},
+    {"role": "Site Supervisor", "read": 1, "write": 1, "create": 1, "submit": 1},
+    {"role": "Projects User", "read": 1, "write": 1, "create": 1}
+  ]
+}

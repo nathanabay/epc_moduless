@@ -7,7 +7,3 @@ import frappe
 
 class DailyProgressReport(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Daily Progress Report", ["name"])

@@ -98,30 +98,30 @@ def get_projects():
     project_names = [p.name for p in projects]
 
     # Batch query: count NCRs per project
-    ncr_counts = dict(frappe.db.sql("""
+    ncr_counts = dict(frappe.db.sql(f"""
         SELECT project, COUNT(*) as cnt
         FROM `tabNon-Conformance Report`
-        WHERE project IN (%s)
+        WHERE project IN ({", ".join(["%s"] * len(project_names))})
         AND status IN ('Open', 'In Progress')
         GROUP BY project
-    """ % ", ".join(["%s"] * len(project_names)), project_names))
+    """, project_names))
 
     # Batch query: count work orders per project
-    wo_counts = dict(frappe.db.sql("""
+    wo_counts = dict(frappe.db.sql(f"""
         SELECT project, COUNT(*) as cnt
         FROM `tabSubcontractor Work Order`
-        WHERE project IN (%s)
+        WHERE project IN ({", ".join(["%s"] * len(project_names))})
         AND docstatus != 2
         GROUP BY project
-    """ % ", ".join(["%s"] * len(project_names)), project_names))
+    """, project_names))
 
     # Batch query: count cost sheets per project
-    cs_counts = dict(frappe.db.sql("""
+    cs_counts = dict(frappe.db.sql(f"""
         SELECT parent, COUNT(*) as cnt
         FROM `tabCustom BOQ`
-        WHERE parent IN (%s)
+        WHERE parent IN ({", ".join(["%s"] * len(project_names))})
         GROUP BY parent
-    """ % ", ".join(["%s"] * len(project_names)), project_names))
+    """, project_names))
 
     result = []
     for p in projects:

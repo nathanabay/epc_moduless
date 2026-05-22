@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class CustomBOQ(frappe.Document):
+class CustomBOQ(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Custom BOQ", ["name"])

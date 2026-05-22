@@ -433,8 +433,8 @@ def create_formwork_inspection(project, data):
     """
     frappe.has_permission("Formwork Inspection", "create", throw=True)
 
-    count = frappe.get_all("Formwork Inspection", filters={"project": project}, count=True) or 0
-    inspection_id = f"FW-{project[:4].upper()}-{count + 1:04d}"
+    project_code = project[:4].upper().replace(" ", "")
+    inspection_id = f"FW-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Formwork Inspection",
@@ -487,8 +487,8 @@ def create_curing_record(project, data):
     """
     frappe.has_permission("Curing Record", "create", throw=True)
 
-    count = frappe.get_all("Curing Record", filters={"project": project}, count=True) or 0
-    record_id = f"CR-{project[:4].upper()}-{count + 1:04d}"
+    project_code = project[:4].upper().replace(" ", "")
+    record_id = f"CR-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Curing Record",

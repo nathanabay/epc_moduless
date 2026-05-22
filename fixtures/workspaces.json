@@ -1,0 +1,16 @@
+[
+  {
+    "doctype": "Workspace",
+    "name": "Project & Planning",
+    "label": "Project & Planning",
+    "title": "Project & Planning",
+    "module": "EPC Modules",
+    "icon": "icon-folder",
+    "is_hidden": 0,
+    "public": 1,
+    "indicator_color": "blue",
+    "parent_page": "EPC Management",
+    "content": "[{\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Project Management</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Typology\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Milestone\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Site Zone\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>WBS & Costing</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"WBS Item\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Custom BOQ\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cost Line Breakdown\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Budget Line\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Progress Tracking</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Daily Progress Report\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"DPR Entry\", \"col\": 4}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Design</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Design Phase\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Design Phase Team\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Design Deliverable\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Master Inspection Template\", \"col\": 3}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Space Requirement\", \"col\": 3}}, {\"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Documentation</b></span>\"}, \"col\": 12}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shop Drawing\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Transmittal\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"EPC Document Template\", \"col\": 4}}]",
+    "sequence_id": 15
+  }
+]

@@ -7,7 +7,3 @@ import frappe
 
 class RiskRegister(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Risk Register", ["name"])

@@ -7,6 +7,7 @@ Block Works, Thermal/Moisture.
 """
 
 import frappe
+from frappe import _
 from epc_modules.utils import get_epc_logger
 
 logger = get_epc_logger(__name__)
@@ -106,8 +107,17 @@ def create_arat_kilo_wbs_structure(project_name):
     project = frappe.get_doc("Project", project_name)
     project_code = f"P-{project_name[:4].upper()}"
 
+    # Batch load all existing WBS codes for this project to avoid N+1 queries
+    existing_wbs = set(
+        row.wbs_code for row in frappe.get_all(
+            "WBS Item",
+            filters={"project": project_name},
+            fields=["wbs_code"],
+        )
+    )
+
     # Create project root WBS Item
-    if not frappe.db.exists("WBS Item", {"wbs_code": project_code}):
+    if project_code not in existing_wbs:
         root = frappe.get_doc({
             "doctype": "WBS Item",
             "project": project_name,
@@ -118,7 +128,16 @@ def create_arat_kilo_wbs_structure(project_name):
             "planned_value": 0,
             "wbs_status": "In Progress",
         })
-        root.insert(ignore_permissions=True)
+        try:
+            root.insert()
+            existing_wbs.add(project_code)
+        except frappe.PermissionError:
+            logger.error(f"Permission denied creating root WBS Item for project {project_name}")
+            raise
+        except Exception as e:
+            logger.error(f"Failed to insert root WBS Item for project {project_name}: {e}")
+            frappe.log_error(f"WBS Creation Error: {e}", "Arat Kilo WBS")
+            raise
     else:
         root = frappe.get_doc("WBS Item", {"wbs_code": project_code})
         project_code = root.wbs_code
@@ -128,7 +147,7 @@ def create_arat_kilo_wbs_structure(project_name):
     for phase in ARAT_KILO_WBS_TEMPLATE:
         phase_code = phase["code_prefix"]
 
-        if not frappe.db.exists("WBS Item", {"wbs_code": phase_code}):
+        if phase_code not in existing_wbs:
             phase_doc = frappe.get_doc({
                 "doctype": "WBS Item",
                 "project": project_name,
@@ -140,7 +159,16 @@ def create_arat_kilo_wbs_structure(project_name):
                 "planned_value": phase["planned_value"],
                 "wbs_status": "Pending",
             })
-            phase_doc.insert(ignore_permissions=True)
+            try:
+                phase_doc.insert()
+                existing_wbs.add(phase_code)
+            except frappe.PermissionError:
+                logger.error(f"Permission denied creating phase WBS Item {phase_code} for project {project_name}")
+                raise
+            except Exception as e:
+                logger.error(f"Failed to insert phase WBS Item {phase_code}: {e}")
+                frappe.log_error(f"WBS Creation Error: {e}", "Arat Kilo WBS")
+                raise
             created.append({"wbs_code": phase_code, "wbs_name": phase["name"], "level": 2})
         else:
             phase_doc = frappe.get_doc("WBS Item", {"wbs_code": phase_code})
@@ -149,7 +177,7 @@ def create_arat_kilo_wbs_structure(project_name):
         for child_idx, child in enumerate(phase.get("children", [])):
             child_code = child["code_prefix"]
 
-            if not frappe.db.exists("WBS Item", {"wbs_code": child_code}):
+            if child_code not in existing_wbs:
                 child_doc = frappe.get_doc({
                     "doctype": "WBS Item",
                     "project": project_name,
@@ -161,7 +189,16 @@ def create_arat_kilo_wbs_structure(project_name):
                     "planned_value": child["planned_value"],
                     "wbs_status": "Pending",
                 })
-                child_doc.insert(ignore_permissions=True)
+                try:
+                    child_doc.insert()
+                    existing_wbs.add(child_code)
+                except frappe.PermissionError:
+                    logger.error(f"Permission denied creating child WBS Item {child_code} for project {project_name}")
+                    raise
+                except Exception as e:
+                    logger.error(f"Failed to insert child WBS Item {child_code}: {e}")
+                    frappe.log_error(f"WBS Creation Error: {e}", "Arat Kilo WBS")
+                    raise
                 created.append({"wbs_code": child_code, "wbs_name": child["name"], "level": 3})
 
     logger.info(f"Created {len(created)} WBS elements for project {project_name}")
@@ -171,6 +208,11 @@ def create_arat_kilo_wbs_structure(project_name):
 @frappe.whitelist()
 def create_arat_kilo_wbs(project_name):
     """Whitelist endpoint to create Arat Kilo WBS structure."""
+    frappe.has_permission("Project", "write", project_name, throw=True)
+
+    if not frappe.db.exists("Project", project_name):
+        frappe.throw(_("Project {0} does not exist").format(project_name))
+
     elements = create_arat_kilo_wbs_structure(project_name)
     return {
         "project": project_name,

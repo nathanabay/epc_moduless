@@ -61,7 +61,8 @@ def on_project_created(doc, method):
         typology = frappe.get_doc("Project Typology", doc.project_typology)
         if typology.typology_type == "Civil":
             warehouse_name = create_site_warehouse(doc.name)
-            doc.primary_site_warehouse = warehouse_name
+            # FIX: Use db_set instead of doc.save() to avoid recursive on_update hooks
+            doc.db_set("primary_site_warehouse", warehouse_name)
             _lazy_logger().info(f"Created warehouse: {warehouse_name}")
 
         # Clone inspection templates based on typology (Quality Gate Phase 4)
@@ -441,8 +442,22 @@ def on_cube_test_submit(doc, method):
     if not doc.compressive_strength_mpa and doc.crushing_load_kn and doc.size_mm:
         area_mm2 = doc.size_mm ** 2
         strength = (doc.crushing_load_kn * 1000) / area_mm2
-        doc.compressive_strength_mpa = round(strength, 2)
-        doc.save(ignore_permissions=True)
+        calculated_strength = round(strength, 2)
+        # SECURITY: Check write permission before save - no ignore_permissions
+        if not frappe.has_permission("Cube Test Result", "write", doc, throw=False):
+            if "System Manager" not in frappe.get_roles():
+                _lazy_logger().warning(f"No write permission for cube test {doc.name}, skipping auto-calculation")
+                return
+        try:
+            # FIX: Calculate first, then update atomically via db_set instead of doc.save()
+            # This avoids triggering controller after_save hooks and prevents inconsistent
+            # in-memory state if db_set fails.
+            doc.compressive_strength_mpa = calculated_strength
+            doc.db_set("compressive_strength_mpa", calculated_strength)
+        except Exception as e:
+            _lazy_logger().error(f"Failed to save cube test {doc.name}: {e}")
+            # Revert in-memory state on failure to prevent inconsistent doc
+            doc.compressive_strength_mpa = None
 
     # Check acceptance criteria
     if doc.age_days == 28 and not doc.is_pass:

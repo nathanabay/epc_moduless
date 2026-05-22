@@ -150,8 +150,8 @@ epc_modules.materialplan.App = class MaterialPlanApp {
     }
 
     formatCurrency(value) {
-        if (value == null) return "$ 0.00";
-        return "$ " + Number(value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (value == null) return "ETB 0.00";
+        return "ETB " + Number(value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     escapeHtml(str) {

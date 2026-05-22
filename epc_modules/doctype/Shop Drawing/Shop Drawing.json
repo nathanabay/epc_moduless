@@ -1,0 +1,157 @@
+{
+  "name": "Shop Drawing",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "autoname": "hash",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "drawing_number",
+      "fieldtype": "Data",
+      "label": "Drawing Number",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "drawing_title",
+      "fieldtype": "Data",
+      "label": "Drawing Title",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nSubmitted\nUnder Review\nApproved\nApproved with Comments\nRejected\nSuperseded",
+      "default": "Draft",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "drawing_type",
+      "fieldtype": "Select",
+      "label": "Drawing Type",
+      "options": "Structural\nArchitectural\nMechanical\nElectrical\nPlumbing\nHVAC\nProcess\nCivil\nOther",
+      "default": "Civil"
+    },
+    {
+      "fieldname": "section_submission",
+      "fieldtype": "Section Break",
+      "label": "Submission Details"
+    },
+    {
+      "fieldname": "reference_drawing",
+      "fieldtype": "Data",
+      "label": "Reference Drawing/Spec"
+    },
+    {
+      "fieldname": "submitted_by",
+      "fieldtype": "Link",
+      "label": "Submitted By",
+      "options": "User"
+    },
+    {
+      "fieldname": "submission_date",
+      "fieldtype": "Date",
+      "label": "Submission Date",
+      "default": "Today"
+    },
+    {
+      "fieldname": "revision",
+      "fieldtype": "Data",
+      "label": "Revision",
+      "default": "0"
+    },
+    {
+      "fieldname": "column_break_review",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "reviewed_by",
+      "fieldtype": "Link",
+      "label": "Reviewed By",
+      "options": "User"
+    },
+    {
+      "fieldname": "review_date",
+      "fieldtype": "Date",
+      "label": "Review Date"
+    },
+    {
+      "fieldname": "due_date",
+      "fieldtype": "Date",
+      "label": "Due Date"
+    },
+    {
+      "fieldname": "wbs_item",
+      "fieldtype": "Link",
+      "label": "WBS Item",
+      "options": "WBS Item"
+    },
+    {
+      "fieldname": "section_drawing",
+      "fieldtype": "Section Break",
+      "label": "Drawing File"
+    },
+    {
+      "fieldname": "drawing_file",
+      "fieldtype": "Attach",
+      "label": "Drawing File (PDF/DWG)"
+    },
+    {
+      "fieldname": "column_break_approval",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "approved_drawing",
+      "fieldtype": "Attach",
+      "label": "Approved Drawing"
+    },
+    {
+      "fieldname": "section_remarks",
+      "fieldtype": "Section Break",
+      "label": "Remarks"
+    },
+    {
+      "fieldname": "review_comments",
+      "fieldtype": "Small Text",
+      "label": "Review Comments"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

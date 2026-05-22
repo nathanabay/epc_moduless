@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class EquipmentUtilizationLog(frappe.Document):
+class EquipmentUtilizationLog(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Equipment Utilization Log", ["name"])

@@ -1,0 +1,15 @@
+{
+  "doctype": "DocType",
+  "name": "Toolbox Talk Attendee",
+  "module": "EPC Modules",
+  "istable": 1,
+  "editable_grid": 1,
+  "fields": [
+    {"fieldname": "employee_name", "fieldtype": "Link", "label": "Employee", "options": "Employee"},
+    {"fieldname": "employee_id", "fieldtype": "Data", "label": "Employee ID"},
+    {"fieldname": "designation", "fieldtype": "Data", "label": "Designation"},
+    {"fieldname": "department", "fieldtype": "Data", "label": "Department"},
+    {"fieldname": "signature_date", "fieldtype": "Date", "label": "Signature Date"},
+    {"fieldname": "acknowledged", "fieldtype": "Check", "label": "Acknowledged"}
+  ]
+}

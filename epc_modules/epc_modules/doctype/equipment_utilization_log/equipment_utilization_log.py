@@ -7,7 +7,3 @@ import frappe
 
 class EquipmentUtilizationLog(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Equipment Utilization Log", ["name"])

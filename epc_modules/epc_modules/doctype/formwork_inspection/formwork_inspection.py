@@ -7,7 +7,3 @@ import frappe
 
 class FormworkInspection(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Formwork Inspection", ["name"])

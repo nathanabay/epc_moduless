@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class EquipmentMovement(frappe.Document):
+class EquipmentMovement(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Equipment Movement", ["name"])

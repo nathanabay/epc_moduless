@@ -1,14 +1,16 @@
 [
   {
     "doctype": "Workspace",
-    "name": "EPC Management",
-    "label": "EPC Management",
-    "title": "EPC Management",
-    "sequence_id": 15.0,
+    "name": "Reports & Analytics",
+    "label": "Reports & Analytics",
+    "title": "Reports & Analytics",
     "module": "EPC Modules",
-    "icon": "octicon octicon-project",
+    "icon": "icon-chart",
     "is_hidden": 0,
     "public": 1,
-    "content": "[\n  {\"type\": \"chart\", \"data\": {\"chart_name\": \"EPC Project Progress\"}, \"col\": 12},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Project</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Typology\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Site Zone\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"WBS Item\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Building Program\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Milestone\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>BOQ &amp; Cost</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Custom BOQ\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Material Plan\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Risk Register\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Progress</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"DPR Entry\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Daily Progress Report\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Billing</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"RA Bill\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Measurement Book\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Quality</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Concrete Mix Design\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cube Test Result\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Curing Record\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Formwork Inspection\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Non-Conformance Report\"}, \"col\": 3},\n  {\"type\": \"spacer\", \"data\": {\"col\": 12}},\n  {\"type\": \"header\", \"data\": {\"text\": \"<span class='h4'><b>Equipment</b></span>\"}, \"col\": 12},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Register\"}, \"col\": 3},\n  {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Equipment Maintenance\"}, \"col\": 3}\n]"
+    "indicator_color": "purple",
+    "parent_page": "EPC Management",
+    "content": "[{\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Financial Report Wizard\", \"col\": 4}}, {\"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Report Wizard\", \"col\": 4}}]",
+    "sequence_id": 19
   }
 ]

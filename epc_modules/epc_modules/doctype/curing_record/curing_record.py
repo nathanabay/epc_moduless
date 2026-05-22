@@ -7,7 +7,3 @@ import frappe
 
 class CuringRecord(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Curing Record", ["name"])

@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class SubcontractorWorkOrder(frappe.Document):
+class SubcontractorWorkOrder(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Subcontractor Work Order", ["name"])

@@ -1,0 +1,140 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:machine",
+ "creation": "2026-05-21 17:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "machine",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Machine/Equipment",
+   "options": "Equipment Register",
+   "reqd": 1
+  },
+  {
+   "fieldname": "repair_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Repair Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "repair_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Repair Type",
+   "options": "Preventive\nCorrective\nEmergency\nOverhaul",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "fault_details",
+   "fieldtype": "Text",
+   "label": "Fault Details"
+  },
+  {
+   "fieldname": "work_performed",
+   "fieldtype": "Text",
+   "label": "Work Performed"
+  },
+  {
+   "fieldname": "parts_replaced",
+   "fieldtype": "Table",
+   "options": "Machine Repair Part",
+   "label": "Parts Replaced"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "downtime",
+   "fieldtype": "Float",
+   "label": "Downtime (Hours)"
+  },
+  {
+   "fieldname": "repair_cost",
+   "fieldtype": "Currency",
+   "label": "Repair Cost"
+  },
+  {
+   "fieldname": "performed_by",
+   "fieldtype": "Link",
+   "label": "Performed By",
+   "options": "User"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Open\nIn Progress\nCompleted\nVerified",
+   "read_only": 1
+  },
+  {
+   "fieldname": "verified_by",
+   "fieldtype": "Link",
+   "label": "Verified By",
+   "options": "User"
+  },
+  {
+   "fieldname": "verified_on",
+   "fieldtype": "Datetime",
+   "label": "Verified On"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-21 17:00:00.000000",
+ "modified_by": "nathanamare@bespo.et",
+ "module": "EPC Modules",
+ "name": "Machine Repair",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Site Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "machine"
+}

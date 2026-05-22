@@ -33,8 +33,8 @@ def create_project_document(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("Project Document", {"project": project}) or 0
-    document_id = f"DOC-{project[:4].upper()}-{count + 1:04d}"
+    project_code = project[:4].upper().replace(" ", "")
+    document_id = f"DOC-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Project Document",
@@ -147,8 +147,8 @@ def supersede_document(document_name, new_revision_data):
     old_doc.save()
 
     # Create new revision
-    count = frappe.db.count("Project Document", {"project": old_doc.project}) or 0
-    new_document_id = f"DOC-{old_doc.project[:4].upper()}-{count + 1:04d}"
+    project_code = old_doc.project[:4].upper().replace(" ", "")
+    new_document_id = f"DOC-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     new_doc = frappe.get_doc({
         "doctype": "Project Document",
@@ -198,8 +198,8 @@ def create_rfi(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("RFI", {"project": project}) or 0
-    rfi_number = f"RFI-{project[:4].upper()}-{count + 1:04d}"
+    project_code = project[:4].upper().replace(" ", "")
+    rfi_number = f"RFI-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "RFI",
@@ -338,8 +338,8 @@ def create_submittal(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("Submittal", {"project": project}) or 0
-    submittal_number = f"SUB-{project[:4].upper()}-{count + 1:04d}"
+    project_code = project[:4].upper().replace(" ", "")
+    submittal_number = f"SUB-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Submittal",

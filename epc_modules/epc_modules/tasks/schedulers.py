@@ -160,45 +160,58 @@ def generate_project_reports():
 		fields=["name", "project_name", "owner"]
 	)
 
+	if not projects:
+		return {"digests": [], "project_count": 0}
+
+	# FIX: Batch all DB queries upfront to avoid N+1
+	project_names = [p.name for p in projects]
+	today_str = today()
+
+	# Batch 1: Get all DPRs for all projects in one query
+	all_dprs = frappe.get_all(
+		"Daily Progress Report",
+		filters={
+			"project": ["in", project_names],
+			"report_date": today_str
+		},
+		fields=["name", "overall_progress", "status", "project"]
+	)
+
+	# Batch 2: Get all pending MB certifications grouped by project
+	pending_mb_rows = frappe.db.sql("""
+		SELECT project, COUNT(*) as cnt
+		FROM `tabMeasurement Book`
+		WHERE project IN (%s) AND certification_status = 'Submitted'
+		GROUP BY project
+	""" % ", ".join(["%s"] * len(project_names)), project_names, as_dict=1)
+	pending_mb_map = {r.project: r.cnt for r in pending_mb_rows}
+
+	# Batch 3: Get all open NCRs grouped by project
+	open_ncr_rows = frappe.db.sql("""
+		SELECT project, COUNT(*) as cnt
+		FROM `tabNon-Conformance Report`
+		WHERE project IN (%s) AND status IN ('Open', 'In Progress')
+		GROUP BY project
+	""" % ", ".join(["%s"] * len(project_names)), project_names, as_dict=1)
+	open_ncr_map = {r.project: r.cnt for r in open_ncr_rows}
+
 	digests = []
 
 	for project in projects:
-		# Get today's DPRs
-		today_dprs = frappe.get_all(
-			"Daily Progress Report",
-			filters={
-				"project": project.name,
-				"report_date": today()
-			},
-			fields=["name", "overall_progress", "status"]
-		)
+		# Filter DPRs for this project from pre-fetched data
+		project_dprs = [d for d in all_dprs if d.project == project.name]
 
-		# Get pending certifications
-		pending_mbs = frappe.get_count(
-			"Measurement Book",
-			filters={
-				"project": project.name,
-				"certification_status": "Submitted"
-			}
-		)
-
-		# Get open NCRs
-		open_ncrs = frappe.get_count(
-			"Non-Conformance Report",
-			filters={
-				"project": project.name,
-				"status": ["in", ["Open", "In Progress"]]
-			}
-		)
+		pending_mbs = pending_mb_map.get(project.name, 0)
+		open_ncrs = open_ncr_map.get(project.name, 0)
 
 		digests.append({
 			"project": project.name,
 			"project_name": project.project_name,
 			"project_manager": project.get("owner"),
-			"today_dprs": len(today_dprs),
+			"today_dprs": len(project_dprs),
 			"pending_mb_certifications": pending_mbs,
 			"open_ncrs": open_ncrs,
-			"average_progress": sum(d.get("overall_progress", 0) for d in today_dprs) / len(today_dprs) if today_dprs else 0
+			"average_progress": sum(d.get("overall_progress", 0) for d in project_dprs) / len(project_dprs) if project_dprs else 0
 		})
 
 	logger.info(f"Generated digest for {len(digests)} projects")
@@ -227,33 +240,42 @@ def archive_completed_projects():
 		pluck="name"
 	)
 
+	if not completed_projects:
+		return {"archived": 0}
+
 	archived_count = 0
 
-	for project_name in completed_projects:
+	# FIX: Batch WBS items for all completed projects at once
+	wbs_items = frappe.get_all(
+		"WBS Item",
+		filters={"project": ["in", completed_projects]},
+		fields=["name", "wbs_code", "project"]
+	)
+
+	# FIX: Single query to get all BOQ totals for all WBS codes at once
+	unique_wbs_codes = list(set(w.wbs_code for w in wbs_items))
+	if unique_wbs_codes:
+		boq_totals = frappe.db.sql("""
+			SELECT wbs_code, SUM(total_value) as total
+			FROM `tabCustom BOQ`
+			WHERE wbs_code IN (%s) AND parent IN (%s)
+			GROUP BY wbs_code
+		""" % (", ".join(["%s"] * len(unique_wbs_codes)),
+		       ", ".join(["%s"] * len(completed_projects))),
+		       tuple(unique_wbs_codes) + tuple(completed_projects),
+		       as_dict=1)
+		boq_map = {r.wbs_code: r.total or 0 for r in boq_totals}
+	else:
+		boq_map = {}
+
+	# Now update WBS items using pre-computed totals (no per-iteration DB query)
+	for wbs_item in wbs_items:
+		boq_total = boq_map.get(wbs_item.wbs_code, 0)
 		try:
-			# Sync WBS values for final state
-			wbs_items = frappe.get_all(
-				"WBS Item",
-				filters={"project": project_name},
-				fields=["name", "wbs_code"]
-			)
-
-			for wbs_item in wbs_items:
-				boq_total = frappe.db.sql("""
-					SELECT SUM(total_value)
-					FROM `tabCustom BOQ`
-					WHERE wbs_code = %s AND parent = %s
-				""", (wbs_item.wbs_code, project_name))[0][0] or 0
-
-				frappe.db.set_value("WBS Item", wbs_item.name, {
-					"planned_value": boq_total
-				})
-
+			frappe.db.set_value("WBS Item", wbs_item.name, "planned_value", boq_total)
 			archived_count += 1
-
 		except Exception as e:
-			logger.error(f"Archive failed for {project_name}: {str(e)}")
-			frappe.db.rollback()
+			logger.error(f"Archive failed for WBS {wbs_item.name}: {str(e)}")
 
 	try:
 		frappe.db.commit()

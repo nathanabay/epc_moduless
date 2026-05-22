@@ -4,10 +4,11 @@ Arat Kilo WBS Tests
 Tests for Arat Kilo Building Civil Phase-Based WBS structure.
 """
 
-import frappe, unittest
+import frappe
+from frappe.test_utils import FrappeTestCase
 
 
-class TestAratKiloWBS(unittest.TestCase):
+class TestAratKiloWBS(FrappeTestCase):
     def setUp(self):
         frappe.set_user("Administrator")
         if not frappe.db.exists("Project", "ARAT-KILO"):
@@ -46,5 +47,4 @@ class TestAratKiloWBS(unittest.TestCase):
 
     def tearDown(self):
         frappe.set_user("Administrator")
-        frappe.db.sql("DELETE FROM `tabWBS Item` WHERE project = 'ARAT-KILO'")
-        frappe.db.commit()
+        frappe.db.delete("WBS Item", {"project": "ARAT-KILO"})

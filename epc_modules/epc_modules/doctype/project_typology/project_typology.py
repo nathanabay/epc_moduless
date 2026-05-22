@@ -7,7 +7,3 @@ import frappe
 
 class ProjectTypology(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Project Typology", ["name"])

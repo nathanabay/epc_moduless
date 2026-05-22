@@ -13,7 +13,7 @@ from epc_modules.utils.boq_calculator import BOQCalculator
 logger = get_epc_logger(__name__)
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def submit_dpr_entry(data):
     """
     Submit a DPR entry from mobile or web interface.
@@ -33,6 +33,21 @@ def submit_dpr_entry(data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
+    # Validate integer fields (HTTP params arrive as strings)
+    labor_count = data.get("labor_count")
+    work_shifts = data.get("work_shifts", 1)
+    overall_progress = data.get("overall_progress")
+
+    try:
+        if labor_count is not None:
+            labor_count = int(labor_count)
+        if work_shifts is not None:
+            work_shifts = int(work_shifts)
+        if overall_progress is not None:
+            overall_progress = int(overall_progress)
+    except (ValueError, TypeError):
+        frappe.throw(_("Invalid numeric value for labor_count, work_shifts, or overall_progress"))
+
     # Create DPR document
     doc = frappe.get_doc({
         "doctype": "Daily Progress Report",
@@ -41,25 +56,36 @@ def submit_dpr_entry(data):
         "supervisor": data.get("supervisor", frappe.session.user),
         "site_zone": data.get("site_zone"),
         "weather_conditions": data.get("weather_conditions"),
-        "labor_count": data.get("labor_count"),
-        "work_shifts": data.get("work_shifts", 1),
-        "overall_progress": data.get("overall_progress"),
+        "labor_count": labor_count,
+        "work_shifts": work_shifts,
+        "overall_progress": overall_progress,
         "remarks": data.get("remarks"),
         "status": "Draft",
         "progress_entries": _prepare_dpr_entries(data.get("entries", []))
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except Exception:
+        frappe.log_error(
+            title=_("DPR Insert Failed"),
+            message=f"Failed to insert DPR for project {project}"
+        )
+        frappe.throw(_("Failed to create DPR entry. Please contact administrator."))
 
     # Auto-submit if supervisor is the session user
     if data.get("auto_submit", False):
-        doc.submit()
+        frappe.has_permission("Daily Progress Report", "submit", doc.name, throw=True)
+        try:
+            doc.submit()
+        except Exception:
+            frappe.throw(_("Auto-submit failed. DPR was created but not submitted."))
 
     # Trigger progress recalculation
     try:
         BOQCalculator.aggregate_project_progress(project)
-    except Exception as e:
-        logger.warning(f"Progress recalc failed: {str(e)}")
+    except Exception:
+        logger.warning("Progress recalc failed for project: %s", project)
 
     return {
         "name": doc.name,
@@ -68,8 +94,8 @@ def submit_dpr_entry(data):
     }
 
 
-@frappe.whitelist()
-def get_dpr_entries(project, from_date=None, to_date=None):
+@frappe.whitelist(methods=["GET"])
+def get_dpr_entries(project, from_date=None, to_date=None, limit_page_length=20, limit_start=0):
     """
     Get DPR entries for a project.
 
@@ -77,12 +103,19 @@ def get_dpr_entries(project, from_date=None, to_date=None):
         project (str): Project name
         from_date (str): Start date filter
         to_date (str): End date filter
+        limit_page_length (int): Pagination limit (max 100)
+        limit_start (int): Pagination offset
 
     Returns:
         list: DPR entries
     """
+    frappe.has_permission("Daily Progress Report", "read", throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
+
+    # Enforce max pagination
+    limit_page_length = min(int(limit_page_length), 100) if limit_page_length else 20
 
     filters = {"project": project}
     if from_date:
@@ -90,11 +123,14 @@ def get_dpr_entries(project, from_date=None, to_date=None):
     if to_date:
         filters["report_date"] = ["<=", to_date]
 
-    entries = frappe.get_all(
+    entries = frappe.get_list(
         "Daily Progress Report",
         filters=filters,
-        fields=["*"],
-        order_by="report_date desc"
+        fields=["name", "project", "report_date", "supervisor", "status",
+                "labor_count", "work_shifts", "overall_progress", "site_zone", "weather_conditions"],
+        order_by="report_date desc",
+        limit_page_length=limit_page_length,
+        limit_start=int(limit_start) if limit_start else 0
     )
 
     return entries
@@ -111,6 +147,8 @@ def get_dpr_entry_details(dpr_name):
     Returns:
         dict: DPR details
     """
+    frappe.has_permission("Daily Progress Report", "read", dpr_name, throw=True)
+
     if not frappe.db.exists("Daily Progress Report", dpr_name):
         frappe.throw(_("DPR {0} does not exist").format(dpr_name))
 
@@ -143,7 +181,7 @@ def get_dpr_entry_details(dpr_name):
     }
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def update_dpr_progress(dpr_name, progress_entries):
     """
     Update progress entries for an existing DPR.
@@ -155,6 +193,8 @@ def update_dpr_progress(dpr_name, progress_entries):
     Returns:
         dict: Result
     """
+    frappe.has_permission("Daily Progress Report", "write", dpr_name, throw=True)
+
     if not frappe.db.exists("Daily Progress Report", dpr_name):
         frappe.throw(_("DPR {0} does not exist").format(dpr_name))
 
@@ -170,7 +210,7 @@ def update_dpr_progress(dpr_name, progress_entries):
     for entry in progress_entries:
         doc.append("progress_entries", entry)
 
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     return {
         "name": doc.name,
@@ -178,7 +218,7 @@ def update_dpr_progress(dpr_name, progress_entries):
     }
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["POST"])
 def approve_dpr(dpr_name):
     """
     Approve a DPR document.
@@ -189,6 +229,8 @@ def approve_dpr(dpr_name):
     Returns:
         dict: Approval result
     """
+    frappe.has_permission("Daily Progress Report", "write", dpr_name, throw=True)
+
     if not frappe.db.exists("Daily Progress Report", dpr_name):
         frappe.throw(_("DPR {0} does not exist").format(dpr_name))
 
@@ -197,8 +239,9 @@ def approve_dpr(dpr_name):
     if doc.status == "Approved":
         return {"status": "already_approved", "name": doc.name}
 
+    frappe.has_permission("Daily Progress Report", "submit", dpr_name, throw=True)
     doc.status = "Approved"
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     # Trigger progress aggregation
     BOQCalculator.aggregate_project_progress(doc.project)
@@ -220,18 +263,20 @@ def get_wbs_progress_summary(project):
     Returns:
         dict: WBS progress summary
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
     # Get all WBS items for project
-    wbs_items = frappe.get_all(
+    wbs_items = frappe.get_list(
         "WBS Item",
         filters={"project": project},
         fields=["name", "wbs_code", "wbs_name", "physical_progress", "planned_value", "earned_value"]
     )
 
     # Get DPR entries
-    dpr_entries = frappe.get_all(
+    dpr_entries = frappe.get_list(
         "DPR Entry",
         filters={"parenttype": "Daily Progress Report", "parent": project},
         fields=["wbs_item", "actual_quantity", "progress_percent"],

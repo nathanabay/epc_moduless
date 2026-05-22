@@ -1,0 +1,17 @@
+{
+    "name": "epc_modules",
+    "app_title": "EPC Bespo",
+    "app_description": "EPC Project Management Module for ERPNext",
+    "app_version": "1.0.0",
+    "app_email": "dev@organization.com",
+    "app_author": "EPC Development Team",
+    "app_license": "MIT",
+    "app_depends": [],
+    "hooks": {},
+    "website_route": null,
+    "developer_mode_only": false,
+    "sort_order": "Latest",
+    "has_web_view": false,
+    "is_native": false,
+    "minimum_energy_point_required": 0
+}

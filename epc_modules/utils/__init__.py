@@ -101,8 +101,54 @@ def create_site_warehouse(project_name: str, warehouse_name: str = None) -> str:
         "project": project_name
     })
 
-    warehouse.insert(ignore_permissions=True)
+    frappe.has_permission("Warehouse", "create", throw=True)
+    warehouse.insert()
     return warehouse.name
+
+
+def get_vat_account_head() -> Optional[str]:
+    """
+    Look up VAT account from the Account doctype.
+
+    Returns:
+        Account name if found, None otherwise.
+    """
+    vat_account = frappe.db.get_value(
+        "Account",
+        {"account_name": ["like", "%VAT%"]},
+        "name"
+    )
+    if not vat_account:
+        logger = get_epc_logger("billing")
+        logger.warning("No VAT account found in the system. Account head will be empty.")
+    return vat_account
+
+
+def get_default_cost_center() -> Optional[str]:
+    """
+    Look up the default cost center from the Company defaults.
+
+    Returns:
+        Cost center name if found, None otherwise.
+    """
+    company = frappe.defaults.get_user_default("company")
+    if not company:
+        logger = get_epc_logger("billing")
+        logger.warning("No default company set. Cannot determine cost center.")
+        return None
+
+    cost_center = frappe.db.get_value(
+        "Company", company, "default_cost_center"
+    ) or frappe.db.get_value(
+        "Company", company, "cost_center"
+    )
+    if not cost_center:
+        logger = get_epc_logger("billing")
+        logger.warning(
+            f"No default cost center found for company '{company}'. "
+            "Cost center will be empty."
+        )
+    return cost_center
 
 
 def log_epc_activity(
@@ -125,7 +171,7 @@ def log_epc_activity(
     if not user:
         user = frappe.session.user if hasattr(frappe, 'session') else "System"
 
-    frappe.get_doc({
+    doc = frappe.get_doc({
         "doctype": "Activity Log",
         "doctype_ref": doctype,
         "docname_ref": docname,
@@ -133,4 +179,7 @@ def log_epc_activity(
         "user": user,
         "ip_address": frappe.local.request_ip if hasattr(frappe, 'local') else None,
         "metadata": frappe.as_json(meta) if meta else None
-    }).insert(ignore_permissions=True)
+    })
+
+    frappe.has_permission("Activity Log", "create", throw=True)
+    doc.insert()

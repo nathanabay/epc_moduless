@@ -1,0 +1,155 @@
+{
+  "name": "Transmittal",
+  "doctype": "DocType",
+  "module": "EPC Modules",
+  "is_submittable": 1,
+  "autoname": "hash",
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "transmittal_number",
+      "fieldtype": "Data",
+      "label": "Transmittal Number",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "project",
+      "fieldtype": "Link",
+      "label": "Project",
+      "options": "Project",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "transmittal_type",
+      "fieldtype": "Select",
+      "label": "Transmittal Type",
+      "options": "Drawing\nDocument\nReport\nSample\nSpecification\nMaterial\nOther",
+      "default": "Drawing",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nIssued\nReceived\nAccepted\nRejected\nSuperseded",
+      "default": "Draft",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "reference_number",
+      "fieldtype": "Data",
+      "label": "Reference Number"
+    },
+    {
+      "fieldname": "subject",
+      "fieldtype": "Data",
+      "label": "Subject",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_party",
+      "fieldtype": "Section Break",
+      "label": "Recipient Details"
+    },
+    {
+      "fieldname": "recipient_company",
+      "fieldtype": "Data",
+      "label": "Recipient Company",
+      "reqd": 1
+    },
+    {
+      "fieldname": "recipient_contact",
+      "fieldtype": "Data",
+      "label": "Recipient Contact"
+    },
+    {
+      "fieldname": "recipient_email",
+      "fieldtype": "Data",
+      "label": "Recipient Email"
+    },
+    {
+      "fieldname": "column_break_party",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "issued_by",
+      "fieldtype": "Link",
+      "label": "Issued By",
+      "options": "User"
+    },
+    {
+      "fieldname": "issue_date",
+      "fieldtype": "Date",
+      "label": "Issue Date",
+      "default": "Today"
+    },
+    {
+      "fieldname": "due_date",
+      "fieldtype": "Date",
+      "label": "Response Due Date"
+    },
+    {
+      "fieldname": "section_documents",
+      "fieldtype": "Section Break",
+      "label": "Documents"
+    },
+    {
+      "fieldname": "documents",
+      "fieldtype": "Table",
+      "options": "Transmittal Item",
+      "label": "Documents"
+    },
+    {
+      "fieldname": "section_notes",
+      "fieldtype": "Section Break",
+      "label": "Notes"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    },
+    {
+      "fieldname": "column_break_receipt",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "received_date",
+      "fieldtype": "Date",
+      "label": "Received Date"
+    },
+    {
+      "fieldname": "acknowledged",
+      "fieldtype": "Check",
+      "label": "Acknowledged"
+    },
+    {
+      "fieldname": "attachments",
+      "fieldtype": "Attach",
+      "label": "Attachments"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Project Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Site Supervisor",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
+}

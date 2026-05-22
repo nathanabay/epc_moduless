@@ -146,33 +146,46 @@ class BOQCalculator:
             fields=["name", "item_code", "total_value", "boq_quantity", "measurement_method"]
         )
 
+        # FIX: Batch query - fetch all DPR entries for all BOQ items at once (N+1 fix)
+        boq_names = [item.name for item in boq_items]
+        all_dpr_entries = {}
+        if boq_names:
+            all_dpr = frappe.get_all(
+                "DPR Line Item",
+                filters={"boq_item": ["in", boq_names]},
+                fields=["boq_item", "name", "quantity_executed", "percent_complete", "is_milestone_achieved"],
+                order_by="creation asc"
+            )
+            for entry in all_dpr:
+                all_dpr_entries.setdefault(entry.boq_item, []).append(entry)
+
         total_planned_value = 0
         total_earned_value = 0
         updated_items = []
+        wbs_updates = {}  # Collect WBS updates for batch
 
         for item in boq_items:
-            dpr_entries = frappe.get_all(
-                "DPR Line Item",
-                filters={"boq_item": item.name},
-                fields=["name", "quantity_executed", "percent_complete", "is_milestone_achieved"],
-                order_by="creation asc"
-            )
+            dpr_entries = all_dpr_entries.get(item.name, [])
 
             completion = BOQCalculator.calculate_item_completion(item, dpr_entries)
             total_planned_value += item.get("total_value", 0)
             total_earned_value += completion.get("financial_value", 0)
 
-            # Update WBS item earned value if linked
+            # Collect WBS item updates instead of updating inside loop
             if item.get("wbs_item"):
-                frappe.db.set_value("WBS Item", item.wbs_item, {
+                wbs_updates[item.wbs_item] = {
                     "earned_value": completion.get("financial_value", 0),
                     "physical_progress": completion.get("percent_complete", 0)
-                })
+                }
 
             updated_items.append({
                 "item": item.name,
                 "progress": completion.get("percent_complete", 0)
             })
+
+        # Batch update all WBS items outside the loop
+        for wbs_name, values in wbs_updates.items():
+            frappe.db.set_value("WBS Item", wbs_name, values)
 
         # Calculate overall progress
         if total_planned_value > 0:
@@ -180,7 +193,7 @@ class BOQCalculator:
         else:
             overall_progress = 0
 
-        # Update project
+        # Update project (already outside loop)
         frappe.db.set_value("Project", project_name, {
             "percent_complete": overall_progress,
             "earned_value": total_earned_value

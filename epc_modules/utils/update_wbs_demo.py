@@ -35,7 +35,10 @@ wbs_items = frappe.get_all(
 )
 
 print(f"Found {len(wbs_items)} WBS items for {project_name}")
-updated = 0
+
+# Collect all updates and batch them using frappe.db.sql
+# Each item: (name, budget_allocated, physical_progress, earned_value, cost_incurred, wbs_status)
+updates = []
 
 for item in wbs_items:
     wbs_code = item.wbs_code or ""
@@ -72,16 +75,28 @@ for item in wbs_items:
         cost = 0
         status = "Pending"
 
-    frappe.db.set_value("WBS Item", item.name, {
-        "budget_allocated": budget,
-        "physical_progress": progress,
-        "earned_value": earned,
-        "cost_incurred": cost,
-        "wbs_status": status
-    })
-    updated += 1
+    updates.append((budget, progress, earned, cost, status, item.name))
+
+# Batch update all WBS items using parameterized query
+if updates:
+    names = [u[5] for u in updates]
+    case_clauses = []
+    params = []
+    for i, field in enumerate(["budget_allocated", "physical_progress", "earned_value", "cost_incurred", "wbs_status"]):
+        when_parts = []
+        for u in updates:
+            when_parts.append("WHEN %s THEN %s")
+            params.extend([u[5], u[i]])
+        case_clauses.append(f"{field} = CASE name {' '.join(when_parts)} END")
+    name_placeholders = ", ".join(["%s"] * len(names))
+    params.extend(names)
+    frappe.db.sql(f"""
+        UPDATE `tabWBS Item`
+        SET {', '.join(case_clauses)}
+        WHERE name IN ({name_placeholders})
+    """, params)
 
 frappe.db.commit()
-print(f"Updated {updated} WBS items")
+print(f"Updated {len(updates)} WBS items")
 print(f"Project: {project_name}")
 print(f"Total Contract Value: {total_contract_value:,.0f} ETB")

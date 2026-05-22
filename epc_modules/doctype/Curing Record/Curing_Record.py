@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class CuringRecord(frappe.Document):
+class CuringRecord(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Curing Record", ["name"])

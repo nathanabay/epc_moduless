@@ -1,0 +1,224 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:ms_number",
+ "creation": "2026-05-21 20:36:52.628074",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ms_number",
+  "project",
+  "ms_title",
+  "wbs_item",
+  "activity_description",
+  "sequence_of_work",
+  "materials_equipment",
+  "manpower_requirements",
+  "section_break_risk",
+  "hazards_identified",
+  "risk_controls",
+  "ppe_required",
+  "emergency_procedures",
+  "section_break_approval",
+  "prepared_by",
+  "prepared_date",
+  "reviewed_by",
+  "review_date",
+  "approved_by",
+  "approval_date",
+  "status",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "ms_number",
+   "fieldtype": "Data",
+   "label": "MS Number",
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Project",
+   "options": "Project",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ms_title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "wbs_item",
+   "fieldtype": "Link",
+   "label": "WBS Item",
+   "options": "WBS Item"
+  },
+  {
+   "fieldname": "activity_description",
+   "fieldtype": "Text Editor",
+   "label": "Activity Description"
+  },
+  {
+   "fieldname": "sequence_of_work",
+   "fieldtype": "Text Editor",
+   "label": "Sequence of Work"
+  },
+  {
+   "fieldname": "materials_equipment",
+   "fieldtype": "Text Editor",
+   "label": "Materials & Equipment"
+  },
+  {
+   "fieldname": "manpower_requirements",
+   "fieldtype": "Text Editor",
+   "label": "Manpower Requirements"
+  },
+  {
+   "fieldname": "section_break_risk",
+   "fieldtype": "Section Break",
+   "label": "Risk Assessment"
+  },
+  {
+   "fieldname": "hazards_identified",
+   "fieldtype": "Text Editor",
+   "label": "Hazards Identified"
+  },
+  {
+   "fieldname": "risk_controls",
+   "fieldtype": "Text Editor",
+   "label": "Risk Controls"
+  },
+  {
+   "fieldname": "ppe_required",
+   "fieldtype": "Text",
+   "label": "PPE Required"
+  },
+  {
+   "fieldname": "emergency_procedures",
+   "fieldtype": "Text Editor",
+   "label": "Emergency Procedures"
+  },
+  {
+   "fieldname": "section_break_approval",
+   "fieldtype": "Section Break",
+   "label": "Approval"
+  },
+  {
+   "fieldname": "prepared_by",
+   "fieldtype": "Link",
+   "label": "Prepared By",
+   "options": "User"
+  },
+  {
+   "fieldname": "prepared_date",
+   "fieldtype": "Date",
+   "label": "Prepared Date"
+  },
+  {
+   "fieldname": "reviewed_by",
+   "fieldtype": "Link",
+   "label": "Reviewed By",
+   "options": "User"
+  },
+  {
+   "fieldname": "review_date",
+   "fieldtype": "Date",
+   "label": "Review Date"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "label": "Approval Date"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nUnder Review\nApproved\nRevoked"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Method Statement",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-21 20:36:52.628074",
+ "modified_by": "Administrator",
+ "module": "EPC Modules",
+ "name": "Method Statement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HSE Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Project Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

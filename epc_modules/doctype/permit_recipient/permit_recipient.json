@@ -1,0 +1,12 @@
+{
+  "doctype": "DocType",
+  "name": "Permit Recipient",
+  "module": "EPC Modules",
+  "istable": 1,
+  "fields": [
+    {"fieldname": "employee_name", "fieldtype": "Link", "label": "Employee", "options": "Employee"},
+    {"fieldname": "designation", "fieldtype": "Data", "label": "Designation"},
+    {"fieldname": "signature_date", "fieldtype": "Date", "label": "Signature Date"},
+    {"fieldname": "acknowledged", "fieldtype": "Check", "label": "Acknowledged"}
+  ]
+}

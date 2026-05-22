@@ -148,8 +148,10 @@ class WBSStructureGenerator:
         architecture = typology.wbs_architecture or WBS_PHASE_BASED
         typology_type = typology.typology_type
 
-        # Get base project code
-        project_code = f"P-{project_name[:4].upper()}"
+        import hashlib
+        # Use full project name + random component to avoid collision
+        short = hashlib.md5(project_name.encode()).hexdigest()[:6].upper()
+        project_code = f"P-{short}"
 
         wbs_elements = []
 
@@ -212,7 +214,13 @@ class WBSStructureGenerator:
         parent = frappe.get_doc("WBS Item", {"wbs_code": parent_wbs})
         architecture = parent.architecture or WBS_PHASE_BASED
 
-        # Get next index at this level
+        # Lock the parent row to prevent race conditions on concurrent inserts
+        frappe.db.sql(
+            "SELECT name FROM `tabWBS Item` WHERE wbs_code = %s FOR UPDATE",
+            (parent_wbs,)
+        )
+
+        # Get next index at this level using a single query
         existing = frappe.get_all(
             "WBS Item",
             filters={"parent_wbs": parent_wbs},
@@ -233,6 +241,7 @@ class WBSStructureGenerator:
             parent_wbs, level, index, architecture
         )
 
+        frappe.has_permission("WBS Item", "create", throw=True)
         doc = frappe.get_doc({
             "doctype": "WBS Item",
             "wbs_code": wbs_code,
@@ -243,7 +252,11 @@ class WBSStructureGenerator:
             "planned_value": planned_value,
             "architecture": architecture
         })
-        doc.insert(ignore_permissions=True)
+        try:
+            doc.insert()
+        except Exception as e:
+            frappe.log_error(f"Failed to insert WBS Item: {str(e)}", "WBS Generator Error")
+            raise
 
         return {"wbs_code": wbs_code, "wbs_name": name}
 

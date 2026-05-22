@@ -33,8 +33,8 @@ def create_project_document(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("Project Document", {"project": project}) or 0
-    document_id = f"DOC-{project[:4].upper()}-{count + 1:04d}"
+    # Use hash-based ID to avoid race conditions (no count query needed)
+    document_id = f"DOC-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Project Document",
@@ -55,7 +55,13 @@ def create_project_document(project, data):
         "status": "Draft"
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Document ID {0} already exists. Please try again.").format(document_id))
+    except Exception as e:
+        logger.error(f"Failed to create project document: {e}")
+        frappe.throw(_("Failed to create document: {0}").format(str(e)))
 
     logger.info(f"Document registered: {document_id}")
 
@@ -77,11 +83,16 @@ def get_project_documents(project, document_type=None):
     Returns:
         list: Documents
     """
+    frappe.has_permission("Project Document", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     filters = {"project": project, "is_latest": 1}
     if document_type:
         filters["document_type"] = document_type
 
-    return frappe.get_all(
+    return frappe.get_list(
         "Project Document",
         filters=filters,
         fields=["name", "document_id", "document_type", "document_number",
@@ -104,6 +115,8 @@ def update_document_status(document_name, status, comments=None):
         dict: Update result
     """
     frappe.has_permission("Project Document", "write", throw=True)
+    if not frappe.db.exists("Project Document", document_name):
+        frappe.throw(_("Document {0} not found").format(document_name))
     doc = frappe.get_doc("Project Document", document_name)
 
     doc.status = status
@@ -118,7 +131,11 @@ def update_document_status(document_name, status, comments=None):
         doc.approved_by = frappe.session.user
         doc.approval_date = today()
 
-    doc.save()
+    try:
+        doc.save()
+    except Exception as e:
+        logger.error(f"Failed to update document status: {e}")
+        frappe.throw(_("Failed to update document status: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -139,16 +156,21 @@ def supersede_document(document_name, new_revision_data):
         dict: New document info
     """
     frappe.has_permission("Project Document", "write", throw=True)
+    if not frappe.db.exists("Project Document", document_name):
+        frappe.throw(_("Document {0} not found").format(document_name))
     old_doc = frappe.get_doc("Project Document", document_name)
 
     # Mark old as superseded
     old_doc.status = "Superseded"
     old_doc.is_latest = 0
-    old_doc.save()
+    try:
+        old_doc.save()
+    except Exception as e:
+        logger.error(f"Failed to supersede document: {e}")
+        frappe.throw(_("Failed to supersede document: {0}").format(str(e)))
 
-    # Create new revision
-    count = frappe.db.count("Project Document", {"project": old_doc.project}) or 0
-    new_document_id = f"DOC-{old_doc.project[:4].upper()}-{count + 1:04d}"
+    # Create new revision with hash-based ID to avoid race conditions
+    new_document_id = f"DOC-{old_doc.project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     new_doc = frappe.get_doc({
         "doctype": "Project Document",
@@ -168,7 +190,13 @@ def supersede_document(document_name, new_revision_data):
         "status": "Draft"
     })
 
-    new_doc.insert()
+    try:
+        new_doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Document ID {0} already exists. Please try again.").format(new_document_id))
+    except Exception as e:
+        logger.error(f"Failed to create new revision: {e}")
+        frappe.throw(_("Failed to create new revision: {0}").format(str(e)))
 
     return {
         "name": new_doc.name,
@@ -198,14 +226,13 @@ def create_rfi(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("RFI", {"project": project}) or 0
-    rfi_number = f"RFI-{project[:4].upper()}-{count + 1:04d}"
+    # Use hash-based ID to avoid race conditions (no count query needed)
+    rfi_number = f"RFI-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "RFI",
         "rfi_number": rfi_number,
         "project": project,
-        "rfi_number": rfi_number,
         "subject": data.get("subject"),
         "description": data.get("description"),
         "priority": data.get("priority", "Normal"),
@@ -219,7 +246,13 @@ def create_rfi(project, data):
         "status": "Draft"
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("RFI Number {0} already exists. Please try again.").format(rfi_number))
+    except Exception as e:
+        logger.error(f"Failed to create RFI: {e}")
+        frappe.throw(_("Failed to create RFI: {0}").format(str(e)))
 
     logger.info(f"RFI created: {rfi_number}")
 
@@ -242,11 +275,16 @@ def get_project_rfis(project, status=None):
     Returns:
         list: RFIs
     """
+    frappe.has_permission("RFI", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     filters = {"project": project}
     if status:
         filters["status"] = status
 
-    return frappe.get_all(
+    return frappe.get_list(
         "RFI",
         filters=filters,
         fields=["name", "rfi_number", "subject", "priority", "status",
@@ -268,6 +306,8 @@ def respond_to_rfi(rfi_name, response_text):
         dict: Response result
     """
     frappe.has_permission("RFI", "write", throw=True)
+    if not frappe.db.exists("RFI", rfi_name):
+        frappe.throw(_("RFI {0} not found").format(rfi_name))
     doc = frappe.get_doc("RFI", rfi_name)
 
     doc.response_text = response_text
@@ -279,7 +319,11 @@ def respond_to_rfi(rfi_name, response_text):
     from frappe.utils import date_diff
     doc.days_to_close = date_diff(today(), doc.raised_date)
 
-    doc.save()
+    try:
+        doc.save()
+    except Exception as e:
+        logger.error(f"Failed to respond to RFI: {e}")
+        frappe.throw(_("Failed to respond to RFI: {0}").format(str(e)))
 
     logger.info(f"RFI {doc.rfi_number} responded")
 
@@ -302,12 +346,18 @@ def close_rfi(rfi_name):
         dict: Closure result
     """
     frappe.has_permission("RFI", "write", throw=True)
+    if not frappe.db.exists("RFI", rfi_name):
+        frappe.throw(_("RFI {0} not found").format(rfi_name))
     doc = frappe.get_doc("RFI", rfi_name)
 
     doc.status = "Closed"
     doc.closed_date = today()
 
-    doc.save()
+    try:
+        doc.save()
+    except Exception as e:
+        logger.error(f"Failed to close RFI: {e}")
+        frappe.throw(_("Failed to close RFI: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -338,8 +388,14 @@ def create_submittal(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("Submittal", {"project": project}) or 0
-    submittal_number = f"SUB-{project[:4].upper()}-{count + 1:04d}"
+    # Validate required fields
+    if not data.get("submittal_title"):
+        frappe.throw(_("Submittal Title is required"))
+    if not data.get("submittal_type"):
+        frappe.throw(_("Submittal Type is required"))
+
+    # Use hash-based ID to avoid race conditions (no count query needed)
+    submittal_number = f"SUB-{project[:4].upper()}-{frappe.generate_hash(length=8).upper()}"
 
     doc = frappe.get_doc({
         "doctype": "Submittal",
@@ -358,7 +414,13 @@ def create_submittal(project, data):
         "review_status": "Pending"
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Submittal Number {0} already exists. Please try again.").format(submittal_number))
+    except Exception as e:
+        logger.error(f"Failed to create submittal: {e}")
+        frappe.throw(_("Failed to create submittal: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -378,11 +440,16 @@ def get_project_submittals(project, status=None):
     Returns:
         list: Submittals
     """
+    frappe.has_permission("Submittal", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     filters = {"project": project}
     if status:
         filters["review_status"] = status
 
-    return frappe.get_all(
+    return frappe.get_list(
         "Submittal",
         filters=filters,
         fields=["name", "submittal_number", "submittal_title", "submittal_type",
@@ -404,6 +471,8 @@ def review_submittal(submittal_name, review_data):
         dict: Review result
     """
     frappe.has_permission("Submittal", "write", throw=True)
+    if not frappe.db.exists("Submittal", submittal_name):
+        frappe.throw(_("Submittal {0} not found").format(submittal_name))
     doc = frappe.get_doc("Submittal", submittal_name)
 
     doc.review_status = review_data.get("review_status")
@@ -418,7 +487,11 @@ def review_submittal(submittal_name, review_data):
         doc.resubmission_required = 1
         doc.resubmission_number = (doc.resubmission_number or 0) + 1
 
-    doc.save()
+    try:
+        doc.save()
+    except Exception as e:
+        logger.error(f"Failed to review submittal: {e}")
+        frappe.throw(_("Failed to review submittal: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -441,8 +514,13 @@ def get_document_summary(project):
     Returns:
         dict: Summary
     """
+    frappe.has_permission("Project Document", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     # Documents by type
-    docs = frappe.get_all(
+    docs = frappe.get_list(
         "Project Document",
         filters={"project": project},
         fields=["name", "document_type", "status"]
@@ -456,7 +534,7 @@ def get_document_summary(project):
         by_status[doc.status] = by_status.get(doc.status, 0) + 1
 
     # RFIs
-    rfis = frappe.get_all(
+    rfis = frappe.get_list(
         "RFI",
         filters={"project": project},
         fields=["name", "status", "days_to_close"]
@@ -466,7 +544,7 @@ def get_document_summary(project):
     avg_close_days = sum(r.days_to_close or 0 for r in rfis) / len(rfis) if rfis else 0
 
     # Submittals
-    submittals = frappe.get_all(
+    submittals = frappe.get_list(
         "Submittal",
         filters={"project": project},
         fields=["name", "review_status"]
@@ -504,11 +582,16 @@ def get_overdue_items(project):
     Returns:
         dict: Overdue items
     """
+    frappe.has_permission("Project Document", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     today_date = today()
     overdue = {"documents": [], "rfis": [], "submittals": []}
 
     # Overdue document reviews
-    overdue_docs = frappe.get_all(
+    overdue_docs = frappe.get_list(
         "Project Document",
         filters={
             "project": project,
@@ -520,7 +603,7 @@ def get_overdue_items(project):
     overdue["documents"] = overdue_docs
 
     # Overdue RFIs
-    overdue_rfis = frappe.get_all(
+    overdue_rfis = frappe.get_list(
         "RFI",
         filters={
             "project": project,
@@ -532,7 +615,7 @@ def get_overdue_items(project):
     overdue["rfis"] = overdue_rfis
 
     # Overdue submittals
-    overdue_subs = frappe.get_all(
+    overdue_subs = frappe.get_list(
         "Submittal",
         filters={
             "project": project,

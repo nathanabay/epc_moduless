@@ -155,8 +155,10 @@ def submit_mb_for_certification(mb_name):
     if doc.certification_status != "Draft":
         frappe.throw(_("MB can only be submitted from Draft status"))
 
+    frappe.has_permission("Measurement Book", "write", mb_name, throw=True)
+
     doc.certification_status = "Submitted"
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     logger.info(f"Measurement Book {mb_name} submitted for certification")
 
@@ -186,10 +188,12 @@ def certify_measurement_book(mb_name, certifying_authority):
     if doc.certification_status != "Submitted":
         frappe.throw(_("MB must be in Submitted status for certification"))
 
+    frappe.has_permission("Measurement Book", "write", mb_name, throw=True)
+
     doc.certification_status = "Certified"
     doc.certified_by = certifying_authority or frappe.session.user
     doc.certified_date = today()
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     # Update BOQ billed quantity
     _update_boq_billed_quantity(doc)
@@ -224,9 +228,11 @@ def reject_measurement_book(mb_name, reason):
     if doc.certification_status not in ["Draft", "Submitted"]:
         frappe.throw(_("MB cannot be rejected in current status"))
 
+    frappe.has_permission("Measurement Book", "write", mb_name, throw=True)
+
     doc.certification_status = "Rejected"
     doc.remarks = f"{doc.remarks or ''}\n\nRejection Reason: {reason}".strip()
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     logger.info(f"Measurement Book {mb_name} rejected: {reason}")
 
@@ -255,8 +261,10 @@ def resubmit_measurement_book(mb_name):
     if doc.certification_status != "Rejected":
         frappe.throw(_("MB must be in Rejected status for resubmission"))
 
+    frappe.has_permission("Measurement Book", "write", mb_name, throw=True)
+
     doc.certification_status = "Draft"
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     return {
         "name": doc.name,
@@ -323,8 +331,7 @@ def get_cumulative_measurements(project, wbs_item=None, item_code=None):
 def _generate_mb_code(project):
     """Generate unique MB code."""
     prefix = f"MB-{project[:4].upper()}"
-    count = frappe.db.count("Measurement Book", {"project": project}) or 0
-    return f"{prefix}-{count + 1:04d}"
+    return f"{prefix}-{frappe.generate_hash(length=8).upper()}"
 
 
 def _prepare_mb_entries(entries):

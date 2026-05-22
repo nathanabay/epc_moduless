@@ -1,0 +1,14 @@
+{
+ "doctype": "DocType",
+ "name": "IPC Line",
+ "module": "EPC Modules",
+ "istable": 1,
+ "fields": [
+  {"fieldname": "description", "fieldtype": "Data", "label": "Description", "reqd": 1},
+  {"fieldname": "wbs_item", "fieldtype": "Link", "label": "WBS Item", "options": "WBS Item"},
+  {"fieldname": "planned_value", "fieldtype": "Currency", "label": "Planned Value"},
+  {"fieldname": "previous_certified", "fieldtype": "Currency", "label": "Previously Certified"},
+  {"fieldname": "this_period_certified", "fieldtype": "Currency", "label": "This Period Certified", "reqd": 1},
+  {"fieldname": "cumulative_certified", "fieldtype": "Currency", "label": "Cumulative Certified", "read_only": 1}
+ ]
+}

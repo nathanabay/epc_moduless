@@ -1,0 +1,21 @@
+{
+  "doctype": "DocType",
+  "name": "Permit Type",
+  "module": "EPC Modules",
+  "autoname": "field:permit_type_name",
+  "fields": [
+    {"fieldname": "permit_type_name", "fieldtype": "Data", "label": "Permit Type Name", "reqd": 1},
+    {"fieldname": "description", "fieldtype": "Small Text", "label": "Description"},
+    {"fieldname": "requires_jha", "fieldtype": "Check", "label": "Requires JHA"},
+    {"fieldname": "requires_ppe_check", "fieldtype": "Check", "label": "Requires PPE Check"},
+    {"fieldname": "validity_hours", "fieldtype": "Int", "label": "Validity (Hours)", "default": 8},
+    {"fieldname": "requires_area_isolation", "fieldtype": "Check", "label": "Requires Area Isolation"},
+    {"fieldname": "requires_barrier_setup", "fieldtype": "Check", "label": "Requires Barrier Setup"},
+    {"fieldname": "requires_fire_extinguisher", "fieldtype": "Check", "label": "Requires Fire Extinguisher"},
+    {"fieldname": "is_active", "fieldtype": "Check", "label": "Is Active", "default": 1}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+    {"role": "HSE Manager", "read": 1, "write": 1, "create": 1}
+  ]
+}

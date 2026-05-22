@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class ProjectInspectionPlan(frappe.Document):
+class ProjectInspectionPlan(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Project Inspection Plan", ["name"])

@@ -6,7 +6,7 @@ REST API endpoints for Measurement Book operations (Civil projects).
 
 import frappe
 from frappe import _
-from frappe.utils import today, flt
+from frappe.utils import today, flt, cint
 from epc_modules.utils import get_epc_logger
 from epc_modules.utils.boq_calculator import BOQCalculator
 
@@ -48,7 +48,14 @@ def create_measurement_book(data):
         "remarks": data.get("remarks")
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except Exception as e:
+        frappe.log_error(
+            title=_("MB Insert Failed"),
+            message=f"Failed to insert Measurement Book for project {project}: {str(e)}"
+        )
+        frappe.throw(_("Failed to create Measurement Book. Please contact administrator."))
 
     return {
         "name": doc.name,
@@ -69,6 +76,8 @@ def get_measurement_books(project, status=None):
     Returns:
         list: Measurement Books
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -76,11 +85,13 @@ def get_measurement_books(project, status=None):
     if status:
         filters["certification_status"] = status
 
-    books = frappe.get_all(
+    books = frappe.get_list(
         "Measurement Book",
         filters=filters,
         fields=["name", "mb_code", "mb_date", "certification_status", "total_quantity", "certified_by", "certified_date"],
-        order_by="mb_date desc"
+        order_by="mb_date desc",
+        limit_page_length=20,
+        limit_start=max(0, cint(frappe.form_dict.get("page", 0)) * 20)
     )
 
     return books
@@ -97,6 +108,8 @@ def get_mb_details(mb_name):
     Returns:
         dict: MB details with entries
     """
+    frappe.has_permission("Measurement Book", "read", mb_name, throw=True)
+
     if not frappe.db.exists("Measurement Book", mb_name):
         frappe.throw(_("Measurement Book {0} does not exist").format(mb_name))
 
@@ -155,8 +168,9 @@ def submit_mb_for_certification(mb_name):
     if doc.certification_status != "Draft":
         frappe.throw(_("MB can only be submitted from Draft status"))
 
+    frappe.has_permission("Measurement Book", "write", mb_name, throw=True)
     doc.certification_status = "Submitted"
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     logger.info(f"Measurement Book {mb_name} submitted for certification")
 
@@ -167,13 +181,12 @@ def submit_mb_for_certification(mb_name):
 
 
 @frappe.whitelist()
-def certify_measurement_book(mb_name, certifying_authority):
+def certify_measurement_book(mb_name):
     """
     Certify a Measurement Book (Approve).
 
     Args:
         mb_name (str): MB document name
-        certifying_authority (str): User certifying
 
     Returns:
         dict: Certification result
@@ -186,10 +199,11 @@ def certify_measurement_book(mb_name, certifying_authority):
     if doc.certification_status != "Submitted":
         frappe.throw(_("MB must be in Submitted status for certification"))
 
+    frappe.has_permission("Measurement Book", "submit", mb_name, throw=True)
     doc.certification_status = "Certified"
-    doc.certified_by = certifying_authority or frappe.session.user
+    doc.certified_by = frappe.session.user
     doc.certified_date = today()
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     # Update BOQ billed quantity
     _update_boq_billed_quantity(doc)
@@ -224,9 +238,10 @@ def reject_measurement_book(mb_name, reason):
     if doc.certification_status not in ["Draft", "Submitted"]:
         frappe.throw(_("MB cannot be rejected in current status"))
 
+    frappe.has_permission("Measurement Book", "write", mb_name, throw=True)
     doc.certification_status = "Rejected"
     doc.remarks = f"{doc.remarks or ''}\n\nRejection Reason: {reason}".strip()
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     logger.info(f"Measurement Book {mb_name} rejected: {reason}")
 
@@ -255,8 +270,9 @@ def resubmit_measurement_book(mb_name):
     if doc.certification_status != "Rejected":
         frappe.throw(_("MB must be in Rejected status for resubmission"))
 
+    frappe.has_permission("Measurement Book", "write", mb_name, throw=True)
     doc.certification_status = "Draft"
-    doc.save(ignore_permissions=True)
+    doc.save()
 
     return {
         "name": doc.name,
@@ -277,6 +293,8 @@ def get_cumulative_measurements(project, wbs_item=None, item_code=None):
     Returns:
         dict: Cumulative measurements
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
     filters = {
         "project": project,
         "certification_status": "Certified"
@@ -285,31 +303,39 @@ def get_cumulative_measurements(project, wbs_item=None, item_code=None):
     if wbs_item:
         filters["wbs_item"] = wbs_item
 
-    books = frappe.get_all(
+    books = frappe.get_list(
         "Measurement Book",
         filters=filters,
         fields=["name"]
     )
 
+    # Single query for all child entries (fixes N+1)
+    mb_names = [book.name for book in books]
     cumulative = {}
 
-    for book in books:
-        doc = frappe.get_doc("Measurement Book", book.name)
-        for entry in doc.measurement_entries:
-            key = entry.item_code
+    if mb_names:
+        lines = frappe.get_all(
+            "MB Entry",
+            filters={"parent": ["in", mb_names]},
+            fields=["parent", "item_code", "item_description", "uom", "quantity"],
+            order_by="idx"
+        )
+
+        for line in lines:
+            key = line.item_code
             if item_code and key != item_code:
                 continue
 
             if key not in cumulative:
                 cumulative[key] = {
-                    "item_code": entry.item_code,
-                    "item_description": entry.item_description,
-                    "uom": entry.uom,
+                    "item_code": line.item_code,
+                    "item_description": line.item_description,
+                    "uom": line.uom,
                     "total_quantity": 0,
                     "mb_count": 0
                 }
 
-            cumulative[key]["total_quantity"] += entry.quantity
+            cumulative[key]["total_quantity"] += line.quantity
             cumulative[key]["mb_count"] += 1
 
     return {
@@ -323,8 +349,7 @@ def get_cumulative_measurements(project, wbs_item=None, item_code=None):
 def _generate_mb_code(project):
     """Generate unique MB code."""
     prefix = f"MB-{project[:4].upper()}"
-    count = frappe.db.count("Measurement Book", {"project": project}) or 0
-    return f"{prefix}-{count + 1:04d}"
+    return f"{prefix}-{frappe.generate_hash(length=8).upper()}"
 
 
 def _prepare_mb_entries(entries):
@@ -357,17 +382,21 @@ def _update_boq_billed_quantity(mb_doc):
             boq_items[entry.item_code] = 0
         boq_items[entry.item_code] += entry.quantity
 
-    for item_code, qty in boq_items.items():
-        # Find corresponding BOQ item
-        boq_item = frappe.get_all(
-            "Custom BOQ",
-            filters={"parent": mb_doc.project, "item_code": item_code},
-            fields=["name", "billed_quantity"]
-        )
+    # Batch fetch all BOQ items to avoid N+1 query
+    item_codes = list(boq_items.keys())
+    all_boq_items = frappe.get_all(
+        "Custom BOQ",
+        filters={"parent": mb_doc.project, "item_code": ["in", item_codes]},
+        fields=["name", "item_code", "billed_quantity"],
+        as_dict=1
+    )
+    boq_items_map = {item.item_code: item for item in all_boq_items}
 
-        for item in boq_item:
-            current_billed = flt(item.billed_quantity)
-            frappe.db.set_value("Custom BOQ", item.name, {
+    for item_code, qty in boq_items.items():
+        boq_item = boq_items_map.get(item_code)
+        if boq_item:
+            current_billed = flt(boq_item.billed_quantity)
+            frappe.db.set_value("Custom BOQ", boq_item.name, {
                 "billed_quantity": current_billed + qty
             })
 

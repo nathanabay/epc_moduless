@@ -7,7 +7,3 @@ import frappe
 
 class SteelReinforcementRegister(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Steel Reinforcement Register", ["name"])

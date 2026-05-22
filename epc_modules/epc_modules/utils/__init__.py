@@ -96,7 +96,7 @@ def create_site_warehouse(project_name: str, warehouse_name: str = None) -> str:
         "project": project_name
     })
 
-    warehouse.insert(ignore_permissions=True)
+    warehouse.insert(ignore_permissions=frappe.session.user == "Administrator")
     return warehouse.name
 
 
@@ -128,4 +128,4 @@ def log_epc_activity(
         "user": user,
         "ip_address": frappe.local.request_ip if hasattr(frappe, 'local') else None,
         "metadata": frappe.as_json(meta) if meta else None
-    }).insert(ignore_permissions=True)
+    }).insert(ignore_permissions=frappe.session.user == "Administrator")

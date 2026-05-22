@@ -10,4 +10,5 @@ class WBSItem(Document):
 
 
 def on_doctype_update():
-    frappe.db.add_index("WBS Item", ["name"])
+    frappe.db.add_index("WBS Item", ["project"])
+    frappe.db.add_index("WBS Item", ["parent_wbs"])

@@ -2,7 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class RiskResponseAction(frappe.Document):
+class RiskResponseAction(Document):
     pass

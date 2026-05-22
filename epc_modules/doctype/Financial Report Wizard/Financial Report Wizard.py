@@ -94,11 +94,10 @@ class FinancialReportWizard(Document):
             return result
 
         except Exception as e:
-            logger.error(f"Error generating financial report: {str(e)}")
+            logger.error("Error generating financial report: %s", frappe.get_traceback())
             self.db_set("status", "Failed")
-            self.db_set("remarks", f"Error: {str(e)}")
             self.reload()
-            frappe.throw(_(f"Failed to generate report: {str(e)}"))
+            frappe.throw(_("Failed to generate report. Please contact support."))
 
     def before_save(self):
         """Set default values before saving."""

@@ -1,0 +1,42 @@
+{
+ "doctype": "DocType",
+ "istable": 1,
+ "editable_grid": 1,
+ "module": "EPC Modules",
+ "name": "Approval Level",
+ "fields": [
+  {
+   "fieldname": "approval_level",
+   "fieldtype": "Int",
+   "label": "Level",
+   "reqd": 1
+  },
+  {
+   "fieldname": "approver_role",
+   "fieldtype": "Link",
+   "label": "Approver Role",
+   "options": "Role",
+   "reqd": 1
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver (User)",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_limit",
+   "fieldtype": "Currency",
+   "label": "Approval Limit"
+  },
+  {
+   "fieldname": "days_to_approve",
+   "fieldtype": "Int",
+   "label": "Days to Approve",
+   "default": "3"
+  }
+ ],
+ "modified": "2026-05-21 17:00:00.000000",
+ "modified_by": "nathanamare@bespo.et",
+ "owner": "Administrator"
+}

@@ -75,9 +75,9 @@ def create_ra_bill(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    # Generate RA bill number
-    count = frappe.db.count("RA Bill", {"project": project}) or 0
-    ra_bill_number = f"RA-{project[:4].upper()}-{count + 1:04d}"
+    # Use naming series for RA bill number to avoid race conditions
+    project_code = project[:4].upper().replace(" ", "")
+    ra_bill_number = f"RA-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     # Calculate billing totals
     mb_values = []

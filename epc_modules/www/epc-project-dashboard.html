@@ -227,6 +227,14 @@ permalink: epc-project-dashboard.html
 // Project-specific dashboard controller
 frappe.provide('epc_project_dashboard');
 
+// HTML escape utility to prevent XSS
+function escape_html(str) {
+    if (str == null) return '';
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+}
+
 const epc_project_dashboard = {
     project: '{{ project }}',
 
@@ -250,16 +258,16 @@ const epc_project_dashboard = {
         if (wbs.message && wbs.message.length > 0) {
             container.innerHTML = wbs.message.slice(0, 10).map(item => `
                 <div class="wbs-item">
-                    <div class="wbs-indent" style="width: ${item.wbs_level * 20}px"></div>
+                    <div class="wbs-indent" style="width: ${escape_html(item.wbs_level * 20)}px"></div>
                     <div class="wbs-info">
-                        <span class="wbs-code">${item.item_code}</span>
-                        <span class="wbs-status badge-${item.status.toLowerCase().replace(' ', '-')}">${item.status}</span>
+                        <span class="wbs-code">${escape_html(item.item_code)}</span>
+                        <span class="wbs-status badge-${escape_html(item.status.toLowerCase().replace(' ', '-'))}">${escape_html(item.status)}</span>
                     </div>
                     <div class="wbs-progress">
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${item.physical_progress}%"></div>
+                            <div class="progress-fill" style="width: ${escape_html(item.physical_progress)}%"></div>
                         </div>
-                        <span class="progress-text">${item.physical_progress}%</span>
+                        <span class="progress-text">${escape_html(item.physical_progress)}%</span>
                     </div>
                 </div>
             `).join('');
@@ -286,8 +294,8 @@ const epc_project_dashboard = {
                 <div class="dpr-item">
                     <div class="dpr-date">${frappe.datetime.format_date(dpr.report_date)}</div>
                     <div class="dpr-content">
-                        <div class="dpr-progress">${dpr.overall_progress || 0}%</div>
-                        <div class="dpr-summary">${dpr.work_summary || 'No summary'}</div>
+                        <div class="dpr-progress">${escape_html(dpr.overall_progress || 0)}%</div>
+                        <div class="dpr-summary">${escape_html(dpr.work_summary || 'No summary')}</div>
                     </div>
                 </div>
             `).join('');

@@ -7,7 +7,7 @@ REST API endpoints for dual-track billing operations.
 import frappe
 from frappe import _
 from frappe.utils import today, add_days, flt
-from epc_modules.utils import get_epc_logger
+from epc_modules.utils import get_epc_logger, get_vat_account_head, get_default_cost_center
 from epc_modules.utils.billing_calculator import (
     RABillingCalculator,
     MilestoneBillingCalculator,
@@ -31,6 +31,8 @@ def calculate_ra_bill(project, measurement_books=None):
     """
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
+    frappe.has_permission("Project", "read", project, throw=True)
+    frappe.has_permission("RA Bill", "read", throw=True)
 
     project_doc = frappe.get_doc("Project", project)
 
@@ -75,9 +77,9 @@ def create_ra_bill(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    # Generate RA bill number
-    count = frappe.db.count("RA Bill", {"project": project}) or 0
-    ra_bill_number = f"RA-{project[:4].upper()}-{count + 1:04d}"
+    # Use naming series for RA bill number to avoid race conditions
+    project_code = project[:4].upper().replace(" ", "")
+    ra_bill_number = f"RA-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     # Calculate billing totals
     mb_values = []
@@ -115,7 +117,11 @@ def create_ra_bill(project, data):
         "measurement_book_refs": mb_values
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except Exception:
+        frappe.log_error(title="Error in create_ra_bill", message=frappe.get_traceback())
+        frappe.throw(_("Failed to create RA Bill. Error logged."))
 
     logger.info(f"Created RA Bill {ra_bill_number} for project {project}")
 
@@ -141,6 +147,8 @@ def get_project_ra_bills(project, status=None):
     """
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
+    frappe.has_permission("Project", "read", project, throw=True)
+    frappe.has_permission("RA Bill", "read", throw=True)
 
     filters = {"project": project}
     if status:
@@ -169,6 +177,8 @@ def get_ra_bill_details(ra_bill_name):
     Returns:
         dict: RA Bill details
     """
+    frappe.has_permission("RA Bill", "read", ra_bill_name, throw=True)
+
     if not frappe.db.exists("RA Bill", ra_bill_name):
         frappe.throw(_("RA Bill {0} does not exist").format(ra_bill_name))
 
@@ -222,9 +232,9 @@ def submit_ra_bill_for_certification(ra_bill_name):
     Returns:
         dict: Submission result
     """
-    frappe.has_permission("RA Bill", "write", throw=True)
     if not frappe.db.exists("RA Bill", ra_bill_name):
         frappe.throw(_("RA Bill {0} does not exist").format(ra_bill_name))
+    frappe.has_permission("RA Bill", "write", ra_bill_name, throw=True)
 
     doc = frappe.get_doc("RA Bill", ra_bill_name)
 
@@ -232,7 +242,11 @@ def submit_ra_bill_for_certification(ra_bill_name):
         frappe.throw(_("RA Bill can only be submitted from Draft status"))
 
     doc.status = "Submitted"
-    doc.save()
+    try:
+        doc.save()
+    except Exception:
+        frappe.log_error(title="Error in submit_ra_bill_for_certification", message=frappe.get_traceback())
+        frappe.throw(_("Failed to submit RA Bill. Error logged."))
 
     logger.info(f"RA Bill {doc.ra_bill_number} submitted for certification")
 
@@ -254,9 +268,9 @@ def certify_ra_bill(ra_bill_name, certifying_engineer=None):
     Returns:
         dict: Certification result
     """
-    frappe.has_permission("RA Bill", "write", throw=True)
     if not frappe.db.exists("RA Bill", ra_bill_name):
         frappe.throw(_("RA Bill {0} does not exist").format(ra_bill_name))
+    frappe.has_permission("RA Bill", "write", ra_bill_name, throw=True)
 
     doc = frappe.get_doc("RA Bill", ra_bill_name)
 
@@ -267,7 +281,11 @@ def certify_ra_bill(ra_bill_name, certifying_engineer=None):
     doc.certification_date = today()
     if certifying_engineer:
         doc.consulting_engineer = certifying_engineer
-    doc.save()
+    try:
+        doc.save()
+    except Exception:
+        frappe.log_error(title="Error in certify_ra_bill", message=frappe.get_traceback())
+        frappe.throw(_("Failed to certify RA Bill. Error logged."))
 
     logger.info(f"RA Bill {doc.ra_bill_number} certified")
 
@@ -291,6 +309,9 @@ def generate_ra_bill_invoice(ra_bill_name):
     Returns:
         dict: Invoice creation result
     """
+    # Creating a Sales Invoice from RA Bill requires write permission on the RA Bill
+    frappe.has_permission("RA Bill", "write", ra_bill_name, throw=True)
+
     if not frappe.db.exists("RA Bill", ra_bill_name):
         frappe.throw(_("RA Bill {0} does not exist").format(ra_bill_name))
 
@@ -327,15 +348,24 @@ def generate_ra_bill_invoice(ra_bill_name):
         "taxes": [{
             "doctype": "Sales Taxes and Charges",
             "charge_type": "On Net Total",
-            "account_head": frappe.db.get_value("Account", {"account_name": ["like", "%VAT%"]}, "name") or "VAT - E",
+            "account_head": get_vat_account_head() or "",
             "description": "VAT 15% (Proclamation 1341/2024)",
             "rate": 15,
-            "cost_center": "Main - E"
+            "cost_center": get_default_cost_center() or ""
         }]
     })
 
-    si.insert()
-    si.submit()
+    try:
+        si.insert()
+    except Exception:
+        frappe.log_error(title="Error in generate_ra_bill_invoice (insert)", message=frappe.get_traceback())
+        frappe.throw(_("Failed to insert sales invoice. Error logged."))
+
+    try:
+        si.submit()
+    except Exception:
+        frappe.log_error(title="Error in generate_ra_bill_invoice (submit)", message=frappe.get_traceback())
+        frappe.throw(_("Failed to submit sales invoice. Error logged."))
 
     # Update RA Bill
     frappe.db.set_value("RA Bill", ra_bill_name, {
@@ -365,6 +395,8 @@ def get_project_milestones(project):
     Returns:
         list: Project milestones
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -420,7 +452,11 @@ def create_milestone(project, data):
         "status": "Pending"
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except Exception:
+        frappe.log_error(title="Error in create_milestone", message=frappe.get_traceback())
+        frappe.throw(_("Failed to create milestone. Error logged."))
 
     return {
         "name": doc.name,
@@ -441,6 +477,8 @@ def check_milestone_triggers(project):
     Returns:
         list: Milestones ready to invoice
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
     return MilestoneBillingCalculator.check_milestone_triggers(project)
 
 
@@ -456,6 +494,9 @@ def trigger_milestone_invoice(project, milestone_name):
     Returns:
         dict: Invoice result
     """
+    frappe.has_permission("Sales Invoice", "create", throw=True)
+    frappe.has_permission("Project", "read", project, throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -474,6 +515,8 @@ def get_billing_summary(project):
     Returns:
         dict: Billing summary
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -491,6 +534,8 @@ def get_advance_recovery_status(project):
     Returns:
         dict: Advance recovery details
     """
+    frappe.has_permission("Project", "read", project, throw=True)
+
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
@@ -502,11 +547,12 @@ def get_advance_recovery_status(project):
     # Get cumulative certified
     cumulative_certified = 0
     if project_doc.billing_track == "RA-Billing":
-        cumulative_certified = frappe.db.sql("""
+        result = frappe.db.sql("""
             SELECT SUM(gross_certified_value)
             FROM `tabRA Bill`
             WHERE project = %s AND docstatus = 1
-        """, project)[0][0] or 0
+        """, project)
+        cumulative_certified = result[0][0] if result and result[0][0] is not None else 0
 
     # Calculate current recovery status
     recovery = RABillingCalculator.calculate_advance_recovery(
@@ -524,7 +570,7 @@ def get_advance_recovery_status(project):
         "cumulative_recovered": recovery.get("cumulative_certified_value", 0) - cumulative_certified if cumulative_certified > original_advance else 0,
         "remaining_advance": original_advance - cumulative_certified if cumulative_certified < original_advance else 0,
         "recovery_status": recovery.get("status"),
-        "completion_percentage": (cumulative_certified / total_contract * 100) if total_contract > 0 else 0
+        "completion_percentage": (cumulative_certified / total_contract) * 100 if total_contract > 0 else 0
     }
 
 
@@ -540,6 +586,10 @@ def get_vat_calculation(amount, vat_rate=15):
     Returns:
         dict: VAT breakdown
     """
+    # VAT calculation is a system-level utility, not tied to a specific document
+    # but we check Sales Invoice create permission as a gate
+    frappe.has_permission("Sales Invoice", "create", throw=True)
+
     calc = RABillingCalculator.calculate_vat(amount, vat_rate)
 
     return {
@@ -556,6 +606,8 @@ def create_ra_bill_template(project_name, data=None):
     """
     Create RA Bill template for Arat Kilo project from BOQ items.
     """
+    frappe.only_for("System Manager")
+
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
 
@@ -564,9 +616,8 @@ def create_ra_bill_template(project_name, data=None):
     if project.billing_track != "RA-Billing":
         frappe.throw(_("Project uses Milestone-Billing, not RA-Billing"))
 
-    count = frappe.db.count("RA Bill", {"project": project_name}) or 0
-    project_code = project_name[:4].upper()
-    ra_bill_number = f"RA-{project_code}-{count + 1:04d}"
+    project_code = project_name[:4].upper().replace(" ", "")
+    ra_bill_number = f"RA-{project_code}-{frappe.generate_hash(length=8).upper()}"
 
     boq_items = frappe.get_all(
         "Custom BOQ",
@@ -577,11 +628,12 @@ def create_ra_bill_template(project_name, data=None):
 
     total_boq_value = sum(flt(item.total_value) for item in boq_items)
 
-    cumulative_certified = frappe.db.sql("""
+    result = frappe.db.sql("""
         SELECT SUM(gross_certified_value)
         FROM `tabRA Bill`
         WHERE project = %s AND docstatus = 1
-    """, project_name)[0][0] or 0
+    """, project_name)
+    cumulative_certified = result[0][0] if result and result[0][0] is not None else 0
 
     calc = RABillingCalculator.calculate_ra_bill_totals(
         project_name,
@@ -607,7 +659,11 @@ def create_ra_bill_template(project_name, data=None):
         "total_invoice_value": 0,
         "status": "Draft",
     })
-    doc.insert(ignore_permissions=True, ignore_mandatory=True)
+    try:
+        doc.insert()
+    except Exception:
+        frappe.log_error(title="Error in create_ra_bill_template", message=frappe.get_traceback())
+        frappe.throw(_("Failed to create RA Bill template. Error logged."))
 
     return {
         "name": doc.name,
@@ -626,6 +682,8 @@ def get_ra_bill_schedule(project_name):
     """
     Get projected RA Bill billing schedule based on BOQ and contract value.
     """
+    frappe.has_permission("Project", "read", project_name, throw=True)
+
     if not frappe.db.exists("Project", project_name):
         frappe.throw(_("Project {0} does not exist").format(project_name))
 

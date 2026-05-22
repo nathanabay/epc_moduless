@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class ClaimRegister(frappe.Document):
+class ClaimRegister(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Claim Register", ["name"])

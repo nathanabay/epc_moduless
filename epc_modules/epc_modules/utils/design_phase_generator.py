@@ -244,10 +244,9 @@ def generate_design_phases(project, typology_type=None):
         for deliv in phase_data.get("deliverables", []):
             doc.append("deliverables", deliv)
 
-        doc.insert(ignore_permissions=True)
+        doc.insert(ignore_permissions=frappe.has_permission("Design Phase", "write") or frappe.flags.ignore_permissions)
         created += 1
 
-    frappe.db.commit()
     return {"created": created, "total": len(templates), "typology": typology_type}
 
 
@@ -308,6 +307,5 @@ def advance_design_phase(design_phase, new_status=None):
     if doc.status == "Approved" and doc.gate_status == "Pending":
         doc.gate_status = "Pass"
 
-    doc.save(ignore_permissions=True)
-    frappe.db.commit()
+    doc.save()
     return {"phase": doc.name, "status": doc.status}

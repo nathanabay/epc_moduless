@@ -34,8 +34,13 @@ def create_risk(project, data):
     if not frappe.db.exists("Project", project):
         frappe.throw(_("Project {0} does not exist").format(project))
 
-    count = frappe.db.count("Risk Register", {"project": project}) or 0
-    risk_id = f"RSK-{project[:4].upper()}-{count + 1:04d}"
+    # Validate required fields
+    if not data.get("risk_category"):
+        frappe.throw(_("Risk Category is required"))
+    if not data.get("risk_title"):
+        frappe.throw(_("Risk Title is required"))
+
+    risk_id = frappe.generate_hash("Risk Register", 10)
 
     # Calculate risk score
     probability_scores = {"Very Low": 1, "Low": 2, "Medium": 3, "High": 4, "Very High": 5}
@@ -73,7 +78,15 @@ def create_risk(project, data):
         "status": "Identified"
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Risk with this ID already exists"))
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to create risk: {e}")
+        frappe.throw(_("Failed to create risk: {0}").format(str(e)))
 
     logger.info(f"Created risk {risk_id} for project {project}")
 
@@ -86,27 +99,38 @@ def create_risk(project, data):
 
 
 @frappe.whitelist()
-def get_project_risks(project, status=None):
+def get_project_risks(project, status=None, limit=20, offset=0):
     """
     Get risks for a project.
 
     Args:
         project (str): Project name
         status (str, optional): Filter by status
+        limit (int): Page size (max 100)
+        offset (int): Starting offset
 
     Returns:
         list: Project risks
     """
+    frappe.has_permission("Risk Register", "read", throw=True)
+
+    if not frappe.db.exists("Project", project):
+        frappe.throw(_("Project {0} does not exist").format(project))
+
     filters = {"project": project}
     if status:
         filters["status"] = status
 
-    return frappe.get_all(
+    limit = min(int(limit), 100)
+
+    return frappe.get_list(
         "Risk Register",
         filters=filters,
         fields=["name", "risk_id", "risk_category", "risk_title", "risk_score",
                 "risk_rating", "status", "responsible_person", "review_date"],
-        order_by="risk_score desc"
+        order_by="risk_score desc",
+        limit_page_length=limit,
+        limit_start=offset
     )
 
 
@@ -133,7 +157,13 @@ def update_risk_action(risk_name, action_data):
                 action.completed_date = today()
             break
 
-    doc.save()
+    try:
+        doc.save()
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to update risk action: {e}")
+        frappe.throw(_("Failed to update risk action: {0}").format(str(e)))
 
     return {"name": doc.name, "status": "updated"}
 
@@ -160,7 +190,13 @@ def close_risk(risk_name, lessons_learned=None):
     if lessons_learned:
         doc.lessons_learned = lessons_learned
 
-    doc.save()
+    try:
+        doc.save()
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to close risk: {e}")
+        frappe.throw(_("Failed to close risk: {0}").format(str(e)))
 
     logger.info(f"Risk {doc.risk_id} closed")
 
@@ -188,8 +224,7 @@ def create_equipment(data):
     """
     frappe.has_permission("Equipment Register", "create", throw=True)
 
-    count = frappe.db.count("Equipment Register") or 0
-    equipment_id = f"EQ-{count + 1:05d}"
+    equipment_id = frappe.generate_hash("Equipment Register", 10)
 
     doc = frappe.get_doc({
         "doctype": "Equipment Register",
@@ -217,7 +252,15 @@ def create_equipment(data):
         "current_location": data.get("current_location")
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Equipment with this ID already exists"))
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to create equipment: {e}")
+        frappe.throw(_("Failed to create equipment: {0}").format(str(e)))
 
     logger.info(f"Created equipment {equipment_id}: {doc.equipment_name}")
 
@@ -228,16 +271,20 @@ def create_equipment(data):
 
 
 @frappe.whitelist()
-def get_equipment_list(filters=None):
+def get_equipment_list(filters=None, limit=20, offset=0):
     """
     Get equipment list with filters.
 
     Args:
         filters (dict): Filter options
+        limit (int): Page size (max 100)
+        offset (int): Starting offset
 
     Returns:
         list: Equipment records
     """
+    frappe.has_permission("Equipment Register", "read", throw=True)
+
     filter_dict = {}
     if filters:
         if filters.get("project"):
@@ -247,12 +294,16 @@ def get_equipment_list(filters=None):
         if filters.get("category"):
             filter_dict["equipment_category"] = filters["category"]
 
-    return frappe.get_all(
+    limit = min(int(limit), 100)
+
+    return frappe.get_list(
         "Equipment Register",
         filters=filter_dict,
         fields=["name", "equipment_id", "equipment_name", "equipment_category",
                 "equipment_status", "project", "operator_required"],
-        order_by="equipment_id asc"
+        order_by="equipment_id asc",
+        limit_page_length=limit,
+        limit_start=offset
     )
 
 
@@ -274,7 +325,14 @@ def update_equipment_status(equipment_name, status):
 
     doc = frappe.get_doc("Equipment Register", equipment_name)
     doc.equipment_status = status
-    doc.save()
+
+    try:
+        doc.save()
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to update equipment status: {e}")
+        frappe.throw(_("Failed to update equipment status: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -295,8 +353,7 @@ def log_equipment_utilization(data):
     """
     frappe.has_permission("Equipment Utilization Log", "create", throw=True)
 
-    count = frappe.db.count("Equipment Utilization Log") or 0
-    log_id = f"UTIL-{count + 1:06d}"
+    log_id = frappe.generate_hash("Equipment Utilization Log", 10)
 
     # Calculate costs
     operator_rate = data.get("operator_rate", 0)
@@ -323,7 +380,15 @@ def log_equipment_utilization(data):
         "remarks": data.get("remarks")
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Utilization log with this ID already exists"))
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to log equipment utilization: {e}")
+        frappe.throw(_("Failed to log utilization: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -346,8 +411,7 @@ def create_maintenance_schedule(equipment_name, data):
     """
     frappe.has_permission("Equipment Maintenance Schedule", "create", throw=True)
 
-    count = frappe.db.count("Equipment Maintenance Schedule") or 0
-    schedule_id = f"MNT-{count + 1:05d}"
+    schedule_id = frappe.generate_hash("Equipment Maintenance Schedule", 10)
 
     # Calculate next service date
     interval = data.get("interval_days", 30)
@@ -370,7 +434,15 @@ def create_maintenance_schedule(equipment_name, data):
         "alert_days_before": data.get("alert_days_before", 7)
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Maintenance schedule with this ID already exists"))
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to create maintenance schedule: {e}")
+        frappe.throw(_("Failed to create schedule: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -380,16 +452,24 @@ def create_maintenance_schedule(equipment_name, data):
 
 
 @frappe.whitelist()
-def get_maintenance_alerts():
+def get_maintenance_alerts(limit=50, offset=0):
     """
     Get upcoming maintenance alerts.
+
+    Args:
+        limit (int): Page size (max 100)
+        offset (int): Starting offset
 
     Returns:
         list: Maintenance due alerts
     """
+    frappe.has_permission("Equipment Maintenance Schedule", "read", throw=True)
+
     upcoming = add_days(today(), 7)
 
-    return frappe.get_all(
+    limit = min(int(limit), 100)
+
+    return frappe.get_list(
         "Equipment Maintenance Schedule",
         filters={
             "is_scheduled": 1,
@@ -398,7 +478,9 @@ def get_maintenance_alerts():
         },
         fields=["name", "schedule_id", "equipment", "maintenance_type",
                 "description", "next_service_date", "alert_days_before"],
-        order_by="next_service_date asc"
+        order_by="next_service_date asc",
+        limit_page_length=limit,
+        limit_start=offset
     )
 
 
@@ -416,8 +498,7 @@ def move_equipment(equipment_name, data):
     """
     frappe.has_permission("Equipment Movement", "create", throw=True)
 
-    count = frappe.db.count("Equipment Movement") or 0
-    movement_id = f"MOV-{count + 1:05d}"
+    movement_id = frappe.generate_hash("Equipment Movement", 10)
 
     doc = frappe.get_doc({
         "doctype": "Equipment Movement",
@@ -433,7 +514,15 @@ def move_equipment(equipment_name, data):
         "purpose": data.get("purpose")
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Movement with this ID already exists"))
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to record equipment movement: {e}")
+        frappe.throw(_("Failed to record movement: {0}").format(str(e)))
 
     # Update equipment location if movement type is Transfer
     if data.get("movement_type") == "Transfer" and data.get("to_project"):
@@ -441,7 +530,13 @@ def move_equipment(equipment_name, data):
         eq_doc = frappe.get_doc("Equipment Register", equipment_name)
         eq_doc.project = data.get("to_project")
         eq_doc.current_location = data.get("to_project")
-        eq_doc.save()
+        try:
+            eq_doc.save()
+        except frappe.ValidationError as e:
+            frappe.throw(_("Validation error: {0}").format(str(e)))
+        except Exception as e:
+            logger.error(f"Failed to update equipment location: {e}")
+            frappe.throw(_("Failed to update equipment location: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -465,6 +560,8 @@ def get_equipment_utilization_summary(project=None, days=30):
     Returns:
         dict: Utilization summary
     """
+    frappe.has_permission("Equipment Register", "read", throw=True)
+
     from frappe.utils import add_days as add_days_util
 
     cutoff = add_days_util(today(), -days)
@@ -473,27 +570,33 @@ def get_equipment_utilization_summary(project=None, days=30):
     if project:
         filters["project"] = project
 
-    logs = frappe.get_all(
-        "Equipment Utilization Log",
-        filters=filters,
-        fields=["equipment", "hours_worked", "idle_hours", "fuel_consumed_ltr", "total_cost"]
+    # Use SQL GROUP BY for aggregation instead of Python looping
+    result = frappe.db.sql("""
+        SELECT
+            equipment,
+            SUM(hours_worked) as total_hours,
+            SUM(idle_hours) as total_idle,
+            SUM(fuel_consumed_ltr) as total_fuel,
+            SUM(total_cost) as total_cost
+        FROM `tabEquipment Utilization Log`
+        WHERE log_date >= %s {project_filter}
+        GROUP BY equipment
+    """.format(project_filter="AND project = %(project)s" if project else ""),
+        {"cutoff": cutoff, "project": project} if project else {"cutoff": cutoff},
+        as_dict=True
     )
 
-    # Group by equipment
-    by_equipment = {}
-    for log in logs:
-        eq = log.equipment
-        if eq not in by_equipment:
-            by_equipment[eq] = {"hours": 0, "idle": 0, "fuel": 0, "cost": 0}
-        by_equipment[eq]["hours"] += log.hours_worked or 0
-        by_equipment[eq]["idle"] += log.idle_hours or 0
-        by_equipment[eq]["fuel"] += log.fuel_consumed_ltr or 0
-        by_equipment[eq]["cost"] += log.total_cost or 0
-
     # Calculate utilization rates
-    for eq, data in by_equipment.items():
-        total = data["hours"] + data["idle"]
-        data["utilization_rate"] = round((data["hours"] / total * 100) if total > 0 else 0, 2)
+    by_equipment = {}
+    for row in result:
+        total = row.total_hours + row.total_idle
+        by_equipment[row.equipment] = {
+            "hours": row.total_hours or 0,
+            "idle": row.total_idle or 0,
+            "fuel": row.total_fuel or 0,
+            "cost": row.total_cost or 0,
+            "utilization_rate": round((row.total_hours / total * 100) if total > 0 else 0, 2)
+        }
 
     return {
         "period_days": days,
@@ -514,15 +617,19 @@ def get_equipment_cost_analysis(project=None):
     Returns:
         dict: Cost analysis
     """
+    frappe.has_permission("Equipment Register", "read", throw=True)
+
     filters = {}
     if project:
         filters["project"] = project
 
-    equipment_list = frappe.get_all(
+    equipment_list = frappe.get_list(
         "Equipment Register",
         filters=filters,
         fields=["name", "equipment_id", "ownership_type", "lease_rate",
-                "average_fuel_consumption", "project"]
+                "average_fuel_consumption", "project"],
+        limit=50,
+        offset=0
     )
 
     analysis = {
@@ -563,8 +670,7 @@ def create_subcontractor_profile(data):
     """
     frappe.has_permission("Subcontractor Profile", "create", throw=True)
 
-    count = frappe.db.count("Subcontractor Profile") or 0
-    subcontractor_id = f"SC-{count + 1:04d}"
+    subcontractor_id = frappe.generate_hash("Subcontractor Profile", 10)
 
     doc = frappe.get_doc({
         "doctype": "Subcontractor Profile",
@@ -589,7 +695,15 @@ def create_subcontractor_profile(data):
         "status": "Active"
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Subcontractor with this ID already exists"))
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to create subcontractor profile: {e}")
+        frappe.throw(_("Failed to create subcontractor: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -598,43 +712,57 @@ def create_subcontractor_profile(data):
 
 
 @frappe.whitelist()
-def get_subcontractor_list(active_only=True):
+def get_subcontractor_list(active_only=True, limit=20, offset=0):
     """
     Get subcontractor list.
 
     Args:
         active_only (bool): Filter active only
+        limit (int): Page size (max 100)
+        offset (int): Starting offset
 
     Returns:
         list: Subcontractors
     """
+    frappe.has_permission("Subcontractor Profile", "read", throw=True)
+
     filters = {}
     if active_only:
         filters["status"] = "Active"
 
-    return frappe.get_all(
+    limit = min(int(limit), 100)
+
+    return frappe.get_list(
         "Subcontractor Profile",
         filters=filters,
         fields=["name", "subcontractor_id", "subcontractor_name", "trade_category",
                 "safety_rating", "quality_rating", "insurance_expiry", "status"],
-        order_by="subcontractor_name asc"
+        order_by="subcontractor_name asc",
+        limit_page_length=limit,
+        limit_start=offset
     )
 
 
 @frappe.whitelist()
-def get_expiring_insurance(days=30):
+def get_expiring_insurance(days=30, limit=50, offset=0):
     """
     Get subcontractors with expiring insurance.
 
     Args:
         days (int): Days to check
+        limit (int): Page size (max 100)
+        offset (int): Starting offset
 
     Returns:
         list: Expiring insurance alerts
     """
+    frappe.has_permission("Subcontractor Profile", "read", throw=True)
+
     cutoff = add_days(today(), days)
 
-    return frappe.get_all(
+    limit = min(int(limit), 100)
+
+    return frappe.get_list(
         "Subcontractor Profile",
         filters={
             "status": "Active",
@@ -642,7 +770,9 @@ def get_expiring_insurance(days=30):
             "blacklist": 0
         },
         fields=["name", "subcontractor_id", "subcontractor_name", "insurance_expiry"],
-        order_by="insurance_expiry asc"
+        order_by="insurance_expiry asc",
+        limit_page_length=limit,
+        limit_start=offset
     )
 
 
@@ -661,8 +791,7 @@ def create_subcontractor_work_order(project, subcontractor, data):
     """
     frappe.has_permission("Subcontractor Work Order", "create", throw=True)
 
-    count = frappe.db.count("Subcontractor Work Order", {"project": project}) or 0
-    work_order_id = f"WO-{project[:4].upper()}-{count + 1:04d}"
+    work_order_id = frappe.generate_hash("Subcontractor Work Order", 10)
 
     doc = frappe.get_doc({
         "doctype": "Subcontractor Work Order",
@@ -682,7 +811,15 @@ def create_subcontractor_work_order(project, subcontractor, data):
         "status": "Draft"
     })
 
-    doc.insert()
+    try:
+        doc.insert()
+    except frappe.DuplicateEntryError:
+        frappe.throw(_("Work order with this ID already exists"))
+    except frappe.ValidationError as e:
+        frappe.throw(_("Validation error: {0}").format(str(e)))
+    except Exception as e:
+        logger.error(f"Failed to create work order: {e}")
+        frappe.throw(_("Failed to create work order: {0}").format(str(e)))
 
     return {
         "name": doc.name,
@@ -691,27 +828,35 @@ def create_subcontractor_work_order(project, subcontractor, data):
 
 
 @frappe.whitelist()
-def get_subcontractor_work_orders(subcontractor=None, project=None):
+def get_subcontractor_work_orders(subcontractor=None, project=None, limit=20, offset=0):
     """
     Get work orders.
 
     Args:
         subcontractor (str, optional): Filter by subcontractor
         project (str, optional): Filter by project
+        limit (int): Page size (max 100)
+        offset (int): Starting offset
 
     Returns:
         list: Work orders
     """
+    frappe.has_permission("Subcontractor Profile", "read", throw=True)
+
     filters = {}
     if subcontractor:
         filters["subcontractor"] = subcontractor
     if project:
         filters["project"] = project
 
-    return frappe.get_all(
+    limit = min(int(limit), 100)
+
+    return frappe.get_list(
         "Subcontractor Work Order",
         filters=filters,
         fields=["name", "work_order_id", "project", "subcontractor",
                 "contract_value", "status", "start_date", "end_date"],
-        order_by="creation desc"
+        order_by="creation desc",
+        limit_page_length=limit,
+        limit_start=offset
     )

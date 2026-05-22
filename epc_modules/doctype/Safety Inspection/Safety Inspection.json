@@ -1,0 +1,36 @@
+{
+  "doctype": "DocType",
+  "name": "Safety Inspection",
+  "module": "EPC Modules",
+  "autoname": "field:inspection_number",
+  "is_submittable": 1,
+  "editable_grid": 1,
+  "fields": [
+    {"fieldname": "inspection_number", "fieldtype": "Data", "label": "Inspection Number", "read_only": 1, "reqd": 1},
+    {"fieldname": "project", "fieldtype": "Link", "label": "Project", "options": "Project", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "inspection_date", "fieldtype": "Date", "label": "Inspection Date", "reqd": 1, "in_list_view": 1},
+    {"fieldname": "inspector", "fieldtype": "Link", "label": "Inspector", "options": "User"},
+    {"fieldname": "inspection_type", "fieldtype": "Select", "label": "Type", "options": "Daily\nWeekly\nMonthly\nQuarterly\nAnnual\nSpecial", "in_list_view": 1},
+    {"fieldname": "location_area", "fieldtype": "Data", "label": "Location/Area"},
+    {"fieldname": "wbs_item", "fieldtype": "Link", "label": "WBS Item", "options": "WBS Item"},
+    {"fieldname": "weather_conditions", "fieldtype": "Data", "label": "Weather Conditions"},
+    {"fieldname": "temperature", "fieldtype": "Float", "label": "Temperature (C)"},
+    {"fieldname": "total_workers_present", "fieldtype": "Int", "label": "Workers Present"},
+    {"fieldname": "checklist_section", "fieldtype": "Section Break", "label": "Safety Checklist"},
+    {"fieldname": "checklist_items", "fieldtype": "Table", "options": "Inspection Checklist Item", "label": "Checklist Items"},
+    {"fieldname": "total_checklist_items", "fieldtype": "Int", "label": "Total Items", "read_only": 1},
+    {"fieldname": "items_complied", "fieldtype": "Int", "label": "Complied", "read_only": 1},
+    {"fieldname": "compliance_percentage", "fieldtype": "Float", "label": "Compliance %", "read_only": 1},
+    {"fieldname": "overall_section", "fieldtype": "Section Break", "label": "Overall Assessment"},
+    {"fieldname": "overall_status", "fieldtype": "Select", "label": "Status", "options": "Satisfactory\nNeeds Improvement\nUnsatisfactory", "in_list_view": 1},
+    {"fieldname": "non_conformances", "fieldtype": "Int", "label": "Non-Conformances"},
+    {"fieldname": "corrective_actions_required", "fieldtype": "Text", "label": "Corrective Actions"},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Document Status", "options": "Draft\nSubmitted\nApproved", "default": "Draft", "in_list_view": 1}
+  ],
+  "permissions": [
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1},
+    {"role": "Site Supervisor", "read": 1, "write": 1, "create": 1, "submit": 1},
+    {"role": "Projects User", "read": 1, "write": 1, "create": 1}
+  ]
+}

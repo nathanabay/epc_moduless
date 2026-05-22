@@ -2,11 +2,8 @@
 # License: MIT
 
 import frappe
+from frappe.model.document import Document
 
 
-class Non-ConformanceReport(frappe.Document):
+class Non-ConformanceReport(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("Non-Conformance Report", ["name"])

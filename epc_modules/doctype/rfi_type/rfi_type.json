@@ -1,0 +1,55 @@
+{
+ "doctype": "DocType",
+ "name": "RFI Type",
+ "module": "EPC Modules",
+ "autoname": "field:rfi_type_name",
+ "is_submittable": 0,
+ "track_changes": 1,
+ "fields": [
+  {
+   "fieldname": "rfi_type_name",
+   "fieldtype": "Data",
+   "label": "RFI Type Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "default_priority",
+   "fieldtype": "Select",
+   "label": "Default Priority",
+   "options": "Low\nMedium\nHigh\nCritical",
+   "default": "Medium"
+  },
+  {
+   "fieldname": "response_days",
+   "fieldtype": "Int",
+   "label": "Response Days",
+   "default": 7,
+   "description": "Expected response time in days"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Project Manager",
+   "read": 1
+  }
+ ]
+}

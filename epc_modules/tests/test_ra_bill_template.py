@@ -1,7 +1,9 @@
 # tests/test_ra_bill_template.py
-import frappe, unittest
+import frappe
+from frappe.test_utils import FrappeTestCase
 
-class TestRABillTemplate(unittest.TestCase):
+
+class TestRABillTemplate(FrappeTestCase):
     def setUp(self):
         frappe.set_user("Administrator")
         if not frappe.db.exists("Project", "ARAT-KILO"):
@@ -39,6 +41,9 @@ class TestRABillTemplate(unittest.TestCase):
 
     def tearDown(self):
         frappe.set_user("Administrator")
+        # Clean up RA Bills created by tests
         if frappe.db.exists("RA Bill", {"project": "ARAT-KILO"}):
-            frappe.db.sql("DELETE FROM `tabRA Bill` WHERE project = 'ARAT-KILO'")
-        frappe.db.commit()
+            frappe.db.sql("DELETE FROM `tabRA Bill` WHERE project = %(project)s", {"project": "ARAT-KILO"})
+        # Clean up test project
+        if frappe.db.exists("Project", "ARAT-KILO"):
+            frappe.get_doc("Project", "ARAT-KILO").delete()

@@ -34,7 +34,9 @@ def get_polymorphic_boq(project, measurement_method=None):
     boq_items = frappe.get_all(
         "Custom BOQ",
         filters=filters,
-        fields=["*"]
+        fields=["name", "item_code", "description", "boq_quantity", "unit_rate",
+                "total_value", "measurement_method", "wbs_item", "wbs_code",
+                "is_electromechanical", "is_civil", "idx"]
     )
 
     return boq_items

@@ -314,7 +314,11 @@ class TypologyEngine:
         typologies = frappe.get_all(
             "Project Typology",
             filters=filters,
-            fields=["*"],
+            fields=["name", "typology_type", "billing_track", "wbs_architecture",
+                    "inventory_strategy", "requires_tbe", "requires_measurement_book",
+                    "requires_spatial_zones", "requires_itp", "icon", "color",
+                    "default_retention_percentage", "advance_recovery_threshold",
+                    "advance_recovery_cap", "is_active", "priority"],
             order_by="priority asc"
         )
 

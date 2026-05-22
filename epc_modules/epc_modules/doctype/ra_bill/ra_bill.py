@@ -7,7 +7,3 @@ import frappe
 
 class RABill(Document):
     pass
-
-
-def on_doctype_update():
-    frappe.db.add_index("RA Bill", ["name"])
